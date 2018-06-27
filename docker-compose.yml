@@ -1,0 +1,10 @@
+version: '2.1'
+
+services:
+  yandex-dialogs-whatis:
+    image: popstas/yandex-dialogs-whatis
+    build: .
+    environment:
+      NODE_ENV: production
+    ports:
+      - 2756:3000
