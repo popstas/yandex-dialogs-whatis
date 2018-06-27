@@ -31,17 +31,17 @@ const yandexDialogsWhatis = {
   async run() {
     this.db = await this.initDb(DB_PATH);
 
-    alice.command('/^что /', ctx => {
+    alice.command(/^что /, ctx => {
       console.log('> question: ', ctx.messsage);
-      this.getUserData(ctx, (ctx, userData) => {
-        this.processQuestion(ctx, userData);
+      return this.getUserData(ctx, (ctx, userData) => {
+        return this.processQuestion(ctx, userData);
       });
     });
 
     const inAnswer = new Scene('in-answer');
     inAnswer.enter('запомни', ctx => {
       console.log('> answer begin: ', ctx.messsage);
-      this.getUserData(ctx, (ctx, userData) => {
+      return this.getUserData(ctx, (ctx, userData) => {
         let reply = this.processAnswer(ctx, userData);
         return ctx.reply(reply);
       });
@@ -51,32 +51,32 @@ const yandexDialogsWhatis = {
       this.stage = STAGE_IDLE;
       this.question = '';
       this.answer = '';
-      ctx.reply('Всё отменено');
+      return ctx.reply('Всё отменено');
     });
     inAnswer.any(ctx => {
       console.log('> answer end: ', ctx.messsage);
-      this.getUserData(ctx, (ctx, userData) => {
+      return this.getUserData(ctx, (ctx, userData) => {
         let reply = this.processAnswer(ctx, userData);
-        if(this.stage == STAGE_IDLE){
-          inAnswer._handleLeaveScene();
+        if (this.stage == STAGE_IDLE) {
+          const session = alice.sessions.findById(ctx.sessionId);
+          session.currentScene = null;
         }
         return ctx.reply(reply);
       });
     });
     alice.registerScene(inAnswer);
 
-    /* alice.command('запомни ${question} находится ${answer}', ctx => {
+    alice.command('запомни ${question} находится ${answer}', ctx => {
       console.log('> full answer: ', ctx.messsage);
-      console.log(ctx);
       this.getUserData(ctx, (ctx, userData) => {
         const { question, answer } = ctx.body;
         this.stage = STAGE_IDLE;
         this.storeAnswer(userData, question, answer);
         return ctx.reply(question + ' находится ' + answer + ', поняла');
       });
-    }); */
+    });
 
-    alice.command(['/^демо данные$/'], ctx => {
+    alice.command(/^демо данные$/, ctx => {
       console.log('> demo data');
       this.getUserData(ctx, (ctx, userData) => {
         this.fillDemoData(userData);
@@ -84,7 +84,7 @@ const yandexDialogsWhatis = {
       });
     });
 
-    alice.command(['отмена'], ctx => {
+    alice.command('отмена', ctx => {
       console.log('> cancel');
       this.stage = STAGE_IDLE;
       this.question = '';
@@ -92,7 +92,7 @@ const yandexDialogsWhatis = {
       ctx.reply('Всё отменено');
     });
 
-    alice.command(['удалить'], ctx => {
+    alice.command('удалить', ctx => {
       console.log('> remove');
       this.stage = STAGE_IDLE;
       this.question = '';
@@ -182,7 +182,8 @@ const yandexDialogsWhatis = {
     const helpText = [
       'Я умею запоминать, что где лежит и напоминать об этом.',
       'Начните фразу со "что", чтобы получить ответ. Например: "что в синем".',
-      'Начните фразу с "запомни", чтобы добавить новый ответ, например: "запомни: в синем".'
+      'Скажите "запомни", чтобы добавить новый ответ.',
+      'Можно быстро добавить новый ответ так: "запомни ... находится ..."'
     ];
 
     questions = userData.data.map(item => item.questions[0]);
@@ -192,6 +193,7 @@ const yandexDialogsWhatis = {
     });
 
     if (questions.length > 0) {
+      helpText.push('');
       helpText.push('У меня есть информация об этих объектах:');
     }
     replyMessage.text(helpText.join('\n'));
@@ -249,9 +251,9 @@ const yandexDialogsWhatis = {
 
     if (this.stage == STAGE_IDLE) {
       this.question = q;
-      this.answer = "";
+      this.answer = '';
 
-      if(this.question != ''){
+      if (this.question != '') {
         replyMessage.text('Что находится ' + this.question + '?');
         this.stage = STAGE_WAIT_FOR_ANSWER;
       } else {
@@ -273,11 +275,17 @@ const yandexDialogsWhatis = {
     return replyMessage.get();
   },
 
-  storeAnswer(userData, question, answer){
-    userData.insert({
-      questions: [this.question],
-      answer: this.answer
-    });
+  storeAnswer(userData, question, answer) {
+    const found = userData.data.find(item => item.questions.indexOf(question) != -1);
+    if (found) {
+      found.answer = answer;
+      userData.update(found);
+    } else {
+      userData.insert({
+        questions: [question],
+        answer: answer
+      });
+    }
   },
 
   deleteItem(ctx, answer, userData) {
