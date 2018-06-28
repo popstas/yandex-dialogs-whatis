@@ -1,0 +1,75 @@
+{
+  "_from": "yandex-dialogs-sdk",
+  "_id": "yandex-dialogs-sdk@1.1.7",
+  "_inBundle": false,
+  "_integrity": "sha512-0CsOm5GIC7xuNTC+nU7qfucONaltbpKiNroX8PZRVn34fg44nn3BKTnxVoKFM93KS/LF94rgn55Gl2n7ja4AmQ==",
+  "_location": "/yandex-dialogs-sdk",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "yandex-dialogs-sdk",
+    "name": "yandex-dialogs-sdk",
+    "escapedName": "yandex-dialogs-sdk",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/yandex-dialogs-sdk/-/yandex-dialogs-sdk-1.1.7.tgz",
+  "_shasum": "0ff8ae4ac62574584f53787afc5efa4eb948048c",
+  "_spec": "yandex-dialogs-sdk",
+  "_where": "C:\\projects\\yandex-dialogs-whatis",
+  "author": {
+    "name": "Phil Romanov",
+    "url": "@fletcherist"
+  },
+  "bugs": {
+    "url": "https://github.com/fletcherist/yandex-dialogs-sdk/issues"
+  },
+  "bundleDependencies": false,
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.3",
+    "fuse.js": "^3.2.0",
+    "node-fetch": "^2.1.1",
+    "ramda": "^0.25.0"
+  },
+  "deprecated": false,
+  "description": "Build your skill for Alice with ease.",
+  "devDependencies": {
+    "babel-eslint": "^8.2.2",
+    "eslint": "^4.19.0",
+    "eslint-config-standard": "^11.0.0",
+    "eslint-plugin-import": "^2.10.0",
+    "eslint-plugin-node": "^6.0.1",
+    "eslint-plugin-promise": "^3.7.0",
+    "eslint-plugin-standard": "^3.0.1"
+  },
+  "homepage": "https://github.com/fletcherist/yandex-dialogs-sdk#readme",
+  "keywords": [
+    "Alice",
+    "yandex-dialogs",
+    "alice",
+    "alisa",
+    "skills",
+    "alice-sdk",
+    "alice-dialogs",
+    "yandex-dialogs-sdk",
+    "imperator"
+  ],
+  "license": "MIT",
+  "main": "src/index.js",
+  "name": "yandex-dialogs-sdk",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fletcherist/yandex-dialogs-sdk.git"
+  },
+  "scripts": {
+    "test": "jest"
+  },
+  "version": "1.1.7"
+}

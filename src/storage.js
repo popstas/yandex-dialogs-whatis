@@ -2,7 +2,7 @@
 
 const LokiDriver = require('./storage/loki');
 const MongoDriver = require('./storage/mongo');
-const config = require('../config');
+const config = require('./config');
 
 const DB_PATH = 'data/loki.db';
 

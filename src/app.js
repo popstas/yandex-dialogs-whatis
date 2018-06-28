@@ -1,7 +1,7 @@
 'use strict'
 
-const Alice = require('yandex-dialogs-sdk');
-const Scene = require('yandex-dialogs-sdk').Scene;
+const Alice = require('./yandex-dialogs-sdk');
+const Scene = require('./yandex-dialogs-sdk').Scene;
 const alice = new Alice();
 const Fuse = require('fuse.js');
 const storage = require('./storage.js');
@@ -21,9 +21,12 @@ class YandexDialogsWhatis {
     this.init();
   }
 
+  handleRequestBody(event, context) {
+    return alice.handleRequestBody(event);
+  }
+
   async init() {
     await storage.connect();
-    console.log('storage: ', storage);
 
     alice.command(/^что /, ctx => {
       console.log('> question: ', ctx.messsage);
@@ -109,6 +112,11 @@ class YandexDialogsWhatis {
       res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
       next();
     }); */
+  }
+
+  createApp(callbackUrl = '/') {
+    this.app = alice.createApp(callbackUrl);
+    return this.app;
   }
 
   run() {
