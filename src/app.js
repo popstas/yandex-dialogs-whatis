@@ -3,12 +3,10 @@
 const Alice = require('yandex-dialogs-sdk');
 const Scene = require('yandex-dialogs-sdk').Scene;
 const alice = new Alice();
-const loki = require('lokijs');
 const Fuse = require('fuse.js');
+const storage = require('./storage.js');
 
 const PORT = process.env.BASE_URL || 3002;
-const DB_PATH = 'data/loki.db';
-const demoData = require('./demoData');
 
 const STAGE_IDLE = 'STAGE_IDLE';
 const STAGE_WAIT_FOR_ANSWER = 'STAGE_WAIT_FOR_ANSWER';
@@ -19,28 +17,17 @@ class YandexDialogsWhatis {
     this.question = '';
     this.answer = '';
     this.lastAddedItem = {};
-    this.db = {};
 
     this.init();
   }
 
-  initDb(name) {
-    return new Promise((resolv, reject) => {
-      let db = new loki(name, {
-        autoload: true,
-        autoloadCallback: () => resolv(db),
-        autosave: true,
-        autosaveInterval: 4000
-      });
-    });
-  }
-
   async init() {
-    this.db = await this.initDb(DB_PATH);
+    await storage.connect();
+    console.log('storage: ', storage);
 
     alice.command(/^что /, ctx => {
       console.log('> question: ', ctx.messsage);
-      return this.getUserData(ctx, (ctx, userData) => {
+      return storage.getUserData(ctx, (ctx, userData) => {
         return this.processQuestion(ctx, userData);
       });
     });
@@ -48,7 +35,7 @@ class YandexDialogsWhatis {
     const inAnswer = new Scene('in-answer');
     inAnswer.enter('запомни', ctx => {
       console.log('> answer begin: ', ctx.messsage);
-      return this.getUserData(ctx, (ctx, userData) => {
+      return storage.getUserData(ctx, (ctx, userData) => {
         let reply = this.processAnswer(ctx, userData);
         return ctx.reply(reply);
       });
@@ -62,7 +49,7 @@ class YandexDialogsWhatis {
     });
     inAnswer.any(ctx => {
       console.log('> answer end: ', ctx.messsage);
-      return this.getUserData(ctx, (ctx, userData) => {
+      return storage.getUserData(ctx, (ctx, userData) => {
         let reply = this.processAnswer(ctx, userData);
         if (this.stage == STAGE_IDLE) {
           const session = alice.sessions.findById(ctx.sessionId);
@@ -75,18 +62,18 @@ class YandexDialogsWhatis {
 
     alice.command('запомни ${question} находится ${answer}', ctx => {
       console.log('> full answer: ', ctx.messsage);
-      this.getUserData(ctx, (ctx, userData) => {
+      storage.getUserData(ctx, (ctx, userData) => {
         const { question, answer } = ctx.body;
         this.stage = STAGE_IDLE;
-        this.storeAnswer(userData, question, answer);
+        storage.storeAnswer(userData, question, answer);
         return ctx.reply(question + ' находится ' + answer + ', поняла');
       });
     });
 
     alice.command(/^демо данные$/, ctx => {
       console.log('> demo data');
-      this.getUserData(ctx, (ctx, userData) => {
-        this.fillDemoData(userData);
+      storage.getUserData(ctx, (ctx, userData) => {
+        storage.fillDemoData(userData);
         ctx.reply('Данные сброшены на демонстрационные');
       });
     });
@@ -110,7 +97,7 @@ class YandexDialogsWhatis {
 
     alice.any(ctx => {
       console.log('> default');
-      this.getUserData(ctx, (ctx, userData) => {
+      storage.getUserData(ctx, (ctx, userData) => {
         return this.processHelp(ctx, userData);
       });
     });
@@ -127,24 +114,6 @@ class YandexDialogsWhatis {
   run() {
     alice.listen('/', PORT);
     console.log('listen ' + PORT);
-  }
-
-  getUserData(ctx, callback) {
-    let userId = ctx.userId;
-    if (!userId) {
-      return ctx.reply('Не указан идентификатор пользователя');
-    }
-
-    let userData = this.db.getCollection(userId);
-    if (userData === null) {
-      userData = this.db.addCollection(userId);
-    }
-    return callback(ctx, userData);
-  }
-
-  fillDemoData(userData) {
-    userData.clear();
-    demoData.insert(demoData);
   }
 
   processHelp(ctx, userData) {
@@ -237,7 +206,7 @@ class YandexDialogsWhatis {
       };
 
       this.stage = STAGE_IDLE;
-      this.storeAnswer(userData, this.question, this.answer);
+      storage.storeAnswer(userData, this.question, this.answer);
 
       replyMessage.text(this.question + ' находится ' + this.answer + ', поняла');
     }
@@ -245,18 +214,6 @@ class YandexDialogsWhatis {
     return replyMessage.get();
   }
 
-  storeAnswer(userData, question, answer) {
-    const found = userData.data.find(item => item.questions.indexOf(question) != -1);
-    if (found) {
-      found.answer = answer;
-      userData.update(found);
-    } else {
-      userData.insert({
-        questions: [question],
-        answer: answer
-      });
-    }
-  }
 
   deleteItem(ctx, answer, userData) {
     console.log('deleteItem', ctx, userData);
