@@ -7,7 +7,14 @@ class BaseDriver {
 
   connect() {}
 
-  getUserData(ctx, callback) {}
+  getUserData(ctx, callback) {
+    let userId = ctx.userId;
+    if (!userId) {
+      return ctx.reply('Не указан идентификатор пользователя');
+    }
+  }
+
+  getData(userData) {}
 
   fillDemoData(userData) {}
 

@@ -5,12 +5,12 @@ const loki = require('lokijs');
 const demoData = require('../demoData');
 
 class LokiDriver extends BaseDriver {
-  constructor(path){
+  constructor(path) {
     super();
     this.path = path;
   }
 
-  connect(){
+  connect() {
     return new Promise((resolv, reject) => {
       this.db = new loki(this.path, {
         autoload: true,
@@ -21,20 +21,22 @@ class LokiDriver extends BaseDriver {
     });
   }
 
-  getUserData(ctx, callback){
-    let userId = ctx.userId;
-    if (!userId) {
-      return ctx.reply('Не указан идентификатор пользователя');
-    }
+  getUserData(ctx, callback) {
+    // TODO: break when super validation failed
+    super.getUserData(ctx, callback);
 
-    let userData = this.db.getCollection(userId);
+    let userData = this.db.getCollection(ctx.userId);
     if (userData === null) {
-      userData = this.db.addCollection(userId);
+      userData = this.db.addCollection(ctx.userId);
     }
     return callback(ctx, userData);
   }
 
-  fillDemoData(userData){
+  getData(userData) {
+    return userData.data;
+  }
+
+  fillDemoData(userData) {
     userData.clear();
     userData.insert(demoData);
   }

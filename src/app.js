@@ -62,18 +62,18 @@ class YandexDialogsWhatis {
 
     alice.command('запомни ${question} находится ${answer}', ctx => {
       console.log('> full answer: ', ctx.messsage);
-      storage.getUserData(ctx, (ctx, userData) => {
+      storage.getUserData(ctx, async (ctx, userData) => {
         const { question, answer } = ctx.body;
         this.stage = STAGE_IDLE;
-        storage.storeAnswer(userData, question, answer);
+        await storage.storeAnswer(userData, question, answer);
         return ctx.reply(question + ' находится ' + answer + ', поняла');
       });
     });
 
     alice.command(/^демо данные$/, ctx => {
       console.log('> demo data');
-      storage.getUserData(ctx, (ctx, userData) => {
-        storage.fillDemoData(userData);
+      storage.getUserData(ctx, async (ctx, userData) => {
+        await storage.fillDemoData(userData);
         ctx.reply('Данные сброшены на демонстрационные');
       });
     });
@@ -116,7 +116,7 @@ class YandexDialogsWhatis {
     console.log('listen ' + PORT);
   }
 
-  processHelp(ctx, userData) {
+  async processHelp(ctx, userData) {
     const replyMessage = ctx.replyBuilder;
     const helpText = [
       'Я умею запоминать, что где лежит и напоминать об этом.',
@@ -125,7 +125,8 @@ class YandexDialogsWhatis {
       'Можно быстро добавить новый ответ так: "запомни ... находится ..."'
     ];
 
-    let questions = userData.data.map(item => item.questions[0]);
+    const data = await storage.getData(userData);
+    let questions = data.map(item => item.questions[0]);
     questions = questions.map(question => {
       const btn = ctx.buttonBuilder.text('что ' + question);
       replyMessage.addButton({ ...btn.get() });
@@ -140,9 +141,9 @@ class YandexDialogsWhatis {
     ctx.reply(replyMessage.get());
   }
 
-  processQuestion(ctx, userData) {
+  async processQuestion(ctx, userData) {
     const q = ctx.messsage.replace(/^что /, '');
-    const data = userData.data;
+    const data = await storage.getData(userData);
 
     let fuse = new Fuse(data, {
       includeScore: true,
@@ -183,9 +184,9 @@ class YandexDialogsWhatis {
     }
   }
 
-  processAnswer(ctx, userData) {
+  async processAnswer(ctx, userData) {
     const q = ctx.messsage.replace(/^запомни/, '').trim();
-    const data = userData.data;
+    const data = await storage.getData(userData);
     const replyMessage = ctx.replyBuilder;
 
     if (this.stage == STAGE_IDLE) {
@@ -206,7 +207,7 @@ class YandexDialogsWhatis {
       };
 
       this.stage = STAGE_IDLE;
-      storage.storeAnswer(userData, this.question, this.answer);
+      await storage.storeAnswer(userData, this.question, this.answer);
 
       replyMessage.text(this.question + ' находится ' + this.answer + ', поняла');
     }
