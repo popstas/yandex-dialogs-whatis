@@ -1,5 +1,7 @@
-'use strict'
+'use strict';
 
+const express = require('express');
+const bodyParser = require('body-parser');
 const Alice = require('yandex-dialogs-sdk');
 const Scene = require('yandex-dialogs-sdk').Scene;
 const alice = new Alice();
@@ -7,6 +9,8 @@ const Fuse = require('fuse.js');
 const storage = require('./storage.js');
 
 const PORT = process.env.BASE_URL || 3002;
+// must match to AWS API Gateway endpoint
+const API_ENDPOINT = process.env.API_ENDPOINT || '/yandex-dialogs-whatis';
 
 const STAGE_IDLE = 'STAGE_IDLE';
 const STAGE_WAIT_FOR_ANSWER = 'STAGE_WAIT_FOR_ANSWER';
@@ -21,9 +25,24 @@ class YandexDialogsWhatis {
     this.init();
   }
 
+  // for lambda, returns express instance
+  handlerExpress() {
+    const app = express();
+    app.use(bodyParser.json());
+    app.use(function(req, res, next) {
+      res.header('Access-Control-Allow-Origin', '*');
+      res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+      next();
+    });
+    app.post(API_ENDPOINT, async (req, res) => {
+      const handleResponseCallback = response => res.send(response);
+      const replyMessage = await alice.handleRequestBody(req.body, handleResponseCallback);
+    });
+    return app;
+  }
+
   async init() {
     await storage.connect();
-    console.log('storage: ', storage);
 
     alice.command(/^что /, ctx => {
       console.log('> question: ', ctx.messsage);
@@ -214,7 +233,6 @@ class YandexDialogsWhatis {
 
     return replyMessage.get();
   }
-
 
   deleteItem(ctx, answer, userData) {
     console.log('deleteItem', ctx, userData);

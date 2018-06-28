@@ -2,10 +2,17 @@
   "name": "yandex-dialogs-whatis",
   "version": "0.0.1",
   "description": "Позволяет добавлять свои вопросы и потом получать на них ответы",
-  "main": "src/server.js",
+  "files": [
+    "src"
+  ],
+  "main": "lambda.js",
   "scripts": {
-    "start": "node src/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node src/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "claudia": "claudia",
+    "generate": "npm run claudia -- generate-serverless-express-proxy --express-module src/lambda",
+    "create": "npm run claudia -- create --name yandex-dialogs-whatis --region eu-west-1 --handler lambda.handler --set-env DB_DRIVER=mongo --profile yandex-dialogs-whatis",
+    "update": "npm run claudia -- update --profile yandex-dialogs-whatis"
   },
   "repository": {
     "type": "git",
@@ -18,9 +25,14 @@
   },
   "homepage": "https://github.com/popstas/yandex-dialogs-whatis#readme",
   "dependencies": {
+    "aws-serverless-express": "^3.2.0",
+    "express": "^4.16.3",
     "fuse.js": "^3.2.1",
     "lokijs": "^1.5.5",
     "mongodb": "^3.1.0",
     "yandex-dialogs-sdk": "^1.1.7"
+  },
+  "devDependencies": {
+    "claudia": "^5.0.0"
   }
 }
