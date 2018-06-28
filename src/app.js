@@ -8,6 +8,7 @@ const Fuse = require('fuse.js');
 
 const PORT = process.env.BASE_URL || 3002;
 const DB_PATH = 'data/loki.db';
+const demoData = require('./demoData');
 
 const STAGE_IDLE = 'STAGE_IDLE';
 const STAGE_WAIT_FOR_ANSWER = 'STAGE_WAIT_FOR_ANSWER';
@@ -143,46 +144,7 @@ class YandexDialogsWhatis {
 
   fillDemoData(userData) {
     userData.clear();
-    userData.insert({
-      questions: ['в желто-зеленом'],
-      answer: 'дыня'
-    });
-    userData.insert({
-      questions: ['в синем', 'в голубом'],
-      answer: 'возможно арбуз'
-    });
-    userData.insert({
-      questions: ['в большом синем', 'в большом голубом'],
-      answer: 'персик'
-    });
-    userData.insert({
-      questions: ['в черном'],
-      answer: 'грейпфрут'
-    });
-    userData.insert({
-      questions: ['в большом черном'],
-      answer: 'возможно персик'
-    });
-    userData.insert({
-      questions: ['в красном'],
-      answer: 'новый арбуз'
-    });
-    userData.insert({
-      questions: ['в большом красном'],
-      answer: 'гранат'
-    });
-    userData.insert({
-      questions: ['в белом'],
-      answer: 'классический арбуз'
-    });
-    userData.insert({
-      questions: ['в арахисе'],
-      answer: 'крем-сода'
-    });
-    userData.insert({
-      questions: ['в среднем'],
-      answer: 'бабл-гам'
-    });
+    demoData.insert(demoData);
   }
 
   processHelp(ctx, userData) {
