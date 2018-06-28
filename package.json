@@ -2,7 +2,7 @@
   "name": "yandex-dialogs-whatis",
   "version": "0.0.1",
   "description": "Позволяет добавлять свои вопросы и потом получать на них ответы",
-  "main": "src/index.js",
+  "main": "src/server.js",
   "scripts": {
     "start": "node src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"

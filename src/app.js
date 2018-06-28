@@ -1,3 +1,5 @@
+'use strict'
+
 const Alice = require('yandex-dialogs-sdk');
 const Scene = require('yandex-dialogs-sdk').Scene;
 const alice = new Alice();
@@ -10,12 +12,16 @@ const DB_PATH = 'data/loki.db';
 const STAGE_IDLE = 'STAGE_IDLE';
 const STAGE_WAIT_FOR_ANSWER = 'STAGE_WAIT_FOR_ANSWER';
 
-const yandexDialogsWhatis = {
-  stage: STAGE_IDLE,
-  question: '',
-  answer: '',
-  lastAddedItem: {},
-  db: {},
+class YandexDialogsWhatis {
+  constructor() {
+    this.stags = STAGE_IDLE;
+    this.question = '';
+    this.answer = '';
+    this.lastAddedItem = {};
+    this.db = {};
+
+    this.init();
+  }
 
   initDb(name) {
     return new Promise((resolv, reject) => {
@@ -26,9 +32,9 @@ const yandexDialogsWhatis = {
         autosaveInterval: 4000
       });
     });
-  },
+  }
 
-  async run() {
+  async init() {
     this.db = await this.initDb(DB_PATH);
 
     alice.command(/^что /, ctx => {
@@ -115,15 +121,17 @@ const yandexDialogsWhatis = {
       res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
       next();
     }); */
+  }
 
+  run() {
     alice.listen('/', PORT);
     console.log('listen ' + PORT);
-  },
+  }
 
   getUserData(ctx, callback) {
     let userId = ctx.userId;
     if (!userId) {
-      ctx.reply('Не указан идентификатор пользователя');
+      return ctx.reply('Не указан идентификатор пользователя');
     }
 
     let userData = this.db.getCollection(userId);
@@ -131,7 +139,7 @@ const yandexDialogsWhatis = {
       userData = this.db.addCollection(userId);
     }
     return callback(ctx, userData);
-  },
+  }
 
   fillDemoData(userData) {
     userData.clear();
@@ -175,7 +183,7 @@ const yandexDialogsWhatis = {
       questions: ['в среднем'],
       answer: 'бабл-гам'
     });
-  },
+  }
 
   processHelp(ctx, userData) {
     const replyMessage = ctx.replyBuilder;
@@ -186,7 +194,7 @@ const yandexDialogsWhatis = {
       'Можно быстро добавить новый ответ так: "запомни ... находится ..."'
     ];
 
-    questions = userData.data.map(item => item.questions[0]);
+    let questions = userData.data.map(item => item.questions[0]);
     questions = questions.map(question => {
       const btn = ctx.buttonBuilder.text('что ' + question);
       replyMessage.addButton({ ...btn.get() });
@@ -199,7 +207,7 @@ const yandexDialogsWhatis = {
     replyMessage.text(helpText.join('\n'));
     console.log('reply message: ', replyMessage.get());
     ctx.reply(replyMessage.get());
-  },
+  }
 
   processQuestion(ctx, userData) {
     const q = ctx.messsage.replace(/^что /, '');
@@ -242,7 +250,7 @@ const yandexDialogsWhatis = {
     } else {
       ctx.reply('Я не понимаю');
     }
-  },
+  }
 
   processAnswer(ctx, userData) {
     const q = ctx.messsage.replace(/^запомни/, '').trim();
@@ -273,7 +281,7 @@ const yandexDialogsWhatis = {
     }
 
     return replyMessage.get();
-  },
+  }
 
   storeAnswer(userData, question, answer) {
     const found = userData.data.find(item => item.questions.indexOf(question) != -1);
@@ -286,11 +294,11 @@ const yandexDialogsWhatis = {
         answer: answer
       });
     }
-  },
+  }
 
   deleteItem(ctx, answer, userData) {
     console.log('deleteItem', ctx, userData);
   }
-};
+}
 
-yandexDialogsWhatis.run();
+module.exports = YandexDialogsWhatis;
