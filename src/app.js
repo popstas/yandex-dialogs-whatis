@@ -134,7 +134,7 @@ class YandexDialogsWhatis {
       this.stage = STAGE_IDLE;
       this.question = '';
       this.answer = '';
-      this.deleteItem(ctx, this.lastAddedItem);
+      this.processDeleteItem(ctx, this.lastAddedItem);
       return ctx.reply('Удален ответ: ' + this.lastAddedItem.questions.join(', '));
     });
 
@@ -153,14 +153,6 @@ class YandexDialogsWhatis {
       const userData = await storage.getUserData(ctx);
       return this.processHelp(ctx, userData);
     });
-
-    /*
-    https://github.com/fletcherist/yandex-dialogs-sdk/issues/8
-    alice.use(function(req, res, next) {
-      res.header("Access-Control-Allow-Origin", "*");
-      res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-      next();
-    }); */
   }
 
   listen(port) {
@@ -172,7 +164,7 @@ class YandexDialogsWhatis {
   async processHelp(ctx, userData) {
     const replyMessage = ctx.replyBuilder;
     const helpText = [
-      'Я умею запоминать, что где лежит и напоминать об этом.',
+      'Я умею запоминать, что где находится и напоминать об этом.',
       'Начните фразу со "что", чтобы получить ответ. Например: "что в синем".',
       'Скажите "запомни", чтобы добавить новый ответ.',
       'Можно быстро добавить новый ответ так: "запомни ... находится ..."'
@@ -198,6 +190,10 @@ class YandexDialogsWhatis {
   async processQuestion(ctx, userData) {
     const q = ctx.messsage.replace(/^что /, '');
     const data = await storage.getData(userData);
+
+    if (data.length == 0) {
+      return ctx.reply('Я еще ничего не знаю, сначала расскажите мне, что где находится.');
+    }
 
     let fuse = new Fuse(data, {
       includeScore: true,
@@ -269,8 +265,8 @@ class YandexDialogsWhatis {
     return replyMessage.get();
   }
 
-  deleteItem(ctx, answer, userData) {
-    console.log('deleteItem', ctx, userData);
+  processDeleteItem(ctx, answer, userData) {
+    console.log('processDeleteItem', ctx, userData);
   }
 }
 
