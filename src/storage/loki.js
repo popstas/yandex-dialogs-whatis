@@ -36,6 +36,10 @@ class LokiDriver extends BaseDriver {
     return userData.data;
   }
 
+  clearData(userData) {
+    userData.clear();
+  }
+
   fillDemoData(userData) {
     userData.clear();
     userData.insert(demoData);

@@ -16,6 +16,8 @@ class BaseDriver {
 
   getData(userData) {}
 
+  clearData(userData) {}
+
   fillDemoData(userData) {}
 
   storeAnswer(userData, question, answer) {}

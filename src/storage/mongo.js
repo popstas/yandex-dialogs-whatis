@@ -59,8 +59,12 @@ class MongoDriver extends BaseDriver {
     return await userData.find({}).toArray();
   }
 
-  async fillDemoData(userData) {
+  async clearData(userData) {
     await userData.remove({});
+  }
+
+  async fillDemoData(userData) {
+    await this.clearData(userData);
     await userData.insert(demoData);
   }
 

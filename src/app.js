@@ -40,7 +40,7 @@ class YandexDialogsWhatis {
     return app;
   }
 
-  handlerLambda(event, context, callback){
+  handlerLambda(event, context, callback) {
     const body = JSON.parse(event.body);
     alice.handleRequestBody(body, res => {
       callback(null, res);
@@ -93,6 +93,26 @@ class YandexDialogsWhatis {
       return ctx.reply(question + ' находится ' + answer + ', поняла');
     });
 
+    alice.command(/^команды$/, ctx => {
+      console.log('> commands');
+      const commands = [
+        'удалить',
+        'забудь всё',
+        'демо данные',
+        'запомни в чем-то находится что-то',
+        'отмена',
+        'запомни'
+      ];
+
+      const replyMessage = ctx.replyBuilder;
+      commands.map(command => {
+        const btn = ctx.buttonBuilder.text(command).get();
+        replyMessage.addButton({ ...btn });
+      });
+      // replyMessage.text('Вот что я умею:')
+      ctx.reply(replyMessage.get());
+    });
+
     alice.command(/^демо данные$/, async ctx => {
       console.log('> demo data');
       const userData = await storage.getUserData(ctx);
@@ -108,13 +128,24 @@ class YandexDialogsWhatis {
       ctx.reply('Всё отменено');
     });
 
-    alice.command('удалить', ctx => {
+    alice.command('удалить', async ctx => {
       console.log('> remove');
+      const userData = await storage.getUserData(ctx);
       this.stage = STAGE_IDLE;
       this.question = '';
       this.answer = '';
       this.deleteItem(ctx, this.lastAddedItem);
       return ctx.reply('Удален ответ: ' + this.lastAddedItem.questions.join(', '));
+    });
+
+    alice.command('забудь всё', async ctx => {
+      console.log('> clear');
+      const userData = await storage.getUserData(ctx);
+      this.stage = STAGE_IDLE;
+      this.question = '';
+      this.answer = '';
+      storage.clearData(userData);
+      return ctx.reply('Всё забыла...');
     });
 
     alice.any(async ctx => {
@@ -153,6 +184,7 @@ class YandexDialogsWhatis {
       const btn = ctx.buttonBuilder.text('что ' + question);
       replyMessage.addButton({ ...btn.get() });
     });
+    replyMessage.addButton(ctx.buttonBuilder.text('команды').get());
 
     if (questions.length > 0) {
       helpText.push('');
