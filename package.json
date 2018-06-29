@@ -26,11 +26,12 @@
   "homepage": "https://github.com/popstas/yandex-dialogs-whatis#readme",
   "dependencies": {
     "aws-serverless-express": "^3.2.0",
+    "body-parser": "^1.18.3",
     "express": "^4.16.3",
     "fuse.js": "^3.2.1",
     "lokijs": "^1.5.5",
     "mongodb": "^3.1.0",
-    "yandex-dialogs-sdk": "^1.1.7"
+    "yandex-dialogs-sdk": "github:popstas/yandex-dialogs-sdk"
   },
   "devDependencies": {
     "claudia": "^5.0.0"
