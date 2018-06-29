@@ -23,24 +23,36 @@ class MongoDriver extends BaseDriver {
           user: this.user,
           password: this.password
         }
-      },
-      (err, client) => {
-        assert.equal(null, err);
-        console.log('Connected correctly to server');
-
-        this.db = client.db(this.name);
       }
     );
   }
 
-  async getUserData(ctx, callback) {
-    super.getUserData(ctx, callback);
+  getUserData(ctx) {
+    super.getUserData(ctx);
 
-    let userData = await this.db.collection(ctx.userId);
-    if (userData === null) {
-      userData = await this.db.createCollection(ctx.userId);
-    }
-    return callback(ctx, userData);
+    return new Promise(async (resolve, reject) => {
+      if (!this.db) {
+        try {
+          const client = await this.connect();
+          this.db = client.db(this.name);
+          console.log('mongo connected');
+        } catch (err) {
+          reject(err);
+          return ctx.reply('Ошибка при подключении к базе данных, попробуйте позже');
+        }
+      }
+
+      try {
+        let userData = await this.db.collection(ctx.userId);
+        if (userData === null) {
+          userData = await this.db.createCollection(ctx.userId);
+        }
+        resolve(userData);
+      } catch (err) {
+        reject(err);
+        return ctx.reply('Ошибка при получении данных пользователя, попробуйте позже');
+      }
+    });
   }
 
   async getData(userData) {
@@ -55,7 +67,7 @@ class MongoDriver extends BaseDriver {
   async storeAnswer(userData, question, answer) {
     const found = await userData.update(
       { questions: question },
-      { $set: {answer} },
+      { $set: { answer } },
       { upsert: true }
     );
   }

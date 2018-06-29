@@ -1,0 +1,15 @@
+{
+  "meta": {
+    "locale": "ru-RU",
+    "timezone": "GMT+5",
+    "client_id": "popstas/yandex-dialogs-client/0.2.0"
+  },
+  "request": { "type": "SimpleUtterance", "payload": {}, "command": "", "original_utterance": "" },
+  "session": {
+    "message_id": 0,
+    "new": true,
+    "session_id": "9272ee39-6071-b5b4-67be-5a8bca2ee755",
+    "user_id": "bf379159-c126-10f7-84d6-c93454027516"
+  },
+  "version": "1.0"
+}

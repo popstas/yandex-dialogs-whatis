@@ -6,10 +6,9 @@ const Alice = require('yandex-dialogs-sdk');
 const Scene = require('yandex-dialogs-sdk').Scene;
 const alice = new Alice();
 const Fuse = require('fuse.js');
-const config = require('./config')
+const config = require('./config');
 const storage = require('./storage.js');
 
-const PORT = process.env.BASE_URL || 3002;
 // must match to AWS API Gateway endpoint
 
 const STAGE_IDLE = 'STAGE_IDLE';
@@ -34,9 +33,6 @@ class YandexDialogsWhatis {
       res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
       next();
     });
-    app.get(['/', '/yandex-dialogs-whatis'], (req, res) => {
-      res.send('test route: GET ' + req.path);
-    });
     app.post(config.API_ENDPOINT, async (req, res) => {
       const handleResponseCallback = response => res.send(response);
       const replyMessage = await alice.handleRequestBody(req.body, handleResponseCallback);
@@ -44,23 +40,21 @@ class YandexDialogsWhatis {
     return app;
   }
 
-  async init() {
-    await storage.connect();
-
-    alice.command(/^что /, ctx => {
+  init() {
+    // что ...
+    alice.command(/^что /, async ctx => {
       console.log('> question: ', ctx.messsage);
-      return storage.getUserData(ctx, (ctx, userData) => {
-        return this.processQuestion(ctx, userData);
-      });
+      const userData = await storage.getUserData(ctx);
+      return this.processQuestion(ctx, userData);
     });
 
+    // запомни ...
     const inAnswer = new Scene('in-answer');
-    inAnswer.enter('запомни', ctx => {
+    inAnswer.enter('запомни', async ctx => {
       console.log('> answer begin: ', ctx.messsage);
-      return storage.getUserData(ctx, (ctx, userData) => {
-        let reply = this.processAnswer(ctx, userData);
-        return ctx.reply(reply);
-      });
+      const userData = await storage.getUserData(ctx);
+      let reply = this.processAnswer(ctx, userData);
+      return ctx.reply(reply);
     });
     inAnswer.leave('отмена', ctx => {
       console.log('> answer cancel: ', ctx.messsage);
@@ -69,35 +63,34 @@ class YandexDialogsWhatis {
       this.answer = '';
       return ctx.reply('Всё отменено');
     });
-    inAnswer.any(ctx => {
+
+    // прочее
+    inAnswer.any(async ctx => {
       console.log('> answer end: ', ctx.messsage);
-      return storage.getUserData(ctx, (ctx, userData) => {
-        let reply = this.processAnswer(ctx, userData);
-        if (this.stage == STAGE_IDLE) {
-          const session = alice.sessions.findById(ctx.sessionId);
-          session.currentScene = null;
-        }
-        return ctx.reply(reply);
-      });
+      const userData = await storage.getUserData(ctx);
+      let reply = this.processAnswer(ctx, userData);
+      if (this.stage == STAGE_IDLE) {
+        const session = alice.sessions.findById(ctx.sessionId);
+        session.currentScene = null;
+      }
+      return ctx.reply(reply);
     });
     alice.registerScene(inAnswer);
 
-    alice.command('запомни ${question} находится ${answer}', ctx => {
+    alice.command('запомни ${question} находится ${answer}', async ctx => {
       console.log('> full answer: ', ctx.messsage);
-      storage.getUserData(ctx, async (ctx, userData) => {
-        const { question, answer } = ctx.body;
-        this.stage = STAGE_IDLE;
-        await storage.storeAnswer(userData, question, answer);
-        return ctx.reply(question + ' находится ' + answer + ', поняла');
-      });
+      const userData = await storage.getUserData(ctx);
+      const { question, answer } = ctx.body;
+      this.stage = STAGE_IDLE;
+      await storage.storeAnswer(userData, question, answer);
+      return ctx.reply(question + ' находится ' + answer + ', поняла');
     });
 
-    alice.command(/^демо данные$/, ctx => {
+    alice.command(/^демо данные$/, async ctx => {
       console.log('> demo data');
-      storage.getUserData(ctx, async (ctx, userData) => {
-        await storage.fillDemoData(userData);
-        ctx.reply('Данные сброшены на демонстрационные');
-      });
+      const userData = await storage.getUserData(ctx);
+      await storage.fillDemoData(userData);
+      ctx.reply('Данные сброшены на демонстрационные');
     });
 
     alice.command('отмена', ctx => {
@@ -117,11 +110,10 @@ class YandexDialogsWhatis {
       return ctx.reply('Удален ответ: ' + this.lastAddedItem.questions.join(', '));
     });
 
-    alice.any(ctx => {
+    alice.any(async ctx => {
       console.log('> default');
-      storage.getUserData(ctx, (ctx, userData) => {
-        return this.processHelp(ctx, userData);
-      });
+      const userData = await storage.getUserData(ctx);
+      return this.processHelp(ctx, userData);
     });
 
     /*
@@ -133,9 +125,10 @@ class YandexDialogsWhatis {
     }); */
   }
 
-  run() {
-    alice.listen('/', PORT);
-    console.log('listen ' + PORT);
+  listen(port) {
+    const app = this.handlerExpress();
+    app.listen(port);
+    console.log('listen ' + port);
   }
 
   async processHelp(ctx, userData) {

@@ -1,7 +1,0 @@
-{
-  "lambda": {
-    "role": "yandex-dialogs-whatis-executor",
-    "name": "yandex-dialogs-whatis",
-    "region": "eu-west-1"
-  }
-}

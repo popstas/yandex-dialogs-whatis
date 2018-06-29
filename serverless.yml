@@ -1,0 +1,22 @@
+service: yandex-dialogs-whatis
+
+provider:
+  name: aws
+  runtime: nodejs8.10
+  profile: yandex-dialogs-whatis
+  region: eu-west-1
+  stage: prod
+  environment:
+    DB_DRIVER: mongo
+
+functions:
+  app:
+    handler: src/lambda.handler
+    events:
+      - http:
+          path: /
+          method: POST
+          cors: true
+
+plugins:
+  - serverless-offline

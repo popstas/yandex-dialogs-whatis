@@ -2,3 +2,4 @@ data/
 loki.db
 node_modules
 config.js
+.serverless

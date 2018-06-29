@@ -13,10 +13,6 @@
 
 
 ### AWS Lambda
-- Создать лямбду: `npm run create`
-- Обновить лямбду: `npm run update`
+- Создать/обновить лямбду: `npm run deploy`
 
-По идее в команде создания должно быть включено создание API Gateway endpoint для лямбды,
-но у меня не хватало прав на это через claudia, поэтому я создал ендпойнт вручную.
-
-Указал в AWS API_ENDPOINT=/yandex-dialogs-whatis
+У пользователя AWS должны быть права на cloudformation, AWSLambdaFullAccess, IAMFullAccess, AmazonAPIGatewayAdministrator (может можно меньше, но эти работают).

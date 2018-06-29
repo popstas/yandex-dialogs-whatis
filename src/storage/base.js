@@ -2,12 +2,12 @@
 
 class BaseDriver {
   constructor() {
-    this.db = {};
+    this.db = null;
   }
 
   connect() {}
 
-  getUserData(ctx, callback) {
+  getUserData(ctx) {
     let userId = ctx.userId;
     if (!userId) {
       return ctx.reply('Не указан идентификатор пользователя');
