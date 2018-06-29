@@ -65,9 +65,9 @@ class MongoDriver extends BaseDriver {
   }
 
   async storeAnswer(userData, question, answer) {
-    const found = await userData.update(
+    const result = await userData.update(
       { questions: question },
-      { $set: { answer } },
+      { $set: { answer }, $setOnInsert: { questions: [question] } },
       { upsert: true }
     );
   }
