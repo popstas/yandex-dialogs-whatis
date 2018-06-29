@@ -6,11 +6,11 @@ const Alice = require('yandex-dialogs-sdk');
 const Scene = require('yandex-dialogs-sdk').Scene;
 const alice = new Alice();
 const Fuse = require('fuse.js');
+const config = require('./config')
 const storage = require('./storage.js');
 
 const PORT = process.env.BASE_URL || 3002;
 // must match to AWS API Gateway endpoint
-const API_ENDPOINT = process.env.API_ENDPOINT || '/yandex-dialogs-whatis';
 
 const STAGE_IDLE = 'STAGE_IDLE';
 const STAGE_WAIT_FOR_ANSWER = 'STAGE_WAIT_FOR_ANSWER';
@@ -34,7 +34,10 @@ class YandexDialogsWhatis {
       res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
       next();
     });
-    app.post(API_ENDPOINT, async (req, res) => {
+    app.get(['/', '/yandex-dialogs-whatis'], (req, res) => {
+      res.send('test route: GET ' + req.path);
+    });
+    app.post(config.API_ENDPOINT, async (req, res) => {
       const handleResponseCallback = response => res.send(response);
       const replyMessage = await alice.handleRequestBody(req.body, handleResponseCallback);
     });
