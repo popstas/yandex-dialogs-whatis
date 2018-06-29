@@ -40,6 +40,13 @@ class YandexDialogsWhatis {
     return app;
   }
 
+  handlerLambda(event, context, callback){
+    const body = JSON.parse(event.body);
+    alice.handleRequestBody(body, res => {
+      callback(null, res);
+    });
+  }
+
   init() {
     // что ...
     alice.command(/^что /, async ctx => {

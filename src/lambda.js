@@ -6,3 +6,4 @@ const bot = new app();
 const exp = bot.handlerExpress();
 
 module.exports.handler = serverless(exp);
+// module.exports.handler = bot.handlerLambda;
