@@ -16,7 +16,7 @@ const STAGE_WAIT_FOR_ANSWER = 'STAGE_WAIT_FOR_ANSWER';
 
 class YandexDialogsWhatis {
   constructor() {
-    this.stags = STAGE_IDLE;
+    this.stage = STAGE_IDLE;
     this.question = '';
     this.answer = '';
     this.lastAddedItem = {};
@@ -56,7 +56,7 @@ class YandexDialogsWhatis {
     inAnswer.enter('запомни', async ctx => {
       console.log('> answer begin: ', ctx.messsage);
       const userData = await storage.getUserData(ctx);
-      const reply = this.processAnswer(ctx, userData);
+      const reply = await this.processAnswer(ctx, userData);
       return ctx.reply(reply);
     });
     inAnswer.leave('отмена', ctx => {
@@ -69,7 +69,7 @@ class YandexDialogsWhatis {
     inAnswer.any(async ctx => {
       console.log('> answer end: ', ctx.messsage);
       const userData = await storage.getUserData(ctx);
-      const reply = this.processAnswer(ctx, userData);
+      const reply = await this.processAnswer(ctx, userData);
       if (this.stage == STAGE_IDLE) {
         const session = alice.sessions.findById(ctx.sessionId);
         session.currentScene = null;
@@ -118,7 +118,7 @@ class YandexDialogsWhatis {
     const data = await storage.getData(userData);
     const replyMessage = ctx.replyBuilder;
 
-    if (this.stage == STAGE_IDLE) {
+    if (this.stage === STAGE_IDLE) {
       this.question = q;
       this.answer = '';
 
@@ -128,7 +128,7 @@ class YandexDialogsWhatis {
       } else {
         replyMessage.text('Что запомнить?');
       }
-    } else if (this.stage == STAGE_WAIT_FOR_ANSWER) {
+    } else if (this.stage === STAGE_WAIT_FOR_ANSWER) {
       this.answer = q;
       this.lastAddedItem = {
         questions: [this.question],
