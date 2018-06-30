@@ -35,7 +35,7 @@ class MongoDriver extends BaseDriver {
         try {
           const client = await this.connect();
           this.db = client.db(this.name);
-          console.log('mongo connected');
+          // console.log('mongo connected');
         } catch (err) {
           reject(err);
           return ctx.reply('Ошибка при подключении к базе данных, попробуйте позже');

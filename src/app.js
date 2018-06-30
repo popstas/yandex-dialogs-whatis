@@ -33,6 +33,7 @@ class YandexDialogsWhatis {
       res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
       next();
     });
+    app.use(express.static('static'));
     app.post(config.API_ENDPOINT, async (req, res) => {
       const handleResponseCallback = response => res.send(response);
       const replyMessage = await alice.handleRequestBody(req.body, handleResponseCallback);
