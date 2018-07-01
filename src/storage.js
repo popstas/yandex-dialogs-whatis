@@ -14,7 +14,7 @@ const DB_PASSWORD = config.DB_PASSWORD;
 
 let storage;
 
-if (process.env.DB_DRIVER === 'mongo') {
+if (config.DB_DRIVER === 'mongo') {
   const dbUrl = `mongodb://${DB_HOST}:${DB_PORT}/${DB_NAME}`;
   storage = new MongoDriver(dbUrl, DB_NAME, DB_USER, DB_PASSWORD);
 } else {

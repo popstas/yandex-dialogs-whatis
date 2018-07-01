@@ -6,8 +6,6 @@ provider:
   profile: yandex-dialogs-whatis
   region: eu-west-1
   stage: prod
-  environment:
-    DB_DRIVER: mongo
 
 functions:
   app:
