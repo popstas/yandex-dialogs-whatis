@@ -61,7 +61,8 @@ module.exports.commands = ctx => {
     'забудь всё',
     'запомни в чем-то находится что-то',
     'отмена',
-    'запомни'
+    'запомни',
+    'пока'
   ];
   if (process.env.NODE_ENV != 'production') {
     commands.push('демо данные');

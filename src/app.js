@@ -6,10 +6,10 @@ const Alice = require('yandex-dialogs-sdk');
 const Scene = require('yandex-dialogs-sdk').Scene;
 const alice = new Alice({
   fuseOptions: {
-    key: ['name'],
+    keys: ['name'],
     threshold: 0.3,
     distance: 10,
-    location: 4
+    // location: 4,
   }
 });
 const config = require('./config');
@@ -57,14 +57,14 @@ class YandexDialogsWhatis {
     inAnswer.enter('запомни', async ctx => {
       console.log('> answer begin: ', ctx.messsage);
       const userData = await storage.getUserData(ctx);
-      ctx.state = await storage.getState(userData)
+      ctx.state = await storage.getState(userData);
       const reply = await this.processAnswer(ctx, userData);
       return ctx.reply(reply);
     });
     inAnswer.leave('отмена', async ctx => {
       console.log('> answer cancel: ', ctx.messsage);
       const userData = await storage.getUserData(ctx);
-      ctx.state = await storage.getState(userData)
+      ctx.state = await storage.getState(userData);
       ctx.state.stage = STAGE_IDLE;
       ctx.state.question = '';
       ctx.state.answer = '';
@@ -74,7 +74,7 @@ class YandexDialogsWhatis {
     inAnswer.any(async ctx => {
       console.log('> answer end: ', ctx.messsage);
       const userData = await storage.getUserData(ctx);
-      ctx.state = await storage.getState(userData)
+      ctx.state = await storage.getState(userData);
       const reply = await this.processAnswer(ctx, userData);
       if (ctx.state.stage == STAGE_IDLE) {
         const session = alice.sessions.findById(ctx.sessionId);
@@ -95,7 +95,7 @@ class YandexDialogsWhatis {
     alice.command('отмена', async ctx => {
       console.log('> cancel');
       const userData = await storage.getUserData(ctx);
-      ctx.state = await storage.getState(userData)
+      ctx.state = await storage.getState(userData);
       ctx.state.stage = STAGE_IDLE;
       ctx.state.question = '';
       ctx.state.answer = '';
@@ -107,7 +107,7 @@ class YandexDialogsWhatis {
       console.log('> end');
       ctx.reply(
         ctx.replyBuilder
-          .text('До свидания')
+          .text('До свидания!')
           .shouldEndSession(true)
           .get()
       );
@@ -116,7 +116,7 @@ class YandexDialogsWhatis {
     alice.command('удалить', async ctx => {
       console.log('> remove');
       const userData = await storage.getUserData(ctx);
-      ctx.state = await storage.getState(userData)
+      ctx.state = await storage.getState(userData);
       ctx.state.stage = STAGE_IDLE;
       ctx.state.question = '';
       ctx.state.answer = '';
