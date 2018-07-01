@@ -16,6 +16,8 @@ class BaseDriver {
 
   getData(userData) {}
 
+  getState(userData) {}
+
   clearData(userData) {}
 
   fillDemoData(userData) {}

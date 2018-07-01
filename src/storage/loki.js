@@ -21,37 +21,62 @@ class LokiDriver extends BaseDriver {
     });
   }
 
-  getUserData(ctx, callback) {
+  getUserData(ctx) {
     // TODO: break when super validation failed
     super.getUserData(ctx, callback);
 
-    let userData = this.db.getCollection(ctx.userId);
-    if (userData === null) {
-      userData = this.db.addCollection(ctx.userId);
+    try {
+      const dataCollectionName = ctx.userId + '_data';
+      const stateCollectionName = ctx.userId + '_state';
+      let data = this.db.getCollection(dataCollectionName);
+      if (data === null) {
+        data = this.db.addCollection(dataCollectionName);
+      }
+      let state = this.db.getCollection(stateCollectionName);
+      if (state === null) {
+        state = this.db.addCollection(stateCollectionName);
+      }
+      return { data, state };
+    } catch (err) {
+      ctx.reply('Ошибка при получении данных пользователя, попробуйте позже');
+      return false;
     }
-    return callback(ctx, userData);
   }
 
   getData(userData) {
-    return userData.data;
+    return userData.data.data;
+  }
+
+  getState(userData) {
+    return userData.state.data;
+  }
+
+  setState(userData, name, value){
+    const found = userData.state.data[name];
+    if (found) {
+      found.value = value;
+      userData.state.update(found);
+    } else {
+      userData.state.insert({ name, value });
+    }
   }
 
   clearData(userData) {
-    userData.clear();
+    userData.data.clear();
   }
 
   fillDemoData(userData) {
-    userData.clear();
-    userData.insert(demoData);
+    userData.data.clear();
+    userData.data.insert(demoData);
   }
 
   storeAnswer(userData, question, answer) {
-    const found = userData.data.find(item => item.questions.indexOf(question) != -1);
+    const found = userData.data.data.find(item => item.questions.indexOf(question) != -1);
     if (found) {
       found.answer = answer;
-      userData.update(found);
+      userData.data.update(found);
     } else {
-      userData.insert({
+      userData.data.insert({
         questions: [question],
         answer: answer
       });

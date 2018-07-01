@@ -43,11 +43,17 @@ class MongoDriver extends BaseDriver {
       }
 
       try {
-        let userData = await this.db.collection(ctx.userId);
-        if (userData === null) {
-          userData = await this.db.createCollection(ctx.userId);
+        const dataCollectionName = ctx.userId + '_data';
+        const stateCollectionName = ctx.userId + '_state';
+        let data = await this.db.collection(dataCollectionName);
+        if (data === null) {
+          data = await this.db.createCollection(dataCollectionName);
         }
-        resolve(userData);
+        let state = await this.db.collection(stateCollectionName);
+        if (state === null) {
+          state = await this.db.createCollection(stateCollectionName);
+        }
+        resolve({ data, state });
       } catch (err) {
         reject(err);
         return ctx.reply('Ошибка при получении данных пользователя, попробуйте позже');
@@ -56,20 +62,37 @@ class MongoDriver extends BaseDriver {
   }
 
   async getData(userData) {
-    return await userData.find({}).toArray();
+    return await userData.data.find({}).toArray();
+  }
+
+  async getState(userData) {
+    let state = await userData.state.find({ name: 'state' }).toArray();
+    return state ? state[0].state : {};
+  }
+
+  async setState(userData, state) {
+    const result = await userData.state.update(
+      { name: 'state' },
+      { $set: { state } },
+      { upsert: true }
+    );
   }
 
   async clearData(userData) {
-    await userData.remove({});
+    await userData.data.remove({});
+  }
+
+  async clearState(userData) {
+    await userData.state.remove({});
   }
 
   async fillDemoData(userData) {
     await this.clearData(userData);
-    await userData.insert(demoData);
+    await userData.data.insert(demoData);
   }
 
   async storeAnswer(userData, question, answer) {
-    const result = await userData.update(
+    const result = await userData.data.update(
       { questions: question },
       { $set: { answer }, $setOnInsert: { questions: [question] } },
       { upsert: true }

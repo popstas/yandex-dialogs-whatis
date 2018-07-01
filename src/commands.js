@@ -103,7 +103,7 @@ module.exports.demoData = async ctx => {
 module.exports.help = async ctx => {
   console.log('> default');
   const userData = await storage.getUserData(ctx);
-
+  const state = await storage.getState(userData);
   const replyMessage = ctx.replyBuilder;
   const helpText = [
     'Я умею запоминать, что где находится и напоминать об этом.',
