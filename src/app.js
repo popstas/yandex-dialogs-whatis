@@ -93,6 +93,15 @@ class YandexDialogsWhatis {
       ctx.reply('Всё отменено');
     });
 
+    alice.command('пока', ctx => {
+      console.log('> end');
+      ctx.reply(ctx.replyBuilder
+        .text('До свидания')
+        .shouldEndSession(true)
+        .get()
+      );
+    });
+
     alice.command('удалить', async ctx => {
       console.log('> remove');
       const userData = await storage.getUserData(ctx);
