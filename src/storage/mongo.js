@@ -67,7 +67,7 @@ class MongoDriver extends BaseDriver {
 
   async getState(userData) {
     let state = await userData.state.find({ name: 'state' }).toArray();
-    return state ? state[0].state : {};
+    return state.length > 0 ? state[0].state : {};
   }
 
   async setState(userData, state) {
