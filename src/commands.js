@@ -14,6 +14,8 @@ module.exports.whatIs = async ctx => {
   }
 
   let fuse = new Fuse(data, {
+    threshold: 0.3,
+    location: 4,
     includeScore: true,
     keys: [
       {
@@ -48,7 +50,7 @@ module.exports.whatIs = async ctx => {
     console.log('answer: ', msg);
     ctx.reply(msg);
   } else {
-    ctx.reply('Я не понимаю');
+    ctx.reply('Я не знаю');
   }
   return true;
 };
