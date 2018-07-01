@@ -59,11 +59,13 @@ module.exports.commands = ctx => {
   const commands = [
     'удалить',
     'забудь всё',
-    'демо данные',
     'запомни в чем-то находится что-то',
     'отмена',
     'запомни'
   ];
+  if (process.env.NODE_ENV != 'production') {
+    commands.push('демо данные');
+  }
 
   const replyMessage = ctx.replyBuilder;
   commands.map(command => {

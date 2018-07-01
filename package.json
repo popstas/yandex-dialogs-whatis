@@ -5,6 +5,7 @@
   "main": "src/lambda.js",
   "scripts": {
     "start": "node src/server.js",
+    "start-prod": "cross-env NODE_ENV=production node src/server.js",
     "test": "node tests/index.js",
     "dev": "serverless offline start",
     "create": "serverless create",

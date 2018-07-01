@@ -88,7 +88,9 @@ class YandexDialogsWhatis {
 
     alice.command(/^команды$/, commands.commands);
 
-    alice.command(/^демо данные$/, commands.demoData);
+    if (process.env.NODE_ENV != 'production') {
+      alice.command(/^демо данные$/, commands.demoData);
+    }
 
     alice.command('отмена', async ctx => {
       console.log('> cancel');
