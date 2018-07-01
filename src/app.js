@@ -4,7 +4,14 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const Alice = require('yandex-dialogs-sdk');
 const Scene = require('yandex-dialogs-sdk').Scene;
-const alice = new Alice();
+const alice = new Alice({
+  fuseOptions: {
+    key: [ 'name' ],
+    threshold: 0.3,
+    distance: 10,
+    location: 4
+  }
+});
 const config = require('./config');
 const storage = require('./storage');
 const commands = require('./commands');
@@ -132,7 +139,7 @@ class YandexDialogsWhatis {
       this.question = q;
       this.answer = '';
 
-      if (this.question != '') {
+      if (this.question != '') { 
         replyMessage.text('Что находится ' + this.question + '?');
         this.stage = STAGE_WAIT_FOR_ANSWER;
       } else {

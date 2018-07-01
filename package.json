@@ -28,7 +28,7 @@
     "lokijs": "^1.5.5",
     "mongodb": "^3.1.0",
     "serverless-http": "^1.6.0",
-    "yandex-dialogs-sdk": "github:popstas/yandex-dialogs-sdk"
+    "yandex-dialogs-sdk": "^1.1.9"
   },
   "devDependencies": {
     "serverless": "^1.27.3",
