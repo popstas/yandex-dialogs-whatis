@@ -56,7 +56,14 @@ const resetState = async ctx => {
 module.exports.whatIs = async ctx => {
   console.log('> question: ', ctx.messsage);
   const userData = await storage.getUserData(ctx);
-  const q = ctx.messsage.replace(/^(а )?что /, '');
+  const q = ctx.messsage
+    .replace(/^(а )?что /, '')
+    .replace(/^лежит/, '')
+    .replace(/^стоит/, '')
+    .replace(/^находится/, '')
+    .replace(/^налито/, '')
+    .replace(/^насыпано/, '')
+    .replace(/^будет/, '');
   const data = await storage.getData(userData);
   ctx.state = await storage.getState(userData);
 
