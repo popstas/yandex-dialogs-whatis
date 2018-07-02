@@ -98,6 +98,11 @@ class MongoDriver extends BaseDriver {
       { upsert: true }
     );
   }
+
+  async removeQuestion(userData, question) {
+    const result = await userData.data.deleteOne({ questions: question });
+    return result.deletedCount == 1;
+  }
 }
 
 module.exports = MongoDriver;

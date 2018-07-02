@@ -5,6 +5,54 @@ const Fuse = require('fuse.js');
 const STAGE_IDLE = 'STAGE_IDLE';
 const STAGE_WAIT_FOR_ANSWER = 'STAGE_WAIT_FOR_ANSWER';
 
+// процесс ответа на вопрос, кажется, это называется fullfillment
+// https://github.com/dialogflow/dialogflow-fulfillment-nodejs
+const processAnswer = async (ctx, userData) => {
+  const q = ctx.messsage.replace(/^запомни/, '').trim();
+  const replyMessage = ctx.replyBuilder;
+
+  if (!ctx.state.stage || ctx.state.stage === STAGE_IDLE) {
+    ctx.state.answer = '';
+
+    if (q != '') {
+      // еще не знаем ни вопрос, ни ответ
+      ctx.state.question = q;
+      replyMessage.text('Что находится ' + q + '?');
+      ctx.state.stage = STAGE_WAIT_FOR_ANSWER;
+    } else {
+      replyMessage.text('Что запомнить?');
+    }
+  } else if (ctx.state.stage === STAGE_WAIT_FOR_ANSWER) {
+    // уже знаем вопрос, но не знаем ответ
+    ctx.state.answer = q;
+
+    // последний ответ можно удалить отдельной командой
+    ctx.state.lastAddedItem = {
+      questions: [ctx.state.question],
+      answer: ctx.state.answer
+    };
+
+    await storage.storeAnswer(userData, ctx.state.question, ctx.state.answer);
+    replyMessage.text(ctx.state.question + ' находится ' + ctx.state.answer + ', поняла');
+    ctx = await resetState(ctx);
+  }
+
+  storage.setState(userData, ctx.state);
+  return replyMessage.get();
+};
+
+// очищает состояние заполнение ответа на вопрос
+const resetState = async ctx => {
+  const userData = await storage.getUserData(ctx);
+  ctx.state = await storage.getState(userData);
+  storage.setState(userData, ctx.state);
+  ctx.state.stage = STAGE_IDLE;
+  ctx.state.question = '';
+  ctx.state.answer = '';
+  storage.setState(userData, ctx.state);
+  return ctx;
+};
+
 // что ...
 module.exports.whatIs = async ctx => {
   console.log('> question: ', ctx.messsage);
@@ -58,7 +106,7 @@ module.exports.whatIs = async ctx => {
   return true;
 };
 
-// команды
+// команда "команды"
 module.exports.commands = ctx => {
   console.log('> commands');
   const commands = [
@@ -82,28 +130,31 @@ module.exports.commands = ctx => {
   return ctx.reply(replyMessage.get());
 };
 
-// запомни ${question} находится ${answer}
+// команда "запомни ${question} находится ${answer}"
 module.exports.remember = async ctx => {
   console.log('> full answer: ', ctx.messsage);
   const userData = await storage.getUserData(ctx);
   const { question, answer } = ctx.body;
   await storage.storeAnswer(userData, question, answer);
+  ctx = await resetState(ctx);
   return ctx.reply(question + ' находится ' + answer + ', поняла');
 };
 
-// забудь всё
+// команда "забудь всё"
 module.exports.clearData = async ctx => {
   console.log('> clear');
   const userData = await storage.getUserData(ctx);
   storage.clearData(userData);
+  ctx = await resetState(ctx);
   return ctx.reply('Всё забыла...');
 };
 
-// демо данные
+// команда "демо данные"
 module.exports.demoData = async ctx => {
   console.log('> demo data');
   const userData = await storage.getUserData(ctx);
   await storage.fillDemoData(userData);
+  ctx = await resetState(ctx);
   return ctx.reply('Данные сброшены на демонстрационные');
 };
 
@@ -140,18 +191,14 @@ module.exports.help = async ctx => {
 // команда "отмена"
 module.exports.cancel = async ctx => {
   console.log('> cancel');
-  const userData = await storage.getUserData(ctx);
-  ctx.state = await storage.getState(userData);
-  ctx.state.stage = STAGE_IDLE;
-  ctx.state.question = '';
-  ctx.state.answer = '';
-  storage.setState(userData, ctx.state);
+  ctx = await resetState(ctx);
   return ctx.reply('Всё отменено');
 };
 
 // команда "пока"
-module.exports.sessionEnd = ctx => {
+module.exports.sessionEnd = async ctx => {
   console.log('> end');
+  ctx = await resetState(ctx);
   return ctx.reply(
     ctx.replyBuilder
       .text('До свидания!')
@@ -160,48 +207,51 @@ module.exports.sessionEnd = ctx => {
   );
 };
 
-// команда "удалить"
-module.exports.deleteLast = async ctx => {
-  console.log('> remove');
+const processDelete = async (ctx, question) => {
   const userData = await storage.getUserData(ctx);
-  ctx.state = await storage.getState(userData);
-  ctx.state.stage = STAGE_IDLE;
-  ctx.state.question = '';
-  ctx.state.answer = '';
+  const data = await storage.getData(userData);
+  ctx = await resetState(ctx);
   storage.setState(userData, ctx.state);
 
-  return ctx.reply('Удален ответ: ' + ctx.state.lastAddedItem.questions.join(', '));
-};
+  const found = data.filter(item => {
+    return item.questions.indexOf(question) != -1;
+  });
 
-const processAnswer = async (ctx, userData) => {
-  const q = ctx.messsage.replace(/^запомни/, '').trim();
-  const replyMessage = ctx.replyBuilder;
-
-  if (!ctx.state.stage || ctx.state.stage === STAGE_IDLE) {
-    ctx.state.answer = '';
-
-    if (q != '') {
-      ctx.state.question = q;
-      replyMessage.text('Что находится ' + q + '?');
-      ctx.state.stage = STAGE_WAIT_FOR_ANSWER;
-    } else {
-      replyMessage.text('Что запомнить?');
-    }
-  } else if (ctx.state.stage === STAGE_WAIT_FOR_ANSWER) {
-    ctx.state.answer = q;
-    ctx.state.lastAddedItem = {
-      questions: [ctx.state.question],
-      answer: ctx.state.answer
-    };
-
-    ctx.state.stage = STAGE_IDLE;
-    await storage.storeAnswer(userData, ctx.state.question, ctx.state.answer);
-
-    replyMessage.text(ctx.state.question + ' находится ' + ctx.state.answer + ', поняла');
+  // не нашлось
+  if (found.length == 0) {
+    return ctx.reply('Я не знаю, что ' + question);
+  }
+  // нашлось, но много
+  if (found.length > 1) {
+    console.log(found);
+    return ctx.reply('Я не уверена что удалять...');
   }
 
-  storage.setState(userData, ctx.state);
-  return replyMessage.get();
+  const isSuccess = storage.removeQuestion(userData, question);
+  if (!isSuccess) {
+    return ctx.reply('При удалении что-то пошло не так...');
+  }
+
+  return ctx.reply('Забыла, что ' + ctx.state.lastAddedItem.questions.join(', '));
+};
+
+// команда "удали последнее"
+module.exports.deleteLast = async ctx => {
+  console.log('> delete last');
+  const userData = await storage.getUserData(ctx);
+  ctx.state = await storage.getState(userData);
+  if (!ctx.state.lastAddedItem) {
+    return ctx.reply('Я ничего не запоминала в последнее время...');
+  }
+  const question = ctx.state.lastAddedItem.questions[0];
+  return processDelete(ctx, question);
+};
+
+// команда "удали ..."
+module.exports.deleteQuestion = async ctx => {
+  console.log('> delete question');
+  const question = ctx.body.question;
+  return processDelete(ctx, question);
 };
 
 // команда "запомни"

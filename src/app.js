@@ -8,7 +8,7 @@ const alice = new Alice({
   fuseOptions: {
     keys: ['name'],
     threshold: 0.3,
-    distance: 10,
+    distance: 10
     // location: 4,
   }
 });
@@ -68,7 +68,8 @@ class YandexDialogsWhatis {
 
     alice.command('пока', commands.sessionEnd);
 
-    alice.command('удалить', commands.deleteLast);
+    alice.command('удали последнее', commands.deleteLast);
+    alice.command('удали ${question}', commands.deleteQuestion);
 
     alice.command('забудь всё', commands.clearData);
 
