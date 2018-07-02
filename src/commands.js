@@ -2,6 +2,9 @@
 const storage = require('./storage');
 const Fuse = require('fuse.js');
 
+const STAGE_IDLE = 'STAGE_IDLE';
+const STAGE_WAIT_FOR_ANSWER = 'STAGE_WAIT_FOR_ANSWER';
+
 // что ...
 module.exports.whatIs = async ctx => {
   console.log('> question: ', ctx.messsage);
@@ -76,7 +79,7 @@ module.exports.commands = ctx => {
     replyMessage.addButton({ ...btn });
   });
   // replyMessage.text('Вот что я умею:')
-  ctx.reply(replyMessage.get());
+  return ctx.reply(replyMessage.get());
 };
 
 // запомни ${question} находится ${answer}
@@ -101,7 +104,7 @@ module.exports.demoData = async ctx => {
   console.log('> demo data');
   const userData = await storage.getUserData(ctx);
   await storage.fillDemoData(userData);
-  ctx.reply('Данные сброшены на демонстрационные');
+  return ctx.reply('Данные сброшены на демонстрационные');
 };
 
 // команда по умолчанию (справка)
@@ -132,4 +135,91 @@ module.exports.help = async ctx => {
   replyMessage.text(helpText.join('\n'));
   // console.log('reply message: ', replyMessage.get());
   return ctx.reply(replyMessage.get());
+};
+
+// команда "отмена"
+module.exports.cancel = async ctx => {
+  console.log('> cancel');
+  const userData = await storage.getUserData(ctx);
+  ctx.state = await storage.getState(userData);
+  ctx.state.stage = STAGE_IDLE;
+  ctx.state.question = '';
+  ctx.state.answer = '';
+  storage.setState(userData, ctx.state);
+  return ctx.reply('Всё отменено');
+};
+
+// команда "пока"
+module.exports.sessionEnd = ctx => {
+  console.log('> end');
+  return ctx.reply(
+    ctx.replyBuilder
+      .text('До свидания!')
+      .shouldEndSession(true)
+      .get()
+  );
+};
+
+// команда "удалить"
+module.exports.deleteLast = async ctx => {
+  console.log('> remove');
+  const userData = await storage.getUserData(ctx);
+  ctx.state = await storage.getState(userData);
+  ctx.state.stage = STAGE_IDLE;
+  ctx.state.question = '';
+  ctx.state.answer = '';
+  storage.setState(userData, ctx.state);
+
+  return ctx.reply('Удален ответ: ' + ctx.state.lastAddedItem.questions.join(', '));
+};
+
+const processAnswer = async (ctx, userData) => {
+  const q = ctx.messsage.replace(/^запомни/, '').trim();
+  const replyMessage = ctx.replyBuilder;
+
+  if (!ctx.state.stage || ctx.state.stage === STAGE_IDLE) {
+    ctx.state.answer = '';
+
+    if (q != '') {
+      ctx.state.question = q;
+      replyMessage.text('Что находится ' + q + '?');
+      ctx.state.stage = STAGE_WAIT_FOR_ANSWER;
+    } else {
+      replyMessage.text('Что запомнить?');
+    }
+  } else if (ctx.state.stage === STAGE_WAIT_FOR_ANSWER) {
+    ctx.state.answer = q;
+    ctx.state.lastAddedItem = {
+      questions: [ctx.state.question],
+      answer: ctx.state.answer
+    };
+
+    ctx.state.stage = STAGE_IDLE;
+    await storage.storeAnswer(userData, ctx.state.question, ctx.state.answer);
+
+    replyMessage.text(ctx.state.question + ' находится ' + ctx.state.answer + ', поняла');
+  }
+
+  storage.setState(userData, ctx.state);
+  return replyMessage.get();
+};
+
+// команда "запомни"
+module.exports.inAnswerEnter = async ctx => {
+  console.log('> answer begin: ', ctx.messsage);
+  const userData = await storage.getUserData(ctx);
+  ctx.state = await storage.getState(userData);
+  const reply = await processAnswer(ctx, userData);
+  return ctx.reply(reply);
+};
+
+module.exports.inAnswerProcess = async ctx => {
+  console.log('> answer end: ', ctx.messsage);
+  const userData = await storage.getUserData(ctx);
+  ctx.state = await storage.getState(userData);
+  const reply = await processAnswer(ctx, userData);
+  if (ctx.state.stage == STAGE_IDLE) {
+    ctx.session.setData('currentScene', null);
+  }
+  return ctx.reply(reply);
 };

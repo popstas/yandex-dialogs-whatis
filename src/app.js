@@ -13,18 +13,14 @@ const alice = new Alice({
   }
 });
 const config = require('./config');
-const storage = require('./storage');
 const commands = require('./commands');
-
-const STAGE_IDLE = 'STAGE_IDLE';
-const STAGE_WAIT_FOR_ANSWER = 'STAGE_WAIT_FOR_ANSWER';
 
 class YandexDialogsWhatis {
   constructor() {
     this.init();
   }
 
-  // for lambda, returns express instance
+  // returns express instance
   handlerExpress() {
     const app = express();
     app.use(bodyParser.json());
@@ -41,6 +37,7 @@ class YandexDialogsWhatis {
     return app;
   }
 
+  // эту функцию можно ставить ендпойнтом на aws lambda
   handlerLambda(event, context, callback) {
     const body = JSON.parse(event.body);
     alice.handleRequestBody(body, res => {
@@ -54,34 +51,9 @@ class YandexDialogsWhatis {
 
     // запомни ...
     const inAnswer = new Scene('in-answer');
-    inAnswer.enter('запомни', async ctx => {
-      console.log('> answer begin: ', ctx.messsage);
-      const userData = await storage.getUserData(ctx);
-      ctx.state = await storage.getState(userData);
-      const reply = await this.processAnswer(ctx, userData);
-      return ctx.reply(reply);
-    });
-    inAnswer.leave('отмена', async ctx => {
-      console.log('> answer cancel: ', ctx.messsage);
-      const userData = await storage.getUserData(ctx);
-      ctx.state = await storage.getState(userData);
-      ctx.state.stage = STAGE_IDLE;
-      ctx.state.question = '';
-      ctx.state.answer = '';
-      storage.setState(userData, ctx.state);
-      return ctx.reply('Всё отменено');
-    });
-    inAnswer.any(async ctx => {
-      console.log('> answer end: ', ctx.messsage);
-      const userData = await storage.getUserData(ctx);
-      ctx.state = await storage.getState(userData);
-      const reply = await this.processAnswer(ctx, userData);
-      if (ctx.state.stage == STAGE_IDLE) {
-        const session = alice.sessions.findById(ctx.sessionId);
-        session.setData('currentScene', null);
-      }
-      return ctx.reply(reply);
-    });
+    inAnswer.enter('запомни', commands.inAnswerEnter);
+    inAnswer.leave('отмена', commands.cancel);
+    inAnswer.any(commands.inAnswerProcess);
     alice.registerScene(inAnswer);
 
     alice.command('запомни ${question} находится ${answer}', commands.remember);
@@ -92,38 +64,11 @@ class YandexDialogsWhatis {
       alice.command(/^демо данные$/, commands.demoData);
     }
 
-    alice.command('отмена', async ctx => {
-      console.log('> cancel');
-      const userData = await storage.getUserData(ctx);
-      ctx.state = await storage.getState(userData);
-      ctx.state.stage = STAGE_IDLE;
-      ctx.state.question = '';
-      ctx.state.answer = '';
-      storage.setState(userData, ctx.state);
-      ctx.reply('Всё отменено');
-    });
+    alice.command('отмена', commands.cancel);
 
-    alice.command('пока', ctx => {
-      console.log('> end');
-      ctx.reply(
-        ctx.replyBuilder
-          .text('До свидания!')
-          .shouldEndSession(true)
-          .get()
-      );
-    });
+    alice.command('пока', commands.sessionEnd);
 
-    alice.command('удалить', async ctx => {
-      console.log('> remove');
-      const userData = await storage.getUserData(ctx);
-      ctx.state = await storage.getState(userData);
-      ctx.state.stage = STAGE_IDLE;
-      ctx.state.question = '';
-      ctx.state.answer = '';
-      storage.setState(userData, ctx.state);
-      this.processDeleteItem(ctx, ctx.state.lastAddedItem);
-      return ctx.reply('Удален ответ: ' + ctx.state.lastAddedItem.questions.join(', '));
-    });
+    alice.command('удалить', commands.deleteLast);
 
     alice.command('забудь всё', commands.clearData);
 
@@ -134,41 +79,6 @@ class YandexDialogsWhatis {
     const app = this.handlerExpress();
     app.listen(port);
     console.log('listen ' + port);
-  }
-
-  async processAnswer(ctx, userData) {
-    const q = ctx.messsage.replace(/^запомни/, '').trim();
-    const replyMessage = ctx.replyBuilder;
-
-    if (!ctx.state.stage || ctx.state.stage === STAGE_IDLE) {
-      ctx.state.answer = '';
-
-      if (q != '') {
-        ctx.state.question = q;
-        replyMessage.text('Что находится ' + q + '?');
-        ctx.state.stage = STAGE_WAIT_FOR_ANSWER;
-      } else {
-        replyMessage.text('Что запомнить?');
-      }
-    } else if (ctx.state.stage === STAGE_WAIT_FOR_ANSWER) {
-      ctx.state.answer = q;
-      ctx.state.lastAddedItem = {
-        questions: [ctx.state.question],
-        answer: ctx.state.answer
-      };
-
-      ctx.state.stage = STAGE_IDLE;
-      await storage.storeAnswer(userData, ctx.state.question, ctx.state.answer);
-
-      replyMessage.text(ctx.state.question + ' находится ' + ctx.state.answer + ', поняла');
-    }
-
-    storage.setState(userData, ctx.state);
-    return replyMessage.get();
-  }
-
-  processDeleteItem(ctx, answer, userData) {
-    console.log('processDeleteItem', ctx, userData);
   }
 }
 
