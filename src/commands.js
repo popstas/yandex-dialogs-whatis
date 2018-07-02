@@ -146,7 +146,8 @@ module.exports.remember = async ctx => {
   };
 
   ctx = await resetState(ctx);
-  return ctx.reply(question + ' находится ' + answer + ', поняла');
+  const suffix = ctx.messsage.match(/ находятся /) ? 'находятся' : 'находится';
+  return ctx.reply(question + ' ' + suffix + ' ' + answer + ', поняла');
 };
 
 // команда "забудь всё"
