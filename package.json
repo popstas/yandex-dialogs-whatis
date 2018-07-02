@@ -29,7 +29,7 @@
     "lokijs": "^1.5.5",
     "mongodb": "^3.1.0",
     "serverless-http": "^1.6.0",
-    "yandex-dialogs-sdk": "^1.1.9"
+    "yandex-dialogs-sdk": "^1.2.1"
   },
   "devDependencies": {
     "axios": "^0.18.0",
