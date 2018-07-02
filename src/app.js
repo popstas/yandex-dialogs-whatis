@@ -47,7 +47,7 @@ class YandexDialogsWhatis {
 
   init() {
     // что ...
-    alice.command(/^что /, commands.whatIs);
+    alice.command(/^(а )?что /, commands.whatIs);
 
     // запомни ...
     const inAnswer = new Scene('in-answer');

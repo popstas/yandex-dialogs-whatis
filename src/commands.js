@@ -17,7 +17,7 @@ const processAnswer = async (ctx, userData) => {
     if (q != '') {
       // еще не знаем ни вопрос, ни ответ
       ctx.state.question = q;
-      replyMessage.text('Что находится ' + q + '?');
+      replyMessage.text('Что ' + q + '?');
       ctx.state.stage = STAGE_WAIT_FOR_ANSWER;
     } else {
       replyMessage.text('Что запомнить?');
@@ -56,7 +56,7 @@ const resetState = async ctx => {
 module.exports.whatIs = async ctx => {
   console.log('> question: ', ctx.messsage);
   const userData = await storage.getUserData(ctx);
-  const q = ctx.messsage.replace(/^что /, '');
+  const q = ctx.messsage.replace(/^(а )?что /, '');
   const data = await storage.getData(userData);
   ctx.state = await storage.getState(userData);
 
