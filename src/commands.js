@@ -52,18 +52,24 @@ const resetState = async ctx => {
   return ctx;
 };
 
-// что ...
-module.exports.whatIs = async ctx => {
-  console.log('> question: ', ctx.messsage);
-  const userData = await storage.getUserData(ctx);
-  const q = ctx.messsage
+const cleanQuestion = message => {
+  return message
     .replace(/^(а )?что /, '')
+    .replace(/^(а )?где /, '')
     .replace(/^лежит/, '')
     .replace(/^стоит/, '')
     .replace(/^находится/, '')
+    .replace(/^находятся/, '')
     .replace(/^налито/, '')
     .replace(/^насыпано/, '')
     .replace(/^будет/, '');
+};
+
+// что ...
+module.exports.whatIs = async ctx => {
+  console.log('> whatis: ', ctx.messsage);
+  const userData = await storage.getUserData(ctx);
+  const q = cleanQuestion(ctx.messsage);
   const data = await storage.getData(userData);
   ctx.state = await storage.getState(userData);
 
@@ -75,16 +81,7 @@ module.exports.whatIs = async ctx => {
     threshold: 0.3,
     location: 4,
     includeScore: true,
-    keys: [
-      {
-        name: 'questions',
-        weight: 0.7
-      },
-      {
-        name: 'answer',
-        weight: 0.1
-      }
-    ]
+    keys: ['questions']
   });
   let answers = fuse.search(q);
   if (answers.length > 0) {
@@ -101,6 +98,51 @@ module.exports.whatIs = async ctx => {
     });
 
     let msg = answers[0].answer;
+    if (answers.filter(answer => !answer.minor).length > 1) {
+      msg += ', но это неточно';
+    }
+
+    console.log('answer: ', msg);
+    ctx.reply(msg);
+  } else {
+    ctx.reply('Я не знаю');
+  }
+  return true;
+};
+
+// где ...
+module.exports.whereIs = async ctx => {
+  console.log('> whereis: ', ctx.messsage);
+  const userData = await storage.getUserData(ctx);
+  const q = cleanQuestion(ctx.messsage);
+  const data = await storage.getData(userData);
+  ctx.state = await storage.getState(userData);
+
+  if (data.length == 0) {
+    return ctx.reply('Я еще ничего не знаю, сначала расскажите мне, что где находится.');
+  }
+
+  let fuse = new Fuse(data, {
+    threshold: 0.3,
+    location: 4,
+    includeScore: true,
+    keys: ['answer']
+  });
+  let answers = fuse.search(q);
+  if (answers.length > 0) {
+    const bestScore = answers[0].score;
+    const scoreThreshold = 2;
+    answers = answers.map(answer => {
+      return {
+        ...answer.item,
+        ...{
+          score: answer.score,
+          minor: answer.score / bestScore > scoreThreshold
+        }
+      };
+    });
+
+    let msg = answers[0].questions[0];
     if (answers.filter(answer => !answer.minor).length > 1) {
       msg += ', но это неточно';
     }
@@ -184,11 +226,12 @@ module.exports.help = async ctx => {
   const replyMessage = ctx.replyBuilder;
   const helpText = [
     'Я умею запоминать, что где находится и напоминать об этом.',
-    'Начните фразу со "что", чтобы получить ответ. Например: "что в синем".',
+    'Начните фразу со "что", чтобы получить ответ. Например: "что на дворе".',
+    'Начните фразу с "где", чтобы найти место, где это что-то лежит. Например: "где трава".',
     'Скажите "запомни", чтобы добавить новый ответ.',
-    'Можно быстро добавить новый ответ так: "запомни ... находится ...". Именно "находится" в единственном числе.',
+    'Можно быстро добавить новый ответ так: "запомни ... находится ...".',
     'Можно удалить последний ответ, сказав "удали последнее".',
-    'Если надо удалить что-то другое, скажите, например, "удали в синем".'
+    'Если надо удалить что-то другое, скажите, например, "удали на дворе".'
   ];
 
   const data = await storage.getData(userData);

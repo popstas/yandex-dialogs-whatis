@@ -49,6 +49,9 @@ class YandexDialogsWhatis {
     // что ...
     alice.command(/^(а )?что /, commands.whatIs);
 
+    // где ...
+    alice.command(/^(а )?где /, commands.whereIs);
+
     // запомни ...
     const inAnswer = new Scene('in-answer');
     inAnswer.enter('запомни', commands.inAnswerEnter);
