@@ -44,8 +44,7 @@ const processAnswer = async (ctx, userData) => {
 // очищает состояние заполнение ответа на вопрос
 const resetState = async ctx => {
   const userData = await storage.getUserData(ctx);
-  ctx.state = await storage.getState(userData);
-  storage.setState(userData, ctx.state);
+  //ctx.state = await storage.getState(userData);
   ctx.state.stage = STAGE_IDLE;
   ctx.state.question = '';
   ctx.state.answer = '';
@@ -59,6 +58,7 @@ module.exports.whatIs = async ctx => {
   const userData = await storage.getUserData(ctx);
   const q = ctx.messsage.replace(/^что /, '');
   const data = await storage.getData(userData);
+  ctx.state = await storage.getState(userData);
 
   if (data.length == 0) {
     return ctx.reply('Я еще ничего не знаю, сначала расскажите мне, что где находится.');
@@ -134,8 +134,17 @@ module.exports.commands = ctx => {
 module.exports.remember = async ctx => {
   console.log('> full answer: ', ctx.messsage);
   const userData = await storage.getUserData(ctx);
+  ctx.state = await storage.getState(userData);
   const { question, answer } = ctx.body;
+
   await storage.storeAnswer(userData, question, answer);
+
+  // последний ответ можно удалить отдельной командой
+  ctx.state.lastAddedItem = {
+    questions: [question],
+    answer: answer
+  };
+
   ctx = await resetState(ctx);
   return ctx.reply(question + ' находится ' + answer + ', поняла');
 };
@@ -144,6 +153,7 @@ module.exports.remember = async ctx => {
 module.exports.clearData = async ctx => {
   console.log('> clear');
   const userData = await storage.getUserData(ctx);
+  ctx.state = await storage.getState(userData);
   storage.clearData(userData);
   ctx = await resetState(ctx);
   return ctx.reply('Всё забыла...');
@@ -162,7 +172,6 @@ module.exports.demoData = async ctx => {
 module.exports.help = async ctx => {
   console.log('> default');
   const userData = await storage.getUserData(ctx);
-  const state = await storage.getState(userData);
   const replyMessage = ctx.replyBuilder;
   const helpText = [
     'Я умею запоминать, что где находится и напоминать об этом.',
@@ -229,12 +238,12 @@ const processDelete = async (ctx, question) => {
     return ctx.reply('Я не уверена что удалять...');
   }
 
-  const isSuccess = storage.removeQuestion(userData, question);
+  const isSuccess = await storage.removeQuestion(userData, question);
   if (!isSuccess) {
     return ctx.reply('При удалении что-то пошло не так...');
   }
 
-  return ctx.reply('Забыла, что ' + ctx.state.lastAddedItem.questions.join(', '));
+  return ctx.reply('Забыла, что ' + question);
 };
 
 // команда "удали последнее"
@@ -252,6 +261,8 @@ module.exports.deleteLast = async ctx => {
 // команда "удали ..."
 module.exports.deleteQuestion = async ctx => {
   console.log('> delete question');
+  const userData = await storage.getUserData(ctx);
+  ctx.state = await storage.getState(userData);
   const question = ctx.body.question;
   return processDelete(ctx, question);
 };
