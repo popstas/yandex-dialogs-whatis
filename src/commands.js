@@ -338,3 +338,10 @@ module.exports.inAnswerProcess = async ctx => {
   }
   return ctx.reply(reply);
 };
+
+module.exports.replyRandom = messages => {
+  return async ctx => {
+    const randomKey = Math.floor(Math.random() * messages.length);
+    return ctx.reply(messages[randomKey]);
+  };
+};

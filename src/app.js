@@ -77,6 +77,20 @@ class YandexDialogsWhatis {
 
     alice.command('забудь всё', commands.clearData);
 
+    alice.command(
+      ['спс', 'спасибо', 'благодарю'],
+      commands.replyRandom([
+        'Всегда пожалуйста',
+        'Не за что',
+        'Обращайся!',
+        'Пожалуйста',
+        'Пожалуйста',
+        'Пожалуйста',
+        'Пожалуйста',
+        'Пожалуйста'
+      ])
+    );
+
     alice.any(commands.help);
   }
 
