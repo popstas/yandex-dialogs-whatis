@@ -8,7 +8,7 @@ const STAGE_WAIT_FOR_ANSWER = 'STAGE_WAIT_FOR_ANSWER';
 // процесс ответа на вопрос, кажется, это называется fullfillment
 // https://github.com/dialogflow/dialogflow-fulfillment-nodejs
 const processAnswer = async (ctx, userData) => {
-  const q = ctx.messsage.replace(/^запомни/, '').trim();
+  const q = ctx.message.replace(/^запомни/, '').trim();
   const replyMessage = ctx.replyBuilder;
 
   if (!ctx.state.stage || ctx.state.stage === STAGE_IDLE) {
@@ -52,24 +52,46 @@ const resetState = async ctx => {
   return ctx;
 };
 
+const verbs = [
+  'находится',
+  'находятся',
+  'лежит',
+  'стоит',
+  'висит',
+  'налито',
+  'находится',
+  'будет',
+  'было',
+  'был'
+];
+module.exports.verbs = verbs;
+
+// находит глагол в команде
+const getVerb = message => {
+  return verbs.find(verb => {
+    const reg = new RegExp(` ${verb} `);
+    return message.match(reg);
+  });
+};
+
+// убирает глагол из начала в вопросе
+const cleanVerb = msg => {
+  verbs.forEach(verb => {
+    msg = msg.replace(new RegExp(`^${verb} `), '');
+  });
+  return msg;
+};
+
 const cleanQuestion = message => {
-  return message
-    .replace(/^(а |скажи )?что /, '')
-    .replace(/^(а |скажи )?где /, '')
-    .replace(/^лежит/, '')
-    .replace(/^стоит/, '')
-    .replace(/^находится/, '')
-    .replace(/^находятся/, '')
-    .replace(/^налито/, '')
-    .replace(/^насыпано/, '')
-    .replace(/^будет/, '');
+  let msg = message.replace(/^(а )?(скажи )?что /, '').replace(/^(а )?(скажи )?где /, '');
+  return cleanVerb(msg);
 };
 
 // что ...
 module.exports.whatIs = async ctx => {
-  console.log('> whatis: ', ctx.messsage);
+  console.log('> whatis: ', ctx.message);
   const userData = await storage.getUserData(ctx);
-  const q = cleanQuestion(ctx.messsage);
+  const q = cleanQuestion(ctx.message);
   const data = await storage.getData(userData);
   ctx.state = await storage.getState(userData);
 
@@ -112,9 +134,9 @@ module.exports.whatIs = async ctx => {
 
 // где ...
 module.exports.whereIs = async ctx => {
-  console.log('> whereis: ', ctx.messsage);
+  console.log('> whereis: ', ctx.message);
   const userData = await storage.getUserData(ctx);
-  const q = cleanQuestion(ctx.messsage);
+  const q = cleanQuestion(ctx.message);
   const data = await storage.getData(userData);
   ctx.state = await storage.getState(userData);
 
@@ -181,12 +203,10 @@ module.exports.commands = ctx => {
 
 // команда "запомни ${question} находится ${answer}"
 module.exports.remember = async ctx => {
-  console.log('> full answer: ', ctx.messsage);
+  console.log('> full answer: ', ctx.message);
   const userData = await storage.getUserData(ctx);
   ctx.state = await storage.getState(userData);
-  const question = ctx.body.question
-    .replace(/^запомни /, '')
-    .replace(/^что /, '');
+  const question = ctx.body.question.replace(/^запомни /, '').replace(/^что /, '');
   const answer = ctx.body.answer;
 
   await storage.storeAnswer(userData, question, answer);
@@ -198,7 +218,7 @@ module.exports.remember = async ctx => {
   };
 
   ctx = await resetState(ctx);
-  const suffix = ctx.messsage.match(/ находятся /) ? 'находятся' : 'находится';
+  const suffix = getVerb(ctx.message);
   return ctx.reply(question + ' ' + suffix + ' ' + answer + ', поняла');
 };
 
@@ -323,7 +343,7 @@ module.exports.deleteQuestion = async ctx => {
 
 // команда "запомни"
 module.exports.inAnswerEnter = async ctx => {
-  console.log('> answer begin: ', ctx.messsage);
+  console.log('> answer begin: ', ctx.message);
   const userData = await storage.getUserData(ctx);
   ctx.state = await storage.getState(userData);
   const reply = await processAnswer(ctx, userData);
@@ -331,7 +351,7 @@ module.exports.inAnswerEnter = async ctx => {
 };
 
 module.exports.inAnswerProcess = async ctx => {
-  console.log('> answer end: ', ctx.messsage);
+  console.log('> answer end: ', ctx.message);
   const userData = await storage.getUserData(ctx);
   ctx.state = await storage.getState(userData);
   const reply = await processAnswer(ctx, userData);

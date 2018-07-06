@@ -47,10 +47,10 @@ class YandexDialogsWhatis {
 
   init() {
     // что ...
-    alice.command(/^(а |скажи )?что /, commands.whatIs);
+    alice.command(/^(а )?(скажи )?что /, commands.whatIs);
 
     // где ...
-    alice.command(/^(а |скажи )?где /, commands.whereIs);
+    alice.command(/^(а )?(скажи )??где /, commands.whereIs);
 
     // запомни ...
     const inAnswer = new Scene('in-answer');
@@ -59,8 +59,9 @@ class YandexDialogsWhatis {
     inAnswer.any(commands.inAnswerProcess);
     alice.registerScene(inAnswer);
 
-    alice.command('${question} находится ${answer}', commands.remember);
-    alice.command('${question} находятся ${answer}', commands.remember);
+    commands.verbs.forEach(verb => {
+      alice.command('${question} ' + verb + ' ${answer}', commands.remember);
+    });
 
     alice.command(/^команды$/, commands.commands);
 
