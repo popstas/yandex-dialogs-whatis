@@ -54,8 +54,8 @@ const resetState = async ctx => {
 
 const cleanQuestion = message => {
   return message
-    .replace(/^(а )?что /, '')
-    .replace(/^(а )?где /, '')
+    .replace(/^(а |скажи )?что /, '')
+    .replace(/^(а |скажи )?где /, '')
     .replace(/^лежит/, '')
     .replace(/^стоит/, '')
     .replace(/^находится/, '')

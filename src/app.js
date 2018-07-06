@@ -47,10 +47,10 @@ class YandexDialogsWhatis {
 
   init() {
     // что ...
-    alice.command(/^(а )?что /, commands.whatIs);
+    alice.command(/^(а |скажи )?что /, commands.whatIs);
 
     // где ...
-    alice.command(/^(а )?где /, commands.whereIs);
+    alice.command(/^(а |скажи )?где /, commands.whereIs);
 
     // запомни ...
     const inAnswer = new Scene('in-answer');
@@ -88,6 +88,20 @@ class YandexDialogsWhatis {
         'Пожалуйста',
         'Пожалуйста',
         'Пожалуйста'
+      ])
+    );
+
+    alice.command(
+      ['молодец', 'умница'],
+      commands.replyRandom([
+        'Спасибо, стараюсь :)',
+        'Ой, так приятно )',
+        'Ты же в курсе, что хвалишь бездушный алгоритм?',
+        'Спасибо!',
+        'Спасибо!',
+        'Спасибо!',
+        'Спасибо!',
+        'Спасибо!'
       ])
     );
 
