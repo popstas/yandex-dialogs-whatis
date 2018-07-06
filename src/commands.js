@@ -184,7 +184,9 @@ module.exports.remember = async ctx => {
   console.log('> full answer: ', ctx.messsage);
   const userData = await storage.getUserData(ctx);
   ctx.state = await storage.getState(userData);
-  const question = ctx.body.question.replace(/^что /, '');
+  const question = ctx.body.question
+    .replace(/^запомни /, '')
+    .replace(/^что /, '');
   const answer = ctx.body.answer;
 
   await storage.storeAnswer(userData, question, answer);

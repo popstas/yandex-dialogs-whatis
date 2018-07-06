@@ -59,8 +59,8 @@ class YandexDialogsWhatis {
     inAnswer.any(commands.inAnswerProcess);
     alice.registerScene(inAnswer);
 
-    alice.command('запомни ${question} находится ${answer}', commands.remember);
-    alice.command('запомни ${question} находятся ${answer}', commands.remember);
+    alice.command('${question} находится ${answer}', commands.remember);
+    alice.command('${question} находятся ${answer}', commands.remember);
 
     alice.command(/^команды$/, commands.commands);
 
