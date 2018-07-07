@@ -41,6 +41,35 @@ const processAnswer = async (ctx, userData) => {
   return replyMessage.get();
 };
 
+// процесс удаления вопроса
+const processDelete = async (ctx, question) => {
+  const userData = await storage.getUserData(ctx);
+  const data = await storage.getData(userData);
+  ctx = await resetState(ctx);
+  storage.setState(userData, ctx.state);
+
+  const found = data.filter(item => {
+    return item.questions.indexOf(question) != -1;
+  });
+
+  // не нашлось
+  if (found.length == 0) {
+    return ctx.reply('Я не знаю, что ' + question);
+  }
+  // нашлось, но много
+  if (found.length > 1) {
+    console.log(found);
+    return ctx.reply('Я не уверена что удалять...');
+  }
+
+  const isSuccess = await storage.removeQuestion(userData, question);
+  if (!isSuccess) {
+    return ctx.reply('При удалении что-то пошло не так...');
+  }
+
+  return ctx.reply('Забыла, что ' + question);
+};
+
 // очищает состояние заполнение ответа на вопрос
 const resetState = async ctx => {
   const userData = await storage.getUserData(ctx);
@@ -100,8 +129,9 @@ const simpleReply = (ctx, lines, buttons) => {
   return replyMessage.text(lines.join('\n'));
 };
 
-// что ...
+// команда "что ..."
 module.exports.whatIs = async ctx => {
+  if (ctx.messsage) ctx.message = ctx.messsage;
   console.log('> whatis: ', ctx.message);
   const userData = await storage.getUserData(ctx);
   const q = cleanQuestion(ctx.message);
@@ -145,8 +175,9 @@ module.exports.whatIs = async ctx => {
   return true;
 };
 
-// где ...
+// команда "где ...""
 module.exports.whereIs = async ctx => {
+  if (ctx.messsage) ctx.message = ctx.messsage;
   console.log('> whereis: ', ctx.message);
   const userData = await storage.getUserData(ctx);
   const q = cleanQuestion(ctx.message);
@@ -212,6 +243,7 @@ module.exports.commands = ctx => {
 
 // команда "запомни ${question} находится ${answer}"
 module.exports.remember = async ctx => {
+  if (ctx.messsage) ctx.message = ctx.messsage;
   console.log('> full answer: ', ctx.message);
   const userData = await storage.getUserData(ctx);
   ctx.state = await storage.getState(userData);
@@ -387,35 +419,6 @@ module.exports.sessionEnd = async ctx => {
   );
 };
 
-// процесс удаления вопроса
-const processDelete = async (ctx, question) => {
-  const userData = await storage.getUserData(ctx);
-  const data = await storage.getData(userData);
-  ctx = await resetState(ctx);
-  storage.setState(userData, ctx.state);
-
-  const found = data.filter(item => {
-    return item.questions.indexOf(question) != -1;
-  });
-
-  // не нашлось
-  if (found.length == 0) {
-    return ctx.reply('Я не знаю, что ' + question);
-  }
-  // нашлось, но много
-  if (found.length > 1) {
-    console.log(found);
-    return ctx.reply('Я не уверена что удалять...');
-  }
-
-  const isSuccess = await storage.removeQuestion(userData, question);
-  if (!isSuccess) {
-    return ctx.reply('При удалении что-то пошло не так...');
-  }
-
-  return ctx.reply('Забыла, что ' + question);
-};
-
 // команда "удали последнее"
 module.exports.deleteLast = async ctx => {
   console.log('> delete last');
@@ -439,6 +442,7 @@ module.exports.deleteQuestion = async ctx => {
 
 // команда "запомни"
 module.exports.inAnswerEnter = async ctx => {
+  if (ctx.messsage) ctx.message = ctx.messsage;
   console.log('> answer begin: ', ctx.message);
   const userData = await storage.getUserData(ctx);
   ctx.state = await storage.getState(userData);
@@ -447,6 +451,7 @@ module.exports.inAnswerEnter = async ctx => {
 };
 
 module.exports.inAnswerProcess = async ctx => {
+  if (ctx.messsage) ctx.message = ctx.messsage;
   console.log('> answer end: ', ctx.message);
   const userData = await storage.getUserData(ctx);
   ctx.state = await storage.getState(userData);
