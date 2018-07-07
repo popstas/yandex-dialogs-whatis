@@ -106,12 +106,18 @@ class YandexDialogsWhatis {
       ])
     );
 
+    alice.command('что ты знаешь', commands.known);
+    alice.command('что ты помнишь', commands.known);
+
     // это ломает команду "запомни что на дворе находится трава"
     // alice.command(['что ты умеешь', 'что ты можешь'], commands.help);
     alice.command('что ты умеешь', commands.help);
     alice.command('что ты можешь', commands.help);
+    alice.command('помощь', commands.help);
 
     alice.any(commands.help);
+
+    alice.welcome(commands.welcome);
   }
 
   listen(port) {

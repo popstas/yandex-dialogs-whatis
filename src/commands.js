@@ -240,10 +240,36 @@ module.exports.demoData = async ctx => {
   return ctx.reply('Данные сброшены на демонстрационные');
 };
 
-// команда по умолчанию (справка)
-module.exports.help = async ctx => {
-  console.log('> default');
+// команда "что ты знаешь"
+module.exports.known = async ctx => {
+  const replyMessage = ctx.replyBuilder;
+
+  // buttons
   const userData = await storage.getUserData(ctx);
+  const data = await storage.getData(userData);
+  let questions = data.map(item => item.questions[0]);
+  questions = questions.map(question => {
+    const btn = ctx.buttonBuilder.text('что ' + question);
+    replyMessage.addButton({ ...btn.get() });
+    return question;
+  });
+
+  // text
+  let text = [];
+  if (questions.length > 0) {
+    text.push('У меня есть информация об этих объектах:\n');
+    text.push(questions.join('\n'));
+  } else {
+    text.push('Я еще ничего не знаю, сначала расскажите мне, что где находится.');
+  }
+  replyMessage.text(text.join('\n'));
+
+  return ctx.reply(replyMessage.get());
+};
+
+// команда по умолчанию (справка)
+module.exports.welcome = async ctx => {
+  console.log('> welcome');
   const replyMessage = ctx.replyBuilder;
   const helpText = [
     'Я умею запоминать, что где находится и напоминать об этом.',
@@ -252,23 +278,40 @@ module.exports.help = async ctx => {
     'Скажите "запомни", чтобы добавить новый ответ.',
     'Можно быстро добавить новый ответ так: "запомни ... находится ...".',
     'Можно удалить последний ответ, сказав "удали последнее".',
-    'Если надо удалить что-то другое, скажите, например, "удали на дворе".'
+    'Если надо удалить что-то другое, скажите, например, "удали на дворе".',
+    'Чтобы посмотреть примеры разных команд, скажите "Команды".',
+    'Если хотите узнать подробности, скажите "Помощь".'
   ];
 
-  const data = await storage.getData(userData);
-  let questions = data.map(item => item.questions[0]);
-  questions = questions.map(question => {
-    const btn = ctx.buttonBuilder.text('что ' + question);
-    replyMessage.addButton({ ...btn.get() });
-  });
   replyMessage.addButton(ctx.buttonBuilder.text('команды').get());
+  replyMessage.addButton(ctx.buttonBuilder.text('помощь').get());
+  replyMessage.addButton(ctx.buttonBuilder.text('что ты знаешь').get());
 
-  if (questions.length > 0) {
-    helpText.push('');
-    helpText.push('У меня есть информация об этих объектах:');
-  }
   replyMessage.text(helpText.join('\n'));
-  // console.log('reply message: ', replyMessage.get());
+  return ctx.reply(replyMessage.get());
+};
+
+// команда по умолчанию (справка)
+module.exports.help = async ctx => {
+  console.log('> help');
+  const replyMessage = ctx.replyBuilder;
+  let buttons = ['запоминать', 'отвечать что', 'отвечать где', 'забывать'];
+  const text = [
+    'Я умею: ' + buttons.join(', ') + '. Что их этого вы хотите знать?',
+    'Начните фразу со "что", чтобы получить ответ. Например: "что на дворе".',
+    'Начните фразу с "где", чтобы найти место, где это что-то лежит. Например: "где трава".',
+    'Скажите "запомни", чтобы добавить новый ответ.',
+    'Можно быстро добавить новый ответ так: "запомни ... находится ...".',
+    'Можно удалить последний ответ, сказав "удали последнее".',
+    'Если надо удалить что-то другое, скажите, например, "удали на дворе".',
+    'Если надо очистить память, скажите: "забудь все".'
+  ];
+
+  replyMessage.addButton(ctx.buttonBuilder.text('команды').get());
+  replyMessage.addButton(ctx.buttonBuilder.text('помощь').get());
+  replyMessage.addButton(ctx.buttonBuilder.text('что ты знаешь').get());
+
+  replyMessage.text(text.join('\n'));
   return ctx.reply(replyMessage.get());
 };
 
