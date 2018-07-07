@@ -114,9 +114,14 @@ class YandexDialogsWhatis {
     alice.command('что ты умеешь', commands.help);
     alice.command('что ты можешь', commands.help);
     alice.command('помощь', commands.help);
+    alice.command('запоминать', commands.helpRemember);
+    alice.command('отвечать что', commands.helpWhatis);
+    alice.command('отвечать где', commands.helpWhereis);
+    alice.command('забывать', commands.helpForget);
 
     alice.any(commands.help);
 
+    alice.command('приветствие', commands.welcome);
     alice.welcome(commands.welcome);
   }
 
