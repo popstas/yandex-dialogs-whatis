@@ -412,6 +412,8 @@ module.exports.cancel = async ctx => {
 // команда "пока"
 module.exports.sessionEnd = async ctx => {
   console.log('> end');
+  const userData = await storage.getUserData(ctx);
+  ctx.state = await storage.getState(userData);
   ctx = await resetState(ctx);
   return ctx.reply(
     ctx.replyBuilder
