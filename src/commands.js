@@ -283,9 +283,9 @@ module.exports.welcome = async ctx => {
     'Если хотите узнать подробности, скажите "Помощь".'
   ];
 
-  replyMessage.addButton(ctx.buttonBuilder.text('команды').get());
-  replyMessage.addButton(ctx.buttonBuilder.text('помощь').get());
-  replyMessage.addButton(ctx.buttonBuilder.text('что ты знаешь').get());
+  replyMessage.addButton({ ...ctx.buttonBuilder.text('помощь').get()});
+  replyMessage.addButton({ ...ctx.buttonBuilder.text('что ты знаешь').get()});
+  replyMessage.addButton({ ...ctx.buttonBuilder.text('команды').get()});
 
   replyMessage.text(helpText.join('\n'));
   return ctx.reply(replyMessage.get());
@@ -307,9 +307,9 @@ module.exports.help = async ctx => {
     'Если надо очистить память, скажите: "забудь все".'
   ];
 
-  replyMessage.addButton(ctx.buttonBuilder.text('команды').get());
-  replyMessage.addButton(ctx.buttonBuilder.text('помощь').get());
-  replyMessage.addButton(ctx.buttonBuilder.text('что ты знаешь').get());
+  replyMessage.addButton({ ...ctx.buttonBuilder.text('помощь').get()});
+  replyMessage.addButton({ ...ctx.buttonBuilder.text('что ты знаешь').get()});
+  replyMessage.addButton({ ...ctx.buttonBuilder.text('команды').get()});
 
   replyMessage.text(text.join('\n'));
   return ctx.reply(replyMessage.get());
