@@ -3,7 +3,7 @@ version: '2.1'
 services:
   yandex-dialogs-whatis:
     image: popstas/yandex-dialogs-whatis:v1.0.0
-    build: .
+    #build: .
     environment:
       NODE_ENV: production
     volumes:
