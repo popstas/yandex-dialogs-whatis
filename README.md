@@ -23,6 +23,6 @@
 ## Пожелания к SDK:
 - возможность исключить навык из NODE_ENV=production
 - мидлвари-матчеры в первом аргументе `alice.command()`
-- легкий способ вывести многострочный текст с кнопками, simpleReply, 8e6843652a7ea8cccb2d0a1fb62ed833103e5665
-- мидварь "случайный ответ из списка", replyRandom, 9c33c692bc02c6f6f20b61f10e03d195cb00f54a
-- учитывать вес результатов fuse, чтобы не было ситуаций, когда выбрана команда со score 0.5
+- легкий способ вывести многострочный текст с кнопками, simpleReply, https://github.com/popstas/yandex-dialogs-whatis/commit/8e6843652a7ea8cccb2d0a1fb62ed833103e5665
+- мидварь "случайный ответ из списка", replyRandom, https://github.com/popstas/yandex-dialogs-whatis/commit/9c33c692bc02c6f6f20b61f10e03d195cb00f54a
+- учитывать вес результатов fuse, чтобы не было ситуаций, когда выбрана команда со score 0.5, https://github.com/popstas/yandex-dialogs-whatis/commit/de596ffd00bebaa0d9a2879292e2e7deb99e54a0
