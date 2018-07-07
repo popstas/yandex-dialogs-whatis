@@ -8,8 +8,8 @@ const alice = new Alice({
   fuseOptions: {
     keys: ['name'],
     threshold: 0.3,
-    distance: 10
-    // location: 4,
+    maxPatternLength: 50,
+    location: 68
   }
 });
 const config = require('./config');
