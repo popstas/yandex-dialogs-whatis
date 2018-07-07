@@ -10,7 +10,11 @@
     "dev": "serverless offline start",
     "create": "serverless create",
     "deploy": "serverless deploy",
-    "invoke-app": "serverless invoke local -f app -p tests/fixtures/event/default.json"
+    "invoke-app": "serverless invoke local -f app -p tests/fixtures/event/default.json",
+    "version": "npm run changelog && git add CHANGELOG.md",
+    "postversion": "git push && npm run release",
+    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0",
+    "release": "conventional-github-releaser -p angular && bash scripts/deploy.sh"
   },
   "repository": {
     "type": "git",
@@ -33,6 +37,8 @@
   },
   "devDependencies": {
     "axios": "^0.18.0",
+    "conventional-changelog-cli": "^2.0.0",
+    "conventional-github-releaser": "^3.1.0",
     "serverless": "^1.27.3",
     "serverless-offline": "^3.25.5"
   }
