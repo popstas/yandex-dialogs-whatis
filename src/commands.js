@@ -405,6 +405,8 @@ module.exports.help = async ctx => {
 // команда "отмена"
 module.exports.cancel = async ctx => {
   console.log('> cancel');
+  const userData = await storage.getUserData(ctx);
+  ctx.state = await storage.getState(userData);
   ctx = await resetState(ctx);
   return ctx.reply('Всё отменено');
 };
