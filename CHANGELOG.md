@@ -1,5 +1,16 @@
+<a name="1.0.1"></a>
+## [1.0.1](https://github.com/popstas/yandex-dialogs-whatis/compare/v1.0.0...v1.0.1) (2018-07-07)
+
+
+### Bug Fixes
+
+* не работала команда "отмена" вне сцены in-answer ([87c9fcb](https://github.com/popstas/yandex-dialogs-whatis/commit/87c9fcb))
+* не работала команда "пока" ([1a219ea](https://github.com/popstas/yandex-dialogs-whatis/commit/1a219ea))
+
+
+
 <a name="1.0.0"></a>
-# 1.0.0 (2018-07-07)
+# [1.0.0](https://github.com/popstas/yandex-dialogs-whatis/compare/8cf6ca0...v1.0.0) (2018-07-07)
 
 
 ### Bug Fixes
