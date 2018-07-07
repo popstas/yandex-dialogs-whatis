@@ -116,11 +116,13 @@ const cleanVerb = msg => {
   return msg;
 };
 
+// убирает лишнее в вопросе
 const cleanQuestion = message => {
-  let msg = message.replace(/^(а )?(скажи )?что /, '').replace(/^(а )?(скажи )?где /, '');
+  let msg = message.replace(/^(Алиса )?(а )?(скажи )?что /, '').replace(/^(а )?(скажи )?где /, '');
   return cleanVerb(msg);
 };
 
+// простой конструктор ответа с кнопками
 const simpleReply = (ctx, lines, buttons) => {
   const replyMessage = ctx.replyBuilder;
   for (let i in buttons) {
@@ -450,6 +452,7 @@ module.exports.inAnswerEnter = async ctx => {
   return ctx.reply(reply);
 };
 
+// процесс заполнение вопроса в сцене in-answer
 module.exports.inAnswerProcess = async ctx => {
   if (ctx.messsage) ctx.message = ctx.messsage;
   console.log('> answer end: ', ctx.message);
@@ -462,6 +465,7 @@ module.exports.inAnswerProcess = async ctx => {
   return ctx.reply(reply);
 };
 
+// команда рандомного ответа
 module.exports.replyRandom = messages => {
   return async ctx => {
     const randomKey = Math.floor(Math.random() * messages.length);
