@@ -25,7 +25,7 @@ class Scenarios {
     for (let i in this.scenarios) {
       const scenario = this.scenarios[i];
       const isErrors = await scenario.run();
-      if(isErrors){
+      if (isErrors) {
         this.isErrors = true;
         this.failed.push(scenario);
       }
@@ -56,7 +56,7 @@ class Scenario {
   // return isSuccess
   checkAnswer(answer, item) {
     if (typeof item === 'string') {
-      if(this.versose) console.log(`test ${answer} == ${item}`);
+      if (this.versose) console.log(`test ${answer} == ${item}`);
       if (answer != item) {
         console.error(`отвечено: ${answer}\nожидалось: ${item}`);
         return false;
@@ -72,7 +72,7 @@ class Scenario {
       item.tests.map(testItem => {
         let testType = Object.keys(testItem)[0];
         let testVal = testItem[testType];
-        if(this.versose) console.log(`test ${testType} ${testVal}`);
+        if (this.versose) console.log(`test ${testType} ${testVal}`);
         // contains
         if (testType == 'contains' && !answer.includes(testVal)) {
           failed.push(`ответ не содержит "${testVal}"`);
@@ -117,7 +117,7 @@ class Scenario {
         console.log('> ' + item);
         try {
           this.lastAnswer = await this.aliceRequest(item);
-          if(this.lastAnswer.response.end_session){
+          if (this.lastAnswer.response.end_session) {
             this.sessionNew = true;
           }
           console.log('< ' + this.lastAnswer.response.text);

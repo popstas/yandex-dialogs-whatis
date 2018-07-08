@@ -60,7 +60,7 @@ class LokiDriver extends BaseDriver {
     return userData.state.data[0] || {};
   }
 
-  setState(userData, state){
+  setState(userData, state) {
     /* const found = userData.state.data['state'];
     if (found) {
       found = state;
@@ -69,7 +69,7 @@ class LokiDriver extends BaseDriver {
       userData.state.insert({ state });
     } */
     // userData.state.clear();
-    if(userData.state.data.length == 0){
+    if (userData.state.data.length == 0) {
       userData.state.insert(state);
     } else {
       userData.state.update(state);
@@ -77,7 +77,7 @@ class LokiDriver extends BaseDriver {
   }
 
   clearData(userData) {
-    if(userData.data.data.length == 0) return;
+    if (userData.data.data.length == 0) return;
     userData.data.clear();
   }
 

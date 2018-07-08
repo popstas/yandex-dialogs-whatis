@@ -2,5 +2,6 @@ language: node_js
 node_js:
   - lts/*
 script:
+  - cp src/config.sample.js src/config.js
   - npm install
   - npm run test

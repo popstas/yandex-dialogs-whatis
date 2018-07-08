@@ -1,5 +1,6 @@
 'use strict';
 const { Scenarios } = require('./scenarios');
+process.env.DB_DRIVER = 'loki';
 const app = require('../src/app');
 
 // const url = process.env.URL || 'https://whatis.dialogs.popstas.ru';
@@ -16,7 +17,7 @@ bot.listen(port);
     const ok = scenarios.scenarios.length - scenarios.failed.length;
     const failed = scenarios.failed.length;
     console.log(`ok: ${ok}, failed: ${failed}`);
-    if(isErrors){
+    if (isErrors) {
       console.log('Failed scenarios: ', scenarios.failed.map(scenario => scenario.name).join(', '));
       process.exit(1);
     } else {
