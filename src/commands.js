@@ -112,6 +112,7 @@ const getVerb = message => {
 const cleanVerb = msg => {
   verbs.forEach(verb => {
     msg = msg.replace(new RegExp(`^${verb} `), '');
+    msg = msg.replace(new RegExp(` ${verb}$`), '');
   });
   return msg;
 };
