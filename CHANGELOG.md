@@ -1,3 +1,19 @@
+<a name="1.1.0"></a>
+# [1.1.0](https://github.com/popstas/yandex-dialogs-whatis/compare/v1.0.1...v1.1.0) (2018-07-08)
+
+
+### Bug Fixes
+
+* починен драйвер loki для тестов ([dcc3153](https://github.com/popstas/yandex-dialogs-whatis/commit/dcc3153))
+* что на дворе находится (глагол в конце) ([4a91c25](https://github.com/popstas/yandex-dialogs-whatis/commit/4a91c25))
+
+
+### Features
+
+* команды 'отбой', 'все', 'всё', 'хватит', 'закройся' ([072185c](https://github.com/popstas/yandex-dialogs-whatis/commit/072185c))
+
+
+
 <a name="1.0.1"></a>
 ## [1.0.1](https://github.com/popstas/yandex-dialogs-whatis/compare/v1.0.0...v1.0.1) (2018-07-07)
 
