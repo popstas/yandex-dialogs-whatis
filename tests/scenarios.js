@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 const axios = require('axios');
 const yaml = require('js-yaml');
 const fs = require('fs');
@@ -7,6 +7,7 @@ class Scenarios {
   constructor(ymlPath, url) {
     this.scenarios = [];
     this.isErrors = false;
+    this.failed = [];
     this.load(ymlPath, url);
   }
 
@@ -20,13 +21,15 @@ class Scenarios {
   }
 
   async run() {
-    this.scenarios.map(async scenario => {
-      let isErrors = await scenario.run();
-      if (isErrors) {
+    this.failed = [];
+    for (let i in this.scenarios) {
+      const scenario = this.scenarios[i];
+      const isErrors = await scenario.run();
+      if(isErrors){
         this.isErrors = true;
-        console.log(errors.join('\n'));
+        this.failed.push(scenario);
       }
-    });
+    }
     return this.isErrors;
   }
 }
@@ -38,70 +41,94 @@ class Scenario {
     this.data = data;
     this.url = url;
     this.isErrors = false;
+    this.isUser = true;
+    this.lastAnswer = '';
 
     this.messageId = 1;
-    this.sessionNew = true;
+    this.sessionNew = false;
     this.sessionId = 1;
     this.userId = 1;
+
+    this.versose = false;
+    this.timeout = 200000;
   }
 
+  // return isSuccess
+  checkAnswer(answer, item) {
+    if (typeof item === 'string') {
+      if(this.versose) console.log(`test ${answer} == ${item}`);
+      if (answer != item) {
+        console.error(`отвечено: ${answer}\nожидалось: ${item}`);
+        return false;
+      }
+    }
+    if (typeof item === 'object') {
+      if (!item.tests) {
+        console.error('В yml должны быть tests');
+        return false;
+      }
+      let failed = [];
+
+      item.tests.map(testItem => {
+        let testType = Object.keys(testItem)[0];
+        let testVal = testItem[testType];
+        if(this.versose) console.log(`test ${testType} ${testVal}`);
+        // contains
+        if (testType == 'contains' && !answer.includes(testVal)) {
+          failed.push(`ответ не содержит "${testVal}"`);
+          return false;
+        }
+
+        // not contains
+        if (testType == 'not_contains' && answer.includes(testVal)) {
+          failed.push(`ответ содержит "${testVal}", но не должен`);
+          return false;
+        }
+      });
+
+      if (failed.length > 0) {
+        console.error(failed.join('\n'));
+        return false;
+      }
+    }
+    return true;
+  }
+
+  // начало диалога
   async run() {
-    console.log('run scenario: ', this.name);
+    console.log('### scenario: ', this.name);
     this.isUser = true;
-    this.data.map(async item => {
-      let lastAnswer = false;
+    this.lastAnswer = '';
+
+    for (let i in this.data) {
+      // item - реплика
+      const item = this.data[i];
 
       // check
       if (!this.isUser) {
-        if (typeof item === 'string') {
-          console.log(`test ${lastAnswer.text} == ${item}`);
-          if (lastAnswer.text != item) {
-            this.isErrors = true;
-            console.log(`отвечено: ${lastAnswer.text}\nожидалось: ${item}`);
-            return this.isErrors;
-          }
+        const result = this.checkAnswer(this.lastAnswer.response.text, item);
+        // при ошибке диалог заканчивается
+        if (!result) {
+          this.isErrors = true;
+          break;
         }
-        if (typeof item === 'object') {
-          if (!item.tests) {
-            this.isErrors = true;
-            console.error('В yml должны быть tests');
-            return this.isErrors;
-          }
-          let failed = [];
-
-          item.tests.map(testItem => {
-            let testType = Object.keys(testItem)[0];
-            let testVal = testItem[testType];
-            console.log(`test ${testType} ${testVal}`);
-            // contains
-            if (testType == 'contains' && !lastAnswer.text.includes(testVal)) {
-              failed.push(`ответ не содержит "${testVal}"`);
-              return this.isErrors;
-            }
-
-            // not contains
-            if (testType == 'not_contains' && lastAnswer.text.includes(testVal)) {
-              failed.push(`ответ содержит "${testVal}", но не должен`);
-              return this.isErrors;
-            }
-          });
-
-          if (failed.length > 0) {
-            this.isErrors = true;
-            console.log(failed.join('\n'));
-            return this.isErrors;
-          }
-        }
-
         // send
       } else {
-        console.log('send: ', item);
-        let lastAnswer = await this.aliceRequest(item);
-        console.log('answer: ', lastAnswer);
+        console.log('> ' + item);
+        try {
+          this.lastAnswer = await this.aliceRequest(item);
+          if(this.lastAnswer.response.end_session){
+            this.sessionNew = true;
+          }
+          console.log('< ' + this.lastAnswer.response.text);
+        } catch (err) {
+          console.error(err);
+        }
       }
-      console.log('change user');
       this.isUser = !this.isUser;
-    });
+    }
+
+    console.log('\n\n\n');
     return this.isErrors;
   }
 
@@ -119,24 +146,33 @@ class Scenario {
       request: {
         type: 'SimpleUtterance',
         payload: {},
-        command: command
+        original_utterance: command,
+        command: command,
+        payload: {}
       },
       session: {
-        message_id: this.messageId,
         new: this.sessionNew,
+        message_id: this.messageId,
         session_id: this.sessionId,
         user_id: this.userId
       },
       version: '1.0'
     };
 
-    let answer = await axios.post(this.url, data);
-    console.log(answer);
+    try {
+      const ajax = axios.create({
+        baseURL: this.url,
+        timeout: this.timeout
+      });
+      const answer = await ajax.post('/', data);
 
-    this.messageId++;
-    this.sessionNew = false;
+      this.messageId++;
+      this.sessionNew = false;
 
-    return answer;
+      return answer.data;
+    } catch (err) {
+      console.error('error: ', err);
+    }
   }
 }
 

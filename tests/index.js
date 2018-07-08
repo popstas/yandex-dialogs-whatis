@@ -1,15 +1,29 @@
-'use strict'
+'use strict';
 const { Scenarios } = require('./scenarios');
-const url = process.env.URL || 'https://whatis.dialogs.popstas.ru';
-// const url = process.env.URL || 'https://localhost:3002';
+const app = require('../src/app');
 
-(async() => {
+// const url = process.env.URL || 'https://whatis.dialogs.popstas.ru';
+const port = 28463;
+const url = process.env.URL || 'http://localhost:' + port;
+
+const bot = new app();
+bot.listen(port);
+
+(async () => {
   const scenarios = new Scenarios('./static/scenarios.yml', url);
-  try{
+  try {
     const isErrors = await scenarios.run();
-    console.log('exit');
-    process.exit(isErrors);
-  } catch(err){
+    const ok = scenarios.scenarios.length - scenarios.failed.length;
+    const failed = scenarios.failed.length;
+    console.log(`ok: ${ok}, failed: ${failed}`);
+    if(isErrors){
+      console.log('Failed scenarios: ', scenarios.failed.map(scenario => scenario.name).join(', '));
+      process.exit(1);
+    } else {
+      process.exit(0);
+    }
+  } catch (err) {
     console.log(err);
+    process.exit(1);
   }
 })();

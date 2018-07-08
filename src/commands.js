@@ -270,7 +270,7 @@ module.exports.clearData = async ctx => {
   console.log('> clear');
   const userData = await storage.getUserData(ctx);
   ctx.state = await storage.getState(userData);
-  storage.clearData(userData);
+  await storage.clearData(userData);
   ctx = await resetState(ctx);
   return ctx.reply('Всё забыла...');
 };
