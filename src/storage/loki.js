@@ -21,9 +21,18 @@ class LokiDriver extends BaseDriver {
     });
   }
 
-  getUserData(ctx) {
+  async getUserData(ctx) {
     // TODO: break when super validation failed
-    super.getUserData(ctx, callback);
+    super.getUserData(ctx);
+
+    if (!this.db) {
+      try {
+        this.db = await this.connect();
+      } catch (err) {
+        reject(err);
+        return ctx.reply('Ошибка при подключении к базе данных, попробуйте позже');
+      }
+    }
 
     try {
       const dataCollectionName = ctx.userId + '_data';
@@ -48,21 +57,32 @@ class LokiDriver extends BaseDriver {
   }
 
   getState(userData) {
-    return userData.state.data;
+    return userData.state.data[0] || {};
   }
 
-  setState(userData, name, value){
-    const found = userData.state.data[name];
+  setState(userData, state){
+    /* const found = userData.state.data['state'];
     if (found) {
-      found.value = value;
+      found = state;
       userData.state.update(found);
     } else {
-      userData.state.insert({ name, value });
+      userData.state.insert({ state });
+    } */
+    // userData.state.clear();
+    if(userData.state.data.length == 0){
+      userData.state.insert(state);
+    } else {
+      userData.state.update(state);
     }
   }
 
   clearData(userData) {
+    if(userData.data.data.length == 0) return;
     userData.data.clear();
+  }
+
+  clearState(userData) {
+    userData.state.clear();
   }
 
   fillDemoData(userData) {
@@ -81,6 +101,15 @@ class LokiDriver extends BaseDriver {
         answer: answer
       });
     }
+  }
+
+  async removeQuestion(userData, question) {
+    const found = userData.data.data.find(item => item.questions.indexOf(question) != -1);
+    if (found) {
+      userData.data.remove(found);
+      return true;
+    }
+    return false;
   }
 }
 
