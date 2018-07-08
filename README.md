@@ -1,6 +1,6 @@
-[![Build Status](https://travis-ci.org/popstas/yandex-dialogs-whatis.svg?branch=master)](https://travis-ci.org/popstas/yandex-dialogs-whatis)
-
 # yandex-dialogs-whatis
+
+[![Build Status](https://travis-ci.org/popstas/yandex-dialogs-whatis.svg?branch=master)](https://travis-ci.org/popstas/yandex-dialogs-whatis)
 
 Бот отвечает на вопросы и умеет записывать новые ответы.
 
