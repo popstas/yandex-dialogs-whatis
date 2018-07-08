@@ -4,6 +4,13 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const Alice = require('yandex-dialogs-sdk');
 const Scene = require('yandex-dialogs-sdk').Scene;
+const storeMongoMiddleware = require('./middlewares/storeMongoMiddleware');
+const config = require('./config');
+const commands = require('./commands/index');
+const helpers = require('./helpers');
+const utils = require('./utils');
+const commandsHelp = require('./commands/help');
+
 const alice = new Alice({
   fuseOptions: {
     keys: ['name'],
@@ -12,11 +19,7 @@ const alice = new Alice({
     location: 68
   }
 });
-const config = require('./config');
-const commands = require('./commands/index');
-const helpers = require('./helpers');
-const utils = require('./utils');
-const commandsHelp = require('./commands/help');
+alice.use(storeMongoMiddleware());
 
 class YandexDialogsWhatis {
   constructor() {
