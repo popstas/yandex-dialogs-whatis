@@ -13,7 +13,10 @@ const alice = new Alice({
   }
 });
 const config = require('./config');
-const commands = require('./commands');
+const commands = require('./commands/index');
+const helpers = require('./helpers');
+const utils = require('./utils');
+const commandsHelp = require('./commands/help');
 
 class YandexDialogsWhatis {
   constructor() {
@@ -59,7 +62,7 @@ class YandexDialogsWhatis {
     inAnswer.any(commands.inAnswerProcess);
     alice.registerScene(inAnswer);
 
-    commands.verbs.forEach(verb => {
+    utils.verbs.forEach(verb => {
       alice.command('${question} ' + verb + ' ${answer}', commands.remember);
     });
 
@@ -80,7 +83,7 @@ class YandexDialogsWhatis {
 
     alice.command(
       ['спс', 'спасибо', 'благодарю'],
-      commands.replyRandom([
+      helpers.replyRandom([
         'Всегда пожалуйста',
         'Не за что',
         'Обращайся!',
@@ -94,7 +97,7 @@ class YandexDialogsWhatis {
 
     alice.command(
       ['молодец', 'умница', 'отлично', 'прекрасно', 'круто'],
-      commands.replyRandom([
+      helpers.replyRandom([
         'Спасибо, стараюсь :)',
         'Ой, так приятно )',
         'Ты же в курсе, что хвалишь бездушный алгоритм?',
@@ -113,18 +116,18 @@ class YandexDialogsWhatis {
 
     // это ломает команду "запомни что на дворе находится трава"
     // alice.command(['что ты умеешь', 'что ты можешь'], commands.help);
-    alice.command('что ты умеешь', commands.help);
-    alice.command('что ты можешь', commands.help);
-    alice.command('помощь', commands.help);
-    alice.command('запоминать', commands.helpRemember);
-    alice.command('отвечать что', commands.helpWhatis);
-    alice.command('отвечать где', commands.helpWhereis);
-    alice.command('забывать', commands.helpForget);
+    alice.command('что ты умеешь', commandsHelp.help);
+    alice.command('что ты можешь', commandsHelp.help);
+    alice.command('помощь', commandsHelp.help);
+    alice.command('запоминать', commandsHelp.remember);
+    alice.command('отвечать что', commandsHelp.whatis);
+    alice.command('отвечать где', commandsHelp.whereis);
+    alice.command('забывать', commandsHelp.forget);
 
-    alice.any(commands.help);
+    alice.any(commandsHelp.help);
 
-    alice.command('приветствие', commands.welcome);
-    alice.welcome(commands.welcome);
+    alice.command('приветствие', commandsHelp.welcome);
+    alice.welcome(commandsHelp.welcome);
   }
 
   listen(port) {

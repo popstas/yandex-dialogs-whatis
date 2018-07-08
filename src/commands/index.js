@@ -1,5 +1,7 @@
 'use strict';
-const storage = require('./storage');
+const storage = require('../storage');
+const utils = require('../utils');
+const helpers = require('../helpers');
 const Fuse = require('fuse.js');
 
 const STAGE_IDLE = 'STAGE_IDLE';
@@ -7,6 +9,7 @@ const STAGE_WAIT_FOR_ANSWER = 'STAGE_WAIT_FOR_ANSWER';
 
 // процесс ответа на вопрос, кажется, это называется fullfillment
 // https://github.com/dialogflow/dialogflow-fulfillment-nodejs
+// process, action
 const processAnswer = async (ctx, userData) => {
   const q = ctx.message.replace(/^запомни/, '').trim();
   const replyMessage = ctx.replyBuilder;
@@ -42,6 +45,7 @@ const processAnswer = async (ctx, userData) => {
 };
 
 // процесс удаления вопроса
+// action
 const processDelete = async (ctx, question) => {
   const userData = await storage.getUserData(ctx);
   const data = await storage.getData(userData);
@@ -71,6 +75,7 @@ const processDelete = async (ctx, question) => {
 };
 
 // очищает состояние заполнение ответа на вопрос
+// action
 const resetState = async ctx => {
   const userData = await storage.getUserData(ctx);
   //ctx.state = await storage.getState(userData);
@@ -81,63 +86,12 @@ const resetState = async ctx => {
   return ctx;
 };
 
-const verbs = [
-  'находится',
-  'находятся',
-  'лежит',
-  'лежат',
-  'стоит',
-  'стоят',
-  'висит',
-  'висят',
-  'налита',
-  'налито',
-  'будет',
-  'будут',
-  'было',
-  'был',
-  'была'
-];
-module.exports.verbs = verbs;
-
-// находит глагол в команде
-const getVerb = message => {
-  return verbs.find(verb => {
-    const reg = new RegExp(` ${verb} `);
-    return message.match(reg);
-  });
-};
-
-// убирает глагол из начала в вопросе
-const cleanVerb = msg => {
-  verbs.forEach(verb => {
-    msg = msg.replace(new RegExp(`^${verb} `), '');
-    msg = msg.replace(new RegExp(` ${verb}$`), '');
-  });
-  return msg;
-};
-
-// убирает лишнее в вопросе
-const cleanQuestion = message => {
-  let msg = message.replace(/^(Алиса )?(а )?(скажи )?что /, '').replace(/^(а )?(скажи )?где /, '');
-  return cleanVerb(msg);
-};
-
-// простой конструктор ответа с кнопками
-const simpleReply = (ctx, lines, buttons) => {
-  const replyMessage = ctx.replyBuilder;
-  for (let i in buttons) {
-    replyMessage.addButton({ ...ctx.buttonBuilder.text(buttons[i]).get() });
-  }
-  return replyMessage.text(lines.join('\n'));
-};
-
 // команда "что ..."
 module.exports.whatIs = async ctx => {
   if (ctx.messsage) ctx.message = ctx.messsage;
   console.log('> whatis: ', ctx.message);
   const userData = await storage.getUserData(ctx);
-  const q = cleanQuestion(ctx.message);
+  const q = utils.cleanQuestion(ctx.message);
   const data = await storage.getData(userData);
   ctx.state = await storage.getState(userData);
 
@@ -183,7 +137,7 @@ module.exports.whereIs = async ctx => {
   if (ctx.messsage) ctx.message = ctx.messsage;
   console.log('> whereis: ', ctx.message);
   const userData = await storage.getUserData(ctx);
-  const q = cleanQuestion(ctx.message);
+  const q = utils.cleanQuestion(ctx.message);
   const data = await storage.getData(userData);
   ctx.state = await storage.getState(userData);
 
@@ -240,7 +194,11 @@ module.exports.commands = ctx => {
     buttons.push('приветствие');
   }
 
-  const reply = simpleReply(ctx, ['Вот примеры разных команд:', buttons.join('\n')], buttons);
+  const reply = helpers.simpleReply(
+    ctx,
+    ['Вот примеры разных команд:', buttons.join('\n')],
+    buttons
+  );
   return ctx.reply(reply.get());
 };
 
@@ -262,7 +220,7 @@ module.exports.remember = async ctx => {
   };
 
   ctx = await resetState(ctx);
-  const suffix = getVerb(ctx.message);
+  const suffix = utils.getVerb(ctx.message);
   return ctx.reply(question + ' ' + suffix + ' ' + answer + ', поняла');
 };
 
@@ -304,103 +262,7 @@ module.exports.known = async ctx => {
     text.push('Я еще ничего не знаю, сначала расскажите мне, что где находится.');
   }
 
-  return ctx.reply(simpleReply(ctx, text, buttons).get());
-};
-
-// команда по умолчанию (справка)
-module.exports.welcome = async ctx => {
-  console.log('> welcome');
-  const reply = simpleReply(
-    ctx,
-    [
-      'Я умею запоминать, что где находится или что когда будет и напоминать об этом.',
-      'Скажите "запомни", чтобы добавить новый ответ.',
-      'Можно быстро добавить новый ответ так: "запомни [что-то] находится [где-то]".',
-      'Начните фразу со "что", чтобы получить ответ. Например: "что на дворе".',
-      'Начните фразу с "где", чтобы найти место, где это что-то лежит. Например: "где трава".',
-      'Можно удалить последний ответ, сказав "удали последнее".',
-      'Если надо удалить что-то другое, скажите что, например, "удали на дворе".',
-      'Чтобы посмотреть примеры разных команд, скажите "команды".',
-      'Если хотите узнать подробности, скажите "помощь".'
-    ],
-    ['помощь', 'что ты знаешь', 'команды']
-  );
-  return ctx.reply(reply.get());
-};
-
-// команда помощь: "запоминать"
-module.exports.helpRemember = async ctx => {
-  const buttons = ['запомни на дворе находится трава', 'в среду будет дождь'];
-  const reply = simpleReply(
-    ctx,
-    [
-      'Скажите "запомни", чтобы добавить новый ответ пошагово.',
-      'Вы можете запоминать вопросы со смыслом "что где" и "что когда".',
-      'Можно быстро добавить новый ответ так: "запомни [что-то] находится [где-то]".',
-      'Необязательно говорить "запомни" в начале, скорее всего, я вас пойму и так.',
-      'Примеры:',
-      buttons.join('\n')
-    ],
-    buttons
-  );
-  return ctx.reply(reply.get());
-};
-
-// команда помощь: "отвечать что"
-module.exports.helpWhatis = async ctx => {
-  const buttons = ['что на дворе', 'что в среду в столовой', 'что на ужин'];
-  const reply = simpleReply(
-    ctx,
-    [
-      'Начните фразу со "что", чтобы получить ответ. Например: "что на дворе".',
-      'Вы можете задавать вопросы со смыслом "что где" и "что когда". Например:',
-      buttons.join('\n')
-    ],
-    buttons
-  );
-  return ctx.reply(reply.get());
-};
-
-// команда помощь: "отвечать где"
-module.exports.helpWhereis = async ctx => {
-  const buttons = ['где трава', 'где находится трава'];
-  const reply = simpleReply(
-    ctx,
-    [
-      'Начните фразу с "где", чтобы найти место, где это что-то лежит.',
-      'Примеры:',
-      buttons.join('\n')
-    ],
-    buttons
-  );
-  return ctx.reply(reply.get());
-};
-
-// команда помощь: "забывать"
-module.exports.helpForget = async ctx => {
-  const buttons = ['удали последнее', 'удали на дворе', 'забудь все'];
-  const reply = simpleReply(
-    ctx,
-    [
-      'Можно удалить последний ответ, сказав "удали последнее".',
-      'Если надо удалить что-то другое, скажите что, например, "удали на дворе".',
-      'Если надо очистить память, скажите: "забудь все".'
-    ],
-    buttons
-  );
-  return ctx.reply(reply.get());
-};
-
-// команда "помощь"
-module.exports.help = async ctx => {
-  console.log('> help');
-  let buttons = ['запоминать', 'отвечать что', 'отвечать где', 'забывать'];
-  const reply = simpleReply(
-    ctx,
-    ['Я умею ' + buttons.join(', ') + '. Что из этого вы хотите знать?'],
-    [...buttons, ...['что ты знаешь', 'команды']]
-  );
-  return ctx.reply(reply.get());
+  return ctx.reply(helpers.simpleReply(ctx, text, buttons).get());
 };
 
 // команда "отмена"
@@ -468,12 +330,4 @@ module.exports.inAnswerProcess = async ctx => {
     ctx.session.setData('currentScene', null);
   }
   return ctx.reply(reply);
-};
-
-// команда рандомного ответа
-module.exports.replyRandom = messages => {
-  return async ctx => {
-    const randomKey = Math.floor(Math.random() * messages.length);
-    return ctx.reply(messages[randomKey]);
-  };
 };
