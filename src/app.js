@@ -71,7 +71,7 @@ class YandexDialogsWhatis {
 
     alice.command('отмена', commands.cancel);
 
-    alice.command('пока', commands.sessionEnd);
+    alice.command(['пока', 'отбой', 'все', 'всё', 'хватит', 'закройся'], commands.sessionEnd);
 
     alice.command('удали последнее', commands.deleteLast);
     alice.command('удали ${question}', commands.deleteQuestion);
