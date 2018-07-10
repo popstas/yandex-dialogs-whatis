@@ -37,7 +37,9 @@ const processAnswer = async ctx => {
     };
 
     await storage.storeAnswer(ctx.userData, ctx.user.state.question, ctx.user.state.answer);
-    replyMessage.text(ctx.user.state.question + (verb ? ` ${verb} ` : ' ') + ctx.user.state.answer + ', поняла');
+    const msg = ctx.user.state.question + (verb ? ` ${verb} ` : ' ') + ctx.user.state.answer + ', поняла';
+    replyMessage.text(msg);
+    console.log(`< ${msg}`);
     ctx = await resetState(ctx);
   }
 
@@ -61,14 +63,17 @@ const processDelete = async (ctx, question) => {
   // нашлось, но много
   if (found.length > 1) {
     console.log(found);
+    console.log(`< Я не уверена что удалять...`);
     return ctx.reply('Я не уверена что удалять...');
   }
 
   const isSuccess = await storage.removeQuestion(ctx.userData, question);
   if (!isSuccess) {
+    console.log(`< При удалении что-то пошло не так...`);
     return ctx.reply('При удалении что-то пошло не так...');
   }
 
+  console.log('Забыла, что ' + question);
   return ctx.reply('Забыла, что ' + question);
 };
 
@@ -84,7 +89,7 @@ const resetState = async ctx => {
 
 // команда "что ..."
 module.exports.whatIs = async ctx => {
-  console.log('> whatis: ', ctx.message);
+  console.log(`> ${ctx.message} (whatis)`);
   const q = utils.cleanQuestion(ctx.message);
 
   if (ctx.user.data.length == 0) {
@@ -116,7 +121,7 @@ module.exports.whatIs = async ctx => {
       msg += ', но это неточно';
     }
 
-    console.log('answer: ', msg);
+    console.log(`< ${msg}`);
     ctx.reply(msg);
   } else {
     ctx.reply('Я не знаю');
@@ -126,7 +131,7 @@ module.exports.whatIs = async ctx => {
 
 // команда "где ...""
 module.exports.whereIs = async ctx => {
-  console.log('> whereis: ', ctx.message);
+  console.log(`> ${ctx.message} (whereis)`);
   const q = utils.cleanQuestion(ctx.message);
 
   if (ctx.user.data.length == 0) {
@@ -168,7 +173,7 @@ module.exports.whereIs = async ctx => {
 
 // команда "команды"
 module.exports.commands = ctx => {
-  console.log('> commands');
+  console.log(`> ${ctx.message} (commands)`);
   const buttons = [
     'запомни в чем-то находится что-то',
     'удали последнее',
@@ -192,7 +197,7 @@ module.exports.commands = ctx => {
 
 // команда "запомни ${question} находится ${answer}"
 module.exports.remember = async ctx => {
-  console.log('> full answer: ', ctx.message);
+  console.log(`> ${ctx.message} (remember)`);
   const question = ctx.body.question.replace(/^запомни /, '').replace(/^что /, '');
   const answer = ctx.body.answer;
 
@@ -211,7 +216,7 @@ module.exports.remember = async ctx => {
 
 // команда "забудь всё"
 module.exports.clearData = async ctx => {
-  console.log('> clear');
+  console.log(`> ${ctx.message} (clear)`);
   await storage.clearData(ctx.userData);
   ctx = await resetState(ctx);
   return ctx.reply('Всё забыла...');
@@ -219,7 +224,7 @@ module.exports.clearData = async ctx => {
 
 // команда "демо данные"
 module.exports.demoData = async ctx => {
-  console.log('> demo data');
+  console.log(`> ${ctx.message} (demoData)`);
   await storage.fillDemoData(ctx.userData);
   ctx = await resetState(ctx);
   return ctx.reply('Данные сброшены на демонстрационные');
@@ -245,14 +250,14 @@ module.exports.known = async ctx => {
 
 // команда "отмена"
 module.exports.cancel = async ctx => {
-  console.log('> cancel');
+  console.log(`> ${ctx.message} (cancel)`);
   ctx = await resetState(ctx);
   return ctx.reply('Всё отменено');
 };
 
 // команда "пока"
 module.exports.sessionEnd = async ctx => {
-  console.log('> end');
+  console.log(`> ${ctx.message} (sessionEnd)`);
   ctx = await resetState(ctx);
   return ctx.reply(
     ctx.replyBuilder
@@ -264,7 +269,7 @@ module.exports.sessionEnd = async ctx => {
 
 // команда "удали последнее"
 module.exports.deleteLast = async ctx => {
-  console.log('> delete last');
+  console.log(`> ${ctx.message} (deleteLast)`);
   if (!ctx.user.state.lastAddedItem) {
     return ctx.reply('Я ничего не запоминала в последнее время...');
   }
@@ -274,21 +279,21 @@ module.exports.deleteLast = async ctx => {
 
 // команда "удали ..."
 module.exports.deleteQuestion = async ctx => {
-  console.log('> delete question');
+  console.log(`> ${ctx.message} (deleteQuestion)`);
   const question = ctx.body.question;
   return processDelete(ctx, question);
 };
 
 // команда "запомни"
 module.exports.inAnswerEnter = async ctx => {
-  console.log('> answer begin: ', ctx.message);
+  console.log(`> ${ctx.message} (inAnswerEnter)`);
   const reply = await processAnswer(ctx);
   return ctx.reply(reply);
 };
 
 // процесс заполнение вопроса в сцене in-answer
 module.exports.inAnswerProcess = async ctx => {
-  console.log('> answer end: ', ctx.message);
+  console.log(`> ${ctx.message} (inAnswerProcess)`);
   const reply = await processAnswer(ctx);
   if (ctx.user.state.stage == STAGE_IDLE) {
     ctx.session.setData('currentScene', null);

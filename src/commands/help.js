@@ -2,7 +2,7 @@ const helpers = require('../helpers');
 
 // команда по умолчанию (справка)
 module.exports.welcome = async ctx => {
-  console.log('> welcome');
+  console.log(`> ${ctx.message} (welcome)`);
   const reply = helpers.simpleReply(
     ctx,
     [
@@ -23,18 +23,19 @@ module.exports.welcome = async ctx => {
 
 // команда "помощь"
 module.exports.help = async ctx => {
-    console.log('> help');
-    let buttons = ['запоминать', 'отвечать что', 'отвечать где', 'забывать'];
-    const reply = helpers.simpleReply(
-      ctx,
-      ['Я умею ' + buttons.join(', ') + '. Что из этого вы хотите знать?'],
-      [...buttons, ...['что ты знаешь', 'команды']]
-    );
-    return ctx.reply(reply.get());
-  };
+  console.log(`> ${ctx.message} (help)`);
+  let buttons = ['запоминать', 'отвечать что', 'отвечать где', 'забывать'];
+  const reply = helpers.simpleReply(
+    ctx,
+    ['Я умею ' + buttons.join(', ') + '. Что из этого вы хотите знать?'],
+    [...buttons, ...['что ты знаешь', 'команды']]
+  );
+  return ctx.reply(reply.get());
+};
 
 // команда помощь: "запоминать"
 module.exports.remember = async ctx => {
+  console.log(`> ${ctx.message} (remember)`);
   const buttons = ['запомни на дворе находится трава', 'в среду будет дождь'];
   const reply = helpers.simpleReply(
     ctx,
@@ -53,6 +54,7 @@ module.exports.remember = async ctx => {
 
 // команда помощь: "отвечать что"
 module.exports.whatis = async ctx => {
+  console.log(`> ${ctx.message} (whatis)`);
   const buttons = ['что на дворе', 'что в среду в столовой', 'что на ужин'];
   const reply = helpers.simpleReply(
     ctx,
@@ -68,6 +70,7 @@ module.exports.whatis = async ctx => {
 
 // команда помощь: "отвечать где"
 module.exports.whereis = async ctx => {
+  console.log(`> ${ctx.message} (whereis)`);
   const buttons = ['где трава', 'где находится трава'];
   const reply = helpers.simpleReply(
     ctx,
@@ -83,6 +86,7 @@ module.exports.whereis = async ctx => {
 
 // команда помощь: "забывать"
 module.exports.forget = async ctx => {
+  console.log(`> ${ctx.message} (forget)`);
   const buttons = ['удали последнее', 'удали на дворе', 'забудь все'];
   const reply = helpers.simpleReply(
     ctx,
