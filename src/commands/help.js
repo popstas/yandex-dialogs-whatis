@@ -1,11 +1,17 @@
+const storage = require('../storage');
 const helpers = require('../helpers');
 
 // команда по умолчанию (справка)
 module.exports.welcome = async ctx => {
   console.log(`> ${ctx.message} (welcome)`);
-  const reply = helpers.simpleReply(
-    ctx,
-    [
+  let msg;
+  if (ctx.user.state.lastWelcome) {
+    const last = new Date(ctx.user.state.lastWelcome);
+    // const lastLong = new Date().getTime() - last > 12 * 3600 * 1000;
+    const lastLong = new Date().getTime() - last > 10000;
+    msg = ['Привет' + (lastLong ? ', давно не виделись' : '')];
+  } else {
+    msg = [
       'Я умею запоминать, что где находится или что когда будет и напоминать об этом.',
       'Скажите "запомни", чтобы добавить новый ответ.',
       'Можно быстро добавить новый ответ так: "запомни [что-то] находится [где-то]".',
@@ -15,9 +21,14 @@ module.exports.welcome = async ctx => {
       'Если надо удалить что-то другое, скажите что, например, "удали на дворе".',
       'Чтобы посмотреть примеры разных команд, скажите "команды".',
       'Если хотите узнать подробности, скажите "помощь".'
-    ],
-    ['помощь', 'что ты знаешь', 'команды']
-  );
+    ];
+  }
+
+  // store last welcome
+  ctx.user.state.lastWelcome = new Date().getTime();
+  storage.setState(ctx.userData, ctx.user.state);
+
+  const reply = helpers.simpleReply(ctx, msg, ['помощь', 'что ты знаешь', 'команды']);
   return ctx.reply(reply.get());
 };
 

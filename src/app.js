@@ -85,7 +85,7 @@ class YandexDialogsWhatis {
     alice.command(matchers.strings('удали последнее'), commands.deleteLast);
     alice.command('удали ${question}', commands.deleteQuestion);
 
-    alice.command(matchers.strings('забудь всё'), commands.clearData);
+    alice.command(matchers.strings(['забудь всё', 'забудь все']), commands.clearData);
 
     alice.command(
       matchers.strings(['спс', 'спасибо', 'благодарю']),
@@ -117,7 +117,7 @@ class YandexDialogsWhatis {
 
     // это ломает команды "удали последнее", "удали кокретное"
     // alice.command(['что ты знаешь', 'что ты помнишь'], commands.known);
-    alice.command(matchers.strings(['что ты знаешь', 'что ты помнишь']), commands.known);
+    alice.command(matchers.strings(['что ты знаешь', 'что ты помнишь', 'ты знаешь']), commands.known);
 
     // это ломает команду "запомни что на дворе находится трава"
     // alice.command(['что ты умеешь', 'что ты можешь'], commands.help);
@@ -132,8 +132,8 @@ class YandexDialogsWhatis {
 
     alice.any(commandsHelp.help);
 
-    alice.command(matchers.strings('приветствие'), commandsHelp.welcome);
-    alice.welcome(commandsHelp.welcome);
+    alice.command(matchers.strings(['', 'приветствие']), commandsHelp.welcome);
+    // alice.welcome(commandsHelp.welcome);
   }
 
   listen(port) {

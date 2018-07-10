@@ -218,6 +218,7 @@ module.exports.remember = async ctx => {
 module.exports.clearData = async ctx => {
   console.log(`> ${ctx.message} (clear)`);
   await storage.clearData(ctx.userData);
+  ctx.user.state.lastWelcome = false;
   ctx = await resetState(ctx);
   return ctx.reply('Всё забыла...');
 };
