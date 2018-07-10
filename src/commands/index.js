@@ -27,7 +27,8 @@ const processAnswer = async ctx => {
     }
   } else if (ctx.user.state.stage === STAGE_WAIT_FOR_ANSWER) {
     // уже знаем вопрос, но не знаем ответ
-    ctx.user.state.answer = q;
+    const verb = utils.getVerb(q);
+    ctx.user.state.answer = utils.cleanQuestion(q);
 
     // последний ответ можно удалить отдельной командой
     ctx.user.state.lastAddedItem = {
@@ -36,7 +37,7 @@ const processAnswer = async ctx => {
     };
 
     await storage.storeAnswer(ctx.userData, ctx.user.state.question, ctx.user.state.answer);
-    replyMessage.text(ctx.user.state.question + ' находится ' + ctx.user.state.answer + ', поняла');
+    replyMessage.text(ctx.user.state.question + (verb ? ` ${verb} ` : ' ') + ctx.user.state.answer + ', поняла');
     ctx = await resetState(ctx);
   }
 
