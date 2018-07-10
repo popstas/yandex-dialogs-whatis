@@ -5,20 +5,19 @@ const bodyParser = require('body-parser');
 const Alice = require('yandex-dialogs-sdk');
 const Scene = require('yandex-dialogs-sdk').Scene;
 const storeMongoMiddleware = require('./middlewares/storeMongoMiddleware');
+const fuseOptions = {
+  keys: ['name'],
+  threshold: 0.3,
+  maxPatternLength: 50,
+  location: 68
+};
 const config = require('./config');
 const commands = require('./commands/index');
 const helpers = require('./helpers');
 const utils = require('./utils');
 const commandsHelp = require('./commands/help');
 
-const alice = new Alice({
-  fuseOptions: {
-    keys: ['name'],
-    threshold: 0.3,
-    maxPatternLength: 50,
-    location: 68
-  }
-});
+const alice = new Alice({ fuseOptions });
 alice.use(storeMongoMiddleware());
 
 class YandexDialogsWhatis {
@@ -59,7 +58,7 @@ class YandexDialogsWhatis {
     alice.command(/^(Алиса )?(а )?(скажи )??где /, commands.whereIs);
 
     // запомни ...
-    const inAnswer = new Scene('in-answer');
+    const inAnswer = new Scene('in-answer', { fuseOptions });
     inAnswer.enter('запомни', commands.inAnswerEnter);
     inAnswer.leave('отмена', commands.cancel);
     inAnswer.any(commands.inAnswerProcess);
