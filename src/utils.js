@@ -24,10 +24,12 @@ module.exports.verbs = verbs;
 
 // находит глагол в команде
 module.exports.getVerb = message => {
-  return verbs.find(verb => {
-    const reg = new RegExp(`${verb} `);
-    return message.match(reg);
-  }) || false;
+  return (
+    verbs.find(verb => {
+      const reg = new RegExp(`${verb} `);
+      return message.match(reg);
+    }) || false
+  );
 };
 
 // убирает глагол из начала в вопросе

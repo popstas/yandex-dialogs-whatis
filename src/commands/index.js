@@ -37,7 +37,8 @@ const processAnswer = async ctx => {
     };
 
     await storage.storeAnswer(ctx.userData, ctx.user.state.question, ctx.user.state.answer);
-    const msg = ctx.user.state.question + (verb ? ` ${verb} ` : ' ') + ctx.user.state.answer + ', поняла';
+    const msg =
+      ctx.user.state.question + (verb ? ` ${verb} ` : ' ') + ctx.user.state.answer + ', поняла';
     replyMessage.text(msg);
     console.log(`< ${msg}`);
     ctx = await resetState(ctx);

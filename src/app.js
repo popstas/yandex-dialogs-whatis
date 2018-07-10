@@ -117,7 +117,10 @@ class YandexDialogsWhatis {
 
     // это ломает команды "удали последнее", "удали кокретное"
     // alice.command(['что ты знаешь', 'что ты помнишь'], commands.known);
-    alice.command(matchers.strings(['что ты знаешь', 'что ты помнишь', 'ты знаешь']), commands.known);
+    alice.command(
+      matchers.strings(['что ты знаешь', 'что ты помнишь', 'ты знаешь']),
+      commands.known
+    );
 
     // это ломает команду "запомни что на дворе находится трава"
     // alice.command(['что ты умеешь', 'что ты можешь'], commands.help);
