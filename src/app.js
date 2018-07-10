@@ -53,10 +53,10 @@ class YandexDialogsWhatis {
 
   init() {
     // что ...
-    alice.command(/^(Алиса )?(привет )?(а )?(скажи )?что /, commands.whatIs);
+    alice.command(/^(Алиса )?(привет )?(а )?(скажи )?(что|в чем) /, commands.whatIs);
 
     // где ...
-    alice.command(/^(Алиса )?(привет )?(а )?(скажи )?где /, commands.whereIs);
+    alice.command(/^(Алиса )?(привет )?(а )?(скажи )?(где|когда) /, commands.whereIs);
 
     // запомни ...
     const inAnswer = new Scene('in-answer', { fuseOptions });
