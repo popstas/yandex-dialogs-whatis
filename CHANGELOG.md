@@ -1,3 +1,25 @@
+<a name="1.2.0"></a>
+# [1.2.0](https://github.com/popstas/yandex-dialogs-whatis/compare/v1.1.0...v1.2.0) (2018-07-10)
+
+
+### Bug Fixes
+
+* fuseOptions для Scene ([33bbeaf](https://github.com/popstas/yandex-dialogs-whatis/commit/33bbeaf))
+* больше логов ([3492ccc](https://github.com/popstas/yandex-dialogs-whatis/commit/3492ccc))
+* игнорировать регистр в matcher.strings ([cf6beff](https://github.com/popstas/yandex-dialogs-whatis/commit/cf6beff))
+* понимать ошибочно распознанное "отвечает что" ([78e24ac](https://github.com/popstas/yandex-dialogs-whatis/commit/78e24ac))
+
+
+### Features
+
+* глагол в ответе, убрано вечное "находится" при пошаговом ответе ([2b51e2b](https://github.com/popstas/yandex-dialogs-whatis/commit/2b51e2b))
+* короткое приветствие бывшим раньше юзерам ([bd492e6](https://github.com/popstas/yandex-dialogs-whatis/commit/bd492e6))
+* надо купить ([8fc2bea](https://github.com/popstas/yandex-dialogs-whatis/commit/8fc2bea))
+* ответ на вопросы "когда", "в чем" ([d10bac3](https://github.com/popstas/yandex-dialogs-whatis/commit/d10bac3))
+* привет в вопросе ([e37ebb5](https://github.com/popstas/yandex-dialogs-whatis/commit/e37ebb5))
+
+
+
 <a name="1.1.0"></a>
 # [1.1.0](https://github.com/popstas/yandex-dialogs-whatis/compare/v1.0.1...v1.1.0) (2018-07-08)
 
