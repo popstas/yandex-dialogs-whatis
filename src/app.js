@@ -4,14 +4,13 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const Alice = require('yandex-dialogs-sdk');
 const Scene = require('yandex-dialogs-sdk').Scene;
-const alice = new Alice({
-  fuseOptions: {
-    keys: ['name'],
-    threshold: 0.3,
-    maxPatternLength: 50,
-    location: 68
-  }
-});
+const fuseOptions = {
+  keys: ['name'],
+  threshold: 0.3,
+  maxPatternLength: 50,
+  location: 68
+}
+const alice = new Alice({ fuseOptions });
 const config = require('./config');
 const commands = require('./commands/index');
 const helpers = require('./helpers');
@@ -56,7 +55,7 @@ class YandexDialogsWhatis {
     alice.command(/^(Алиса )?(а )?(скажи )??где /, commands.whereIs);
 
     // запомни ...
-    const inAnswer = new Scene('in-answer');
+    const inAnswer = new Scene('in-answer', { fuseOptions });
     inAnswer.enter('запомни', commands.inAnswerEnter);
     inAnswer.leave('отмена', commands.cancel);
     inAnswer.any(commands.inAnswerProcess);
