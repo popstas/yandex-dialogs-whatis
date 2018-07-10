@@ -199,8 +199,13 @@ module.exports.commands = ctx => {
 // команда "запомни ${question} находится ${answer}"
 module.exports.remember = async ctx => {
   console.log(`> ${ctx.message} (remember)`);
-  const question = ctx.body.question.replace(/^запомни /, '').replace(/^что /, '');
-  const answer = ctx.body.answer;
+  // figures
+  // const question = ctx.body.question.replace(/^запомни /, '').replace(/^что /, '');
+  // const answer = ctx.body.answer;
+
+  // regexp
+  let [_, question, verb, answer] = utils.rememberRegex.exec(ctx.message);
+  question = question.replace(/^запомни /, '').replace(/^что /, '');
 
   await storage.storeAnswer(ctx.userData, question, answer);
 
@@ -211,8 +216,8 @@ module.exports.remember = async ctx => {
   };
 
   ctx = await resetState(ctx);
-  const suffix = utils.getVerb(ctx.message);
-  return ctx.reply(question + ' ' + suffix + ' ' + answer + ', поняла');
+  // const suffix = utils.getVerb(ctx.message);
+  return ctx.reply(question + ' ' + verb + ' ' + answer + ', поняла');
 };
 
 // команда "забудь всё"
@@ -282,7 +287,8 @@ module.exports.deleteLast = async ctx => {
 // команда "удали ..."
 module.exports.deleteQuestion = async ctx => {
   console.log(`> ${ctx.message} (deleteQuestion)`);
-  const question = ctx.body.question;
+  // const question = ctx.body.question;
+  const [_, question] = ctx.message.match(/удали (.*)/);
   return processDelete(ctx, question);
 };
 

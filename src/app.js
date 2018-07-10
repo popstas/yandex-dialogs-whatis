@@ -65,9 +65,7 @@ class YandexDialogsWhatis {
     inAnswer.any(commands.inAnswerProcess);
     alice.registerScene(inAnswer);
 
-    utils.verbs.forEach(verb => {
-      alice.command('${question} ' + verb + ' ${answer}', commands.remember);
-    });
+    alice.command(utils.rememberRegex, commands.remember);
 
     alice.command(matchers.strings('команды'), commands.commands);
 
@@ -83,7 +81,7 @@ class YandexDialogsWhatis {
     );
 
     alice.command(matchers.strings('удали последнее'), commands.deleteLast);
-    alice.command('удали ${question}', commands.deleteQuestion);
+    alice.command(/удали .*/, commands.deleteQuestion);
 
     alice.command(matchers.strings(['забудь всё', 'забудь все']), commands.clearData);
 

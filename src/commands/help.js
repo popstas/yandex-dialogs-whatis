@@ -7,8 +7,7 @@ module.exports.welcome = async ctx => {
   let msg;
   if (ctx.user.state.lastWelcome) {
     const last = new Date(ctx.user.state.lastWelcome);
-    // const lastLong = new Date().getTime() - last > 12 * 3600 * 1000;
-    const lastLong = new Date().getTime() - last > 10000;
+    const lastLong = new Date().getTime() - last > 12 * 3600 * 1000;
     msg = ['Привет' + (lastLong ? ', давно не виделись' : '')];
   } else {
     msg = [

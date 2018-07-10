@@ -21,6 +21,7 @@ const verbs = [
   'купить'
 ];
 module.exports.verbs = verbs;
+module.exports.rememberRegex = new RegExp('(.*) (' + verbs.join('|') + ') (.*)');
 
 // находит глагол в команде
 module.exports.getVerb = message => {
