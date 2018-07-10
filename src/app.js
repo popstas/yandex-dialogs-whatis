@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const Alice = require('yandex-dialogs-sdk');
 const Scene = require('yandex-dialogs-sdk').Scene;
 const storeMiddleware = require('./middlewares/storeMiddleware');
+const matchers = require('./matchers');
 const fuseOptions = {
   keys: ['name'],
   threshold: 0.3,
@@ -59,8 +60,8 @@ class YandexDialogsWhatis {
 
     // запомни ...
     const inAnswer = new Scene('in-answer', { fuseOptions });
-    inAnswer.enter('запомни', commands.inAnswerEnter);
-    inAnswer.leave('отмена', commands.cancel);
+    inAnswer.enter(matchers.strings('запомни'), commands.inAnswerEnter);
+    inAnswer.leave(matchers.strings('отмена'), commands.cancel);
     inAnswer.any(commands.inAnswerProcess);
     alice.registerScene(inAnswer);
 
@@ -68,23 +69,26 @@ class YandexDialogsWhatis {
       alice.command('${question} ' + verb + ' ${answer}', commands.remember);
     });
 
-    alice.command(/^команды$/, commands.commands);
+    alice.command(matchers.strings('команды'), commands.commands);
 
     if (process.env.NODE_ENV != 'production') {
-      alice.command(/^демо данные$/, commands.demoData);
+      alice.command(matchers.strings('демо данные'), commands.demoData);
     }
 
-    alice.command('отмена', commands.cancel);
-
-    alice.command(['пока', 'отбой', 'все', 'всё', 'хватит', 'закройся'], commands.sessionEnd);
-
-    alice.command('удали последнее', commands.deleteLast);
-    alice.command('удали ${question}', commands.deleteQuestion);
-
-    alice.command('забудь всё', commands.clearData);
+    alice.command(matchers.strings('отмена'), commands.cancel);
 
     alice.command(
-      ['спс', 'спасибо', 'благодарю'],
+      matchers.strings(['пока', 'отбой', 'все', 'всё', 'хватит', 'закройся']),
+      commands.sessionEnd
+    );
+
+    alice.command(matchers.strings('удали последнее'), commands.deleteLast);
+    alice.command('удали ${question}', commands.deleteQuestion);
+
+    alice.command(matchers.strings('забудь всё'), commands.clearData);
+
+    alice.command(
+      matchers.strings(['спс', 'спасибо', 'благодарю']),
       helpers.replyRandom([
         'Всегда пожалуйста',
         'Не за что',
@@ -98,7 +102,7 @@ class YandexDialogsWhatis {
     );
 
     alice.command(
-      ['молодец', 'умница', 'отлично', 'прекрасно', 'круто'],
+      matchers.strings(['молодец', 'умница', 'отлично', 'прекрасно', 'круто']),
       helpers.replyRandom([
         'Спасибо, стараюсь :)',
         'Ой, так приятно )',
@@ -113,22 +117,22 @@ class YandexDialogsWhatis {
 
     // это ломает команды "удали последнее", "удали кокретное"
     // alice.command(['что ты знаешь', 'что ты помнишь'], commands.known);
-    alice.command('что ты знаешь', commands.known);
-    alice.command('что ты помнишь', commands.known);
+    alice.command(matchers.strings(['что ты знаешь', 'что ты помнишь']), commands.known);
 
     // это ломает команду "запомни что на дворе находится трава"
     // alice.command(['что ты умеешь', 'что ты можешь'], commands.help);
-    alice.command('что ты умеешь', commandsHelp.help);
-    alice.command('что ты можешь', commandsHelp.help);
-    alice.command('помощь', commandsHelp.help);
-    alice.command('запоминать', commandsHelp.remember);
-    alice.command('отвечать что', commandsHelp.whatis);
-    alice.command('отвечать где', commandsHelp.whereis);
-    alice.command('забывать', commandsHelp.forget);
+    alice.command(
+      matchers.strings(['что ты умеешь', 'что ты можешь', 'помощь']),
+      commandsHelp.help
+    );
+    alice.command(matchers.strings('запоминать'), commandsHelp.remember);
+    alice.command(matchers.strings('отвечать что'), commandsHelp.whatis);
+    alice.command(matchers.strings('отвечать где'), commandsHelp.whereis);
+    alice.command(matchers.strings('забывать'), commandsHelp.forget);
 
     alice.any(commandsHelp.help);
 
-    alice.command('приветствие', commandsHelp.welcome);
+    alice.command(matchers.strings('приветствие'), commandsHelp.welcome);
     alice.welcome(commandsHelp.welcome);
   }
 
