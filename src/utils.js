@@ -39,6 +39,8 @@ const cleanVerb = msg => {
 
 // убирает лишнее в вопросе
 module.exports.cleanQuestion = message => {
-  let msg = message.replace(/^(Алиса )?(а )?(скажи )?что /, '').replace(/^(а )?(скажи )?где /, '');
+  let msg = message
+    .replace(/^(Алиса )?(привет )?(а )?(скажи )?что /, '')
+    .replace(/^(Алиса )?(привет )?(а )?(скажи )?где /, '');
   return cleanVerb(msg);
 };
