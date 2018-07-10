@@ -4,7 +4,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const Alice = require('yandex-dialogs-sdk');
 const Scene = require('yandex-dialogs-sdk').Scene;
-const storeMongoMiddleware = require('./middlewares/storeMongoMiddleware');
+const storeMiddleware = require('./middlewares/storeMiddleware');
 const fuseOptions = {
   keys: ['name'],
   threshold: 0.3,
@@ -18,7 +18,7 @@ const utils = require('./utils');
 const commandsHelp = require('./commands/help');
 
 const alice = new Alice({ fuseOptions });
-alice.use(storeMongoMiddleware());
+alice.use(storeMiddleware());
 
 class YandexDialogsWhatis {
   constructor() {
