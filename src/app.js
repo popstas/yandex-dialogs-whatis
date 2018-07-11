@@ -81,7 +81,7 @@ class YandexDialogsWhatis {
     );
 
     alice.command(matchers.strings('удали последнее'), commands.deleteLast);
-    alice.command(/удали .*/, commands.deleteQuestion);
+    alice.command(/удали(ть)? .*/, commands.deleteQuestion);
 
     alice.command(matchers.strings(['забудь всё', 'забудь все']), commands.clearData);
 
