@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const Alice = require('yandex-dialogs-sdk');
 const Scene = require('yandex-dialogs-sdk').Scene;
 const storeMiddleware = require('./middlewares/storeMiddleware');
+const correctorMiddleware = require('./middlewares/correctorMiddleware');
 const matchers = require('./matchers');
 const fuseOptions = {
   keys: ['name'],
@@ -20,6 +21,7 @@ const commandsHelp = require('./commands/help');
 
 const alice = new Alice({ fuseOptions });
 alice.use(storeMiddleware());
+alice.use(correctorMiddleware());
 
 class YandexDialogsWhatis {
   constructor() {
