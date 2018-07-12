@@ -3,7 +3,7 @@ const helpers = require('../helpers');
 
 // команда по умолчанию (справка)
 module.exports.welcome = async ctx => {
-  console.log(`> ${ctx.message} (welcome)`);
+  if (ctx.message != 'ping') console.log(`> ${ctx.message} (welcome)`);
   let msg;
   if (ctx.user.state.lastWelcome) {
     const last = new Date(ctx.user.state.lastWelcome);
