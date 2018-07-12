@@ -85,6 +85,7 @@ const resetState = async ctx => {
   ctx.user.state.question = '';
   ctx.user.state.answer = '';
   storage.setState(ctx.userData, ctx.user.state);
+  ctx.session.setData('currentScene', null);
   return ctx;
 };
 

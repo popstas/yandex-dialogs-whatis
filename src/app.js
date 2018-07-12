@@ -62,6 +62,7 @@ class YandexDialogsWhatis {
     const inAnswer = new Scene('in-answer', { fuseOptions });
     inAnswer.enter(matchers.strings('запомни'), commands.inAnswerEnter);
     inAnswer.leave(matchers.strings('отмена'), commands.cancel);
+    inAnswer.command(utils.rememberRegex, commands.remember);
     inAnswer.any(commands.inAnswerProcess);
     alice.registerScene(inAnswer);
 
@@ -80,7 +81,10 @@ class YandexDialogsWhatis {
       commands.sessionEnd
     );
 
-    alice.command(matchers.strings('удали последнее', 'забудь последнее', 'забудь последнюю запись'), commands.deleteLast);
+    alice.command(
+      matchers.strings('удали последнее', 'забудь последнее', 'забудь последнюю запись'),
+      commands.deleteLast
+    );
     alice.command(/удали(ть)? .*/, commands.deleteQuestion);
 
     alice.command(matchers.strings(['забудь всё', 'забудь все']), commands.clearData);
