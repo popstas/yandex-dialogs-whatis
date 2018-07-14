@@ -242,6 +242,7 @@ module.exports.demoData = async ctx => {
 
 // команда "что ты знаешь"
 module.exports.known = async ctx => {
+  console.log(`> ${ctx.message} (known)`);
   // buttons
   let questions = ctx.user.data.map(item => item.questions[0]);
   const buttons = questions.map(question => 'что ' + question);
@@ -256,6 +257,12 @@ module.exports.known = async ctx => {
   }
 
   return ctx.reply(helpers.simpleReply(ctx, text, buttons).get());
+};
+
+// ответ на непонятное
+module.exports.dontKnow = async ctx => {
+  console.log(`> ${ctx.message} (dontKnow)`);
+  return ctx.reply('Я не знаю хороший ответ на этот вопрос');
 };
 
 // команда "отмена"

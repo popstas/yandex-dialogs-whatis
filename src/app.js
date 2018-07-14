@@ -64,6 +64,9 @@ class YandexDialogsWhatis {
     // где ...
     alice.command(/^(где|когда|в чем) /, commands.whereIs);
 
+    // непонятное
+    alice.command(/^(как|зачем|почему) /, commands.dontKnow);
+
     // запомни ...
     const inAnswer = new Scene('in-answer', { fuseOptions });
     inAnswer.enter(matchers.strings('запомни'), commands.inAnswerEnter);
@@ -87,7 +90,9 @@ class YandexDialogsWhatis {
       commands.sessionEnd
     );
 
-    alice.command(/туп(ая|ой)/, ctx => ctx.reply('Я быстро учусь, вернитесь через пару дней и убедитесь!'));
+    alice.command(/туп(ая|ой)/, ctx =>
+      ctx.reply('Я быстро учусь, вернитесь через пару дней и убедитесь!')
+    );
 
     alice.command(
       matchers.strings('удали последнее', 'забудь последнее', 'забудь последнюю запись'),
