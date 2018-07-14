@@ -87,6 +87,8 @@ class YandexDialogsWhatis {
       commands.sessionEnd
     );
 
+    alice.command(/туп(ая|ой)/, ctx => ctx.reply('Я быстро учусь, вернитесь через пару дней и убедитесь!'));
+
     alice.command(
       matchers.strings('удали последнее', 'забудь последнее', 'забудь последнюю запись'),
       commands.deleteLast
