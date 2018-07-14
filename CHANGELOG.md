@@ -1,3 +1,16 @@
+<a name="1.4.1"></a>
+## [1.4.1](https://github.com/popstas/yandex-dialogs-whatis/compare/v1.4.0...v1.4.1) (2018-07-14)
+
+
+### Features
+
+* вариант забудь (что) ([b3b7b9b](https://github.com/popstas/yandex-dialogs-whatis/commit/b3b7b9b))
+* напомни ([a0080d5](https://github.com/popstas/yandex-dialogs-whatis/commit/a0080d5))
+* ответ на "тупая" ([8fa39e0](https://github.com/popstas/yandex-dialogs-whatis/commit/8fa39e0))
+* ответ на непонятное ([5ec6d3b](https://github.com/popstas/yandex-dialogs-whatis/commit/5ec6d3b))
+
+
+
 <a name="1.4.0"></a>
 # [1.4.0](https://github.com/popstas/yandex-dialogs-whatis/compare/v1.3.1...v1.4.0) (2018-07-14)
 
