@@ -52,13 +52,14 @@ module.exports.splitByVerb = msg => {
 // определяется по наличию предлога или наречия
 module.exports.fixReversedRemember = obj => {
   const posts = getMsgPosts(obj.answer);
-  if(posts.indexOf('PREP') != -1 || posts.indexOf('ADVB') != -1) return {
-    question: obj.answer,
-    verb: obj.verb,
-    answer: obj.question
-  }
+  if (posts.indexOf('PREP') != -1 || posts.indexOf('ADVB') != -1)
+    return {
+      question: obj.answer,
+      verb: obj.verb,
+      answer: obj.question
+    };
   return obj;
-}
+};
 
 // возвращает массив частей речи фразы
 const getMsgPosts = msg => {
@@ -68,6 +69,7 @@ const getMsgPosts = msg => {
   // части речи
   const posts = words.map(word => {
     const morph = Az.Morph(word);
+    if (morph.length === 0) return '?';
     return morph[0].tag.POST.replace('INFN', 'VERB') // инфинитив
       .replace('PRTS', 'VERB'); // причастие
     // .replace('PRED', 'VERB') // предикатив (надо)

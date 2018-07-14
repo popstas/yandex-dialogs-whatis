@@ -33,7 +33,7 @@ module.exports.welcome = async ctx => {
 
 // команда "помощь"
 module.exports.help = async ctx => {
-  console.log(`> ${ctx.message} (help)`);
+  if (ctx.message != 'ping') console.log(`> ${ctx.message} (help)`);
   let buttons = ['запоминать', 'отвечать что', 'отвечать где', 'забывать'];
   const reply = helpers.simpleReply(
     ctx,
