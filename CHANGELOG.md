@@ -1,3 +1,13 @@
+<a name="1.3.1"></a>
+## [1.3.1](https://github.com/popstas/yandex-dialogs-whatis/compare/v1.3.0...v1.3.1) (2018-07-14)
+
+
+### Bug Fixes
+
+* добавлен node-fetch для нового sdk ([5f0bb0a](https://github.com/popstas/yandex-dialogs-whatis/commit/5f0bb0a))
+
+
+
 <a name="1.3.0"></a>
 # [1.3.0](https://github.com/popstas/yandex-dialogs-whatis/compare/v1.2.0...v1.3.0) (2018-07-14)
 
