@@ -6,6 +6,7 @@ const Alice = require('yandex-dialogs-sdk');
 const Scene = require('yandex-dialogs-sdk').Scene;
 const storeMiddleware = require('./middlewares/storeMiddleware');
 const correctorMiddleware = require('./middlewares/correctorMiddleware');
+const cleanerMiddleware = require('./middlewares/cleanerMiddleware');
 const matchers = require('./matchers');
 const fuseOptions = {
   keys: ['name'],
@@ -22,6 +23,7 @@ const commandsHelp = require('./commands/help');
 const alice = new Alice({ fuseOptions });
 alice.use(storeMiddleware());
 alice.use(correctorMiddleware());
+alice.use(cleanerMiddleware());
 
 class YandexDialogsWhatis {
   constructor() {
@@ -53,22 +55,24 @@ class YandexDialogsWhatis {
     });
   }
 
-  init() {
+  async init() {
+    await utils.initMorph();
+
     // что ...
-    alice.command(/^(Алиса )?(привет )?(а )?(скажи )?(что|в чем) /, commands.whatIs);
+    alice.command(/^(что|кто|в чем) /, commands.whatIs);
 
     // где ...
-    alice.command(/^(Алиса )?(привет )?(а )?(скажи )?(где|когда) /, commands.whereIs);
+    alice.command(/^(где|когда) /, commands.whereIs);
 
     // запомни ...
     const inAnswer = new Scene('in-answer', { fuseOptions });
     inAnswer.enter(matchers.strings('запомни'), commands.inAnswerEnter);
     inAnswer.leave(matchers.strings('отмена'), commands.cancel);
-    inAnswer.command(utils.rememberRegex, commands.remember);
+    inAnswer.command(matchers.rememberSentence(), commands.remember);
     inAnswer.any(commands.inAnswerProcess);
     alice.registerScene(inAnswer);
 
-    alice.command(utils.rememberRegex, commands.remember);
+    alice.command(matchers.rememberSentence(), commands.remember);
 
     alice.command(matchers.strings('команды'), commands.commands);
 

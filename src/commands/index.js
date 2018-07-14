@@ -90,7 +90,7 @@ const resetState = async ctx => {
 };
 
 // команда "что ..."
-module.exports.whatIs = async ctx => {
+module.exports.whatIs = ctx => {
   console.log(`> ${ctx.message} (whatis)`);
   const q = utils.cleanQuestion(ctx.message);
 
@@ -132,7 +132,7 @@ module.exports.whatIs = async ctx => {
 };
 
 // команда "где ...""
-module.exports.whereIs = async ctx => {
+module.exports.whereIs = ctx => {
   console.log(`> ${ctx.message} (whereis)`);
   const q = utils.cleanQuestion(ctx.message);
 
@@ -205,8 +205,10 @@ module.exports.remember = async ctx => {
   // const answer = ctx.body.answer;
 
   // regexp
-  let [_, question, verb, answer] = utils.rememberRegex.exec(ctx.message);
-  question = question.replace(/^запомни /, '').replace(/^что /, '');
+  const cleanMsg = ctx.message.replace(/^запомни /, '').replace(/^что /, '');
+  const { question, verb, answer } = utils.splitByVerb(cleanMsg);
+  // let [_, question, verb, answer] = utils.rememberRegex.exec(ctx.message);
+  // question = question.replace(/^запомни /, '').replace(/^что /, '');
 
   await storage.storeAnswer(ctx.userData, question, answer);
 
