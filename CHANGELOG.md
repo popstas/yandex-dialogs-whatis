@@ -1,3 +1,23 @@
+<a name="1.3.0"></a>
+# [1.3.0](https://github.com/popstas/yandex-dialogs-whatis/compare/v1.2.0...v1.3.0) (2018-07-14)
+
+
+### Bug Fixes
+
+* забудь последнее ([53e1a61](https://github.com/popstas/yandex-dialogs-whatis/commit/53e1a61))
+* не логировать ping ([3bb36e8](https://github.com/popstas/yandex-dialogs-whatis/commit/3bb36e8))
+
+
+### Features
+
+* correctorMiddleware, исправление "находиться" ([203904f](https://github.com/popstas/yandex-dialogs-whatis/commit/203904f))
+* запомни одной командой во время пошагового заполнения ([90c81e0](https://github.com/popstas/yandex-dialogs-whatis/commit/90c81e0))
+* морфология (любой глагол в "запомни") ([ed03608](https://github.com/popstas/yandex-dialogs-whatis/commit/ed03608))
+* растет ([cb97bc7](https://github.com/popstas/yandex-dialogs-whatis/commit/cb97bc7))
+* удали(ть) конкретное ([9cce012](https://github.com/popstas/yandex-dialogs-whatis/commit/9cce012))
+
+
+
 <a name="1.2.0"></a>
 # [1.2.0](https://github.com/popstas/yandex-dialogs-whatis/compare/v1.1.0...v1.2.0) (2018-07-10)
 
