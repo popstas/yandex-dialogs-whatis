@@ -291,7 +291,7 @@ module.exports.deleteLast = async ctx => {
 module.exports.deleteQuestion = async ctx => {
   console.log(`> ${ctx.message} (deleteQuestion)`);
   // const question = ctx.body.question;
-  const [_, __, question] = ctx.message.match(/удали(ть)? (.*)/);
+  const question = ctx.message.replace(/(забудь |удали(ть)? )(что )?/, '');
   return processDelete(ctx, question);
 };
 
