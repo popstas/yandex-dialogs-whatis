@@ -48,6 +48,18 @@ module.exports.splitByVerb = msg => {
   };
 };
 
+// разворачивает фразу, если часть "где" оказалась справа
+// определяется по наличию предлога или наречия
+module.exports.fixReversedRemember = obj => {
+  const posts = getMsgPosts(obj.answer);
+  if(posts.indexOf('PREP') != -1 || posts.indexOf('ADVB') != -1) return {
+    question: obj.answer,
+    verb: obj.verb,
+    answer: obj.question
+  }
+  return obj;
+}
+
 // возвращает массив частей речи фразы
 const getMsgPosts = msg => {
   if (msg === '') return false;
@@ -97,6 +109,6 @@ const cleanVerb = msg => {
 
 // убирает лишнее в вопросе
 module.exports.cleanQuestion = message => {
-  let msg = message.replace(/^(что|кто|в чем) /, '').replace(/^(где|когда) /, '');
+  let msg = message.replace(/^(что|кто) /, '').replace(/^(где|когда|в чем) /, '');
   return cleanVerb(msg);
 };

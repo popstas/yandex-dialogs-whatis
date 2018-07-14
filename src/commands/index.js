@@ -206,7 +206,7 @@ module.exports.remember = async ctx => {
 
   // regexp
   const cleanMsg = ctx.message.replace(/^запомни /, '').replace(/^что /, '');
-  const { question, verb, answer } = utils.splitByVerb(cleanMsg);
+  const { question, verb, answer } = utils.fixReversedRemember(utils.splitByVerb(cleanMsg));
   // let [_, question, verb, answer] = utils.rememberRegex.exec(ctx.message);
   // question = question.replace(/^запомни /, '').replace(/^что /, '');
 

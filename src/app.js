@@ -59,10 +59,10 @@ class YandexDialogsWhatis {
     await utils.initMorph();
 
     // что ...
-    alice.command(/^(что|кто|в чем) /, commands.whatIs);
+    alice.command(/^(что|кто) /, commands.whatIs);
 
     // где ...
-    alice.command(/^(где|когда) /, commands.whereIs);
+    alice.command(/^(где|когда|в чем) /, commands.whereIs);
 
     // запомни ...
     const inAnswer = new Scene('in-answer', { fuseOptions });

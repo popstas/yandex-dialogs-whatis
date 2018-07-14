@@ -14,8 +14,8 @@ module.exports.rememberSentence = () => {
     if (ctx.session.getData('currentScene') === 'in-answer') {
       ctx.message = ctx.message.replace(/^что /, '');
     }
-    if (ctx.message.match(/^(что|кто|в чем) /)) return false;
-    if (ctx.message.match(/^(где|когда) /)) return false;
+    if (ctx.message.match(/^(что|кто) /)) return false;
+    if (ctx.message.match(/^(где|когда|в чем) /)) return false;
     return utils.splitByVerb(ctx.message.replace(/^запомни /, ''));
   };
 };
