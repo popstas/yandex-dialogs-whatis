@@ -1,3 +1,18 @@
+<a name="1.4.0"></a>
+# [1.4.0](https://github.com/popstas/yandex-dialogs-whatis/compare/v1.3.1...v1.4.0) (2018-07-14)
+
+
+### Bug Fixes
+
+* ошибка на неопределенных частях речи (ц) ([b14cdfe](https://github.com/popstas/yandex-dialogs-whatis/commit/b14cdfe))
+
+
+### Features
+
+* перевернутые конструкции в "запомни" ([080f7a2](https://github.com/popstas/yandex-dialogs-whatis/commit/080f7a2))
+
+
+
 <a name="1.3.1"></a>
 ## [1.3.1](https://github.com/popstas/yandex-dialogs-whatis/compare/v1.3.0...v1.3.1) (2018-07-14)
 
