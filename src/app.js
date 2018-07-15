@@ -156,7 +156,7 @@ class YandexDialogsWhatis {
       matchers.strings(['что ты умеешь', 'что ты можешь', 'помощь']),
       commandsHelp.help
     );
-    alice.command(matchers.strings('запоминать'), commandsHelp.remember);
+    alice.command(matchers.strings(['запоминать', 'как запомнить']), commandsHelp.remember);
     alice.command(matchers.strings(['отвечать что', 'отвечает что']), commandsHelp.whatis);
     alice.command(matchers.strings('отвечать где'), commandsHelp.whereis);
     alice.command(matchers.strings('забывать'), commandsHelp.forget);

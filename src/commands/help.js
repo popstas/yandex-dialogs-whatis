@@ -33,8 +33,13 @@ module.exports.welcome = async ctx => {
 
 // команда "помощь"
 module.exports.any = async ctx => {
-  if (ctx.message.match(/(вчера|завтра|сегодня)/)) {
-    return ctx.reply('Вам нужно добавить глагол, например, запомни что завтра будет завтра');
+  if (ctx.message.match(/(вчера|завтра|сегодня)/) || ctx.message.match(/^запомни /)) {
+    const reply = helpers.simpleReply(
+      ctx,
+      ['Вам нужно добавить глагол, например, запомни что завтра будет завтра'],
+      ['как запомнить']
+    );
+    return ctx.reply(reply.get());
   }
   return module.exports.help(ctx);
 };
