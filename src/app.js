@@ -86,8 +86,12 @@ class YandexDialogsWhatis {
     alice.command(matchers.strings('отмена'), commands.cancel);
 
     alice.command(
-      matchers.strings(['пока', 'отбой', 'все', 'всё', 'хватит', 'закройся']),
+      matchers.strings(['пока', 'отбой', 'все', 'всё', 'хватит', 'закройся', 'выключить', 'выключиcь']),
       commands.sessionEnd
+    );
+
+    alice.command(matchers.strings(['алиса']), ctx =>
+      ctx.reply('Чтобы вернуться к Алисе, скажите "Алиса вернись"')
     );
 
     alice.command(/туп(ая|ой)/, ctx =>
