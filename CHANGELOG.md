@@ -1,3 +1,14 @@
+<a name="1.5.0"></a>
+# [1.5.0](https://github.com/popstas/yandex-dialogs-whatis/compare/v1.4.2...v1.5.0) (2018-07-15)
+
+
+### Features
+
+* сценарии использования ([3f0ce98](https://github.com/popstas/yandex-dialogs-whatis/commit/3f0ce98))
+* убирать "что" из запроса из Алисы "скажи второй памяти что ..." ([95aedc3](https://github.com/popstas/yandex-dialogs-whatis/commit/95aedc3))
+
+
+
 <a name="1.4.2"></a>
 ## [1.4.2](https://github.com/popstas/yandex-dialogs-whatis/compare/v1.4.1...v1.4.2) (2018-07-15)
 
