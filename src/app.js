@@ -161,6 +161,20 @@ class YandexDialogsWhatis {
     alice.command(matchers.strings('отвечать где'), commandsHelp.whereis);
     alice.command(matchers.strings('забывать'), commandsHelp.forget);
 
+    alice.command(
+      matchers.strings([
+        ...['сценарии', 'примеры', 'примеры использования'],
+        ...[
+          'виртуальные подписи',
+          'помощь мастеру',
+          'список покупок',
+          'расписание',
+          'показания счетчиков',
+          'запомни номер'
+        ]
+      ]),
+      commandsHelp.scanarios
+    );
     alice.any(commandsHelp.any);
 
     alice.command(matchers.strings(['', 'привет', 'приветствие']), commandsHelp.welcome);
