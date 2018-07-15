@@ -1,3 +1,13 @@
+<a name="1.5.1"></a>
+## [1.5.1](https://github.com/popstas/yandex-dialogs-whatis/compare/v1.5.0...v1.5.1) (2018-07-15)
+
+
+### Bug Fixes
+
+* запомни когда с числом во второй части ([031fd32](https://github.com/popstas/yandex-dialogs-whatis/commit/031fd32))
+
+
+
 <a name="1.5.0"></a>
 # [1.5.0](https://github.com/popstas/yandex-dialogs-whatis/compare/v1.4.2...v1.5.0) (2018-07-15)
 
