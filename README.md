@@ -40,7 +40,6 @@
 ## Проблемные фразы:
 - спасибо пока
 - надо купить
-- самый короткий день будет 22 декабря
 
 ## Технические особенности
 - Сделано на [yandex-dialogs-sdk](https://github.com/fletcherist/yandex-dialogs-sdk), используются commands, scenes, matchers, middlewares из SDK

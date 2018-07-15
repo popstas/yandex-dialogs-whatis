@@ -49,10 +49,10 @@ module.exports.splitByVerb = msg => {
 };
 
 // разворачивает фразу, если часть "где" оказалась справа
-// определяется по наличию предлога или наречия
+// определяется по наличию предлога или наречия, либо по числу во второй части
 module.exports.fixReversedRemember = obj => {
   const posts = getMsgPosts(obj.answer);
-  if (posts.indexOf('PREP') != -1 || posts.indexOf('ADVB') != -1)
+  if (posts.indexOf('PREP') != -1 || posts.indexOf('ADVB') != -1 || obj.answer.match(/[0-9]/))
     return {
       question: obj.answer,
       verb: obj.verb,
