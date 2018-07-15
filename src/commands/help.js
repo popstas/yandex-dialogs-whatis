@@ -32,6 +32,14 @@ module.exports.welcome = async ctx => {
 };
 
 // команда "помощь"
+module.exports.any = async ctx => {
+  if (ctx.message.match(/(вчера|завтра|сегодня)/)) {
+    return ctx.reply('Вам нужно добавить глагол, например, запомни что завтра будет завтра');
+  }
+  return module.exports.help(ctx);
+};
+
+// команда "помощь"
 module.exports.help = async ctx => {
   if (ctx.message != 'ping') console.log(`> ${ctx.message} (help)`);
   let buttons = ['запоминать', 'отвечать что', 'отвечать где', 'забывать'];

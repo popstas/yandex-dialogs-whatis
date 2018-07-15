@@ -148,7 +148,7 @@ class YandexDialogsWhatis {
     alice.command(matchers.strings('отвечать где'), commandsHelp.whereis);
     alice.command(matchers.strings('забывать'), commandsHelp.forget);
 
-    alice.any(commandsHelp.help);
+    alice.any(commandsHelp.any);
 
     alice.command(matchers.strings(['', 'приветствие']), commandsHelp.welcome);
     // alice.welcome(commandsHelp.welcome);
