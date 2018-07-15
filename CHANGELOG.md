@@ -1,3 +1,21 @@
+<a name="1.4.2"></a>
+## [1.4.2](https://github.com/popstas/yandex-dialogs-whatis/compare/v1.4.1...v1.4.2) (2018-07-15)
+
+
+### Bug Fixes
+
+* ответ из одного глагола ([00579a0](https://github.com/popstas/yandex-dialogs-whatis/commit/00579a0))
+
+
+### Features
+
+* Алиса ([5746c4d](https://github.com/popstas/yandex-dialogs-whatis/commit/5746c4d))
+* запомни без глагола ([7af29d6](https://github.com/popstas/yandex-dialogs-whatis/commit/7af29d6))
+* привет ([30096ce](https://github.com/popstas/yandex-dialogs-whatis/commit/30096ce))
+* фраза с "вчера/сегодня/завтра" без глагола ([2e9e4f2](https://github.com/popstas/yandex-dialogs-whatis/commit/2e9e4f2))
+
+
+
 <a name="1.4.1"></a>
 ## [1.4.1](https://github.com/popstas/yandex-dialogs-whatis/compare/v1.4.0...v1.4.1) (2018-07-14)
 
