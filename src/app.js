@@ -163,7 +163,7 @@ class YandexDialogsWhatis {
 
     alice.any(commandsHelp.any);
 
-    alice.command(matchers.strings(['', 'приветствие']), commandsHelp.welcome);
+    alice.command(matchers.strings(['', 'привет', 'приветствие']), commandsHelp.welcome);
     // alice.welcome(commandsHelp.welcome);
   }
 
