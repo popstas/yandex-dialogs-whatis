@@ -29,8 +29,9 @@ const processAnswer = async ctx => {
     // уже знаем вопрос, но не знаем ответ
     const verb = utils.getVerb(q);
     ctx.user.state.answer = utils.cleanQuestion(q);
-
+    if (ctx.user.state.answer == '') ctx.user.state.answer = q;
     // последний ответ можно удалить отдельной командой
+
     ctx.user.state.lastAddedItem = {
       questions: [ctx.user.state.question],
       answer: ctx.user.state.answer

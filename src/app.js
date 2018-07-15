@@ -86,7 +86,16 @@ class YandexDialogsWhatis {
     alice.command(matchers.strings('отмена'), commands.cancel);
 
     alice.command(
-      matchers.strings(['пока', 'отбой', 'все', 'всё', 'хватит', 'закройся', 'выключить', 'выключиcь']),
+      matchers.strings([
+        'пока',
+        'отбой',
+        'все',
+        'всё',
+        'хватит',
+        'закройся',
+        'выключить',
+        'выключиcь'
+      ]),
       commands.sessionEnd
     );
 
