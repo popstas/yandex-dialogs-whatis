@@ -1,5 +1,4 @@
 const storage = require('../storage');
-const helpers = require('../helpers');
 
 // команда по умолчанию (справка)
 module.exports.welcome = async ctx => {
@@ -27,19 +26,16 @@ module.exports.welcome = async ctx => {
   ctx.user.state.lastWelcome = new Date().getTime();
   storage.setState(ctx.userData, ctx.user.state);
 
-  const reply = helpers.simpleReply(ctx, msg, ['помощь', 'примеры', 'что ты знаешь', 'команды']);
-  return ctx.reply(reply.get());
+  return ctx.replySimple(msg, ['помощь', 'примеры', 'что ты знаешь', 'команды']);
 };
 
 // нераспознанная команда
 module.exports.any = async ctx => {
   if (ctx.message.match(/(вчера|завтра|сегодня)/) || ctx.message.match(/^запомни /)) {
-    const reply = helpers.simpleReply(
-      ctx,
-      ['Вам нужно добавить глагол, например, запомни что завтра будет завтра'],
-      ['как запомнить', 'примеры']
-    );
-    return ctx.reply(reply.get());
+    return ctx.replySimple('Вам нужно добавить глагол, например, запомни что завтра будет завтра', [
+      'как запомнить',
+      'примеры'
+    ]);
   }
   const messages = [
     'Не поняла',
@@ -48,7 +44,7 @@ module.exports.any = async ctx => {
     'Похоже, мы друг друга не понимаем, скажите "примеры"'
   ];
   const randomKey = Math.floor(Math.random() * messages.length);
-  return ctx.reply(helpers.simpleReply(ctx, [messages[randomKey]], ['помощь', 'примеры']).get());
+  return ctx.replySimple(messages[randomKey], ['помощь', 'примеры']);
 };
 
 // команда "сценарии"
@@ -85,36 +81,31 @@ module.exports.scanarios = async ctx => {
   const names = Object.keys(scenarios);
 
   const scenario = scenarios[msg];
-  if (scenario) return ctx.reply(helpers.simpleReply(ctx, scenario, names).get());
+  if (scenario) return ctx.replySimple(scenario, names);
 
-  const reply = helpers.simpleReply(
-    ctx,
+  return ctx.replySimple(
     [
       'Примеры сценариев использования второй памяти, назовите сценарий, чтобы узнать подробности:',
       names.join('\n')
     ],
     names
   );
-  return ctx.reply(reply.get());
 };
 
 // команда "помощь"
 module.exports.help = async ctx => {
   if (ctx.message != 'ping') console.log(`> ${ctx.message} (help)`);
-  const reply = helpers.simpleReply(
-    ctx,
-    ['Я умею запоминать, отвечать что, отвечать где или забывать. Что из этого вы хотите знать?'],
+  return ctx.replySimple(
+    'Я умею запоминать, отвечать что, отвечать где или забывать. Что из этого вы хотите знать?',
     ['запоминать', 'отвечать что', 'отвечать где', 'забывать', 'что ты знаешь', 'примеры']
   );
-  return ctx.reply(reply.get());
 };
 
 // команда помощь: "запоминать"
 module.exports.remember = async ctx => {
   console.log(`> ${ctx.message} (remember)`);
   const buttons = ['запомни на дворе находится трава', 'в среду будет дождь'];
-  const reply = helpers.simpleReply(
-    ctx,
+  return ctx.replySimple(
     [
       'Скажите "запомни", чтобы добавить новый ответ пошагово.',
       'Вы можете запоминать вопросы со смыслом "что где" и "что когда".',
@@ -126,15 +117,13 @@ module.exports.remember = async ctx => {
     ],
     buttons
   );
-  return ctx.reply(reply.get());
 };
 
 // команда помощь: "отвечать что"
 module.exports.whatis = async ctx => {
   console.log(`> ${ctx.message} (whatis)`);
   const buttons = ['что на дворе', 'что в среду в столовой', 'что на ужин'];
-  const reply = helpers.simpleReply(
-    ctx,
+  return ctx.replySimple(
     [
       'Начните фразу со "что", чтобы получить ответ. Например: "что на дворе".',
       'Вы можете задавать вопросы со смыслом "что где" и "что когда". Например:',
@@ -142,15 +131,13 @@ module.exports.whatis = async ctx => {
     ],
     buttons
   );
-  return ctx.reply(reply.get());
 };
 
 // команда помощь: "отвечать где"
 module.exports.whereis = async ctx => {
   console.log(`> ${ctx.message} (whereis)`);
   const buttons = ['где трава', 'где находится трава'];
-  const reply = helpers.simpleReply(
-    ctx,
+  return ctx.replySimple(
     [
       'Начните фразу с "где", чтобы найти место, где это что-то лежит.',
       'Примеры:',
@@ -158,15 +145,13 @@ module.exports.whereis = async ctx => {
     ],
     buttons
   );
-  return ctx.reply(reply.get());
 };
 
 // команда помощь: "забывать"
 module.exports.forget = async ctx => {
   console.log(`> ${ctx.message} (forget)`);
   const buttons = ['удали последнее', 'удали на дворе', 'забудь все'];
-  const reply = helpers.simpleReply(
-    ctx,
+  return ctx.replySimple(
     [
       'Можно удалить последний ответ, сказав "удали последнее".',
       'Если надо удалить что-то другое, скажите что, например, "удали на дворе".',
@@ -174,5 +159,4 @@ module.exports.forget = async ctx => {
     ],
     buttons
   );
-  return ctx.reply(reply.get());
 };

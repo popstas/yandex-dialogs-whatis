@@ -27,6 +27,7 @@ alice.use(middlewares.cleaner());
 // добавляют функции в ctx
 alice.use(middlewares.confirm());
 alice.use(middlewares.replyRandom());
+alice.use(middlewares.replySimple());
 
 class YandexDialogsWhatis {
   constructor() {

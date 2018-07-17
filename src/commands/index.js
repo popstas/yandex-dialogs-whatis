@@ -1,7 +1,6 @@
 'use strict';
 const storage = require('../storage');
 const utils = require('../utils');
-const helpers = require('../helpers');
 const Fuse = require('fuse.js');
 const matchers = require('../matchers');
 
@@ -194,12 +193,7 @@ module.exports.commands = ctx => {
     buttons.push('приветствие');
   }
 
-  const reply = helpers.simpleReply(
-    ctx,
-    ['Вот примеры разных команд:', buttons.join('\n')],
-    buttons
-  );
-  return ctx.reply(reply.get());
+  return ctx.replySimple(['Вот примеры разных команд:', buttons.join('\n')], buttons);
 };
 
 // команда "запомни ${question} находится ${answer}"
@@ -261,7 +255,7 @@ module.exports.known = async ctx => {
     text.push('Я еще ничего не знаю, сначала расскажите мне, что где находится.');
   }
 
-  return ctx.reply(helpers.simpleReply(ctx, text, buttons).get());
+  return ctx.replySimple(text, buttons);
 };
 
 // ответ на непонятное
