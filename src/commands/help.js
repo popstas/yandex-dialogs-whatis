@@ -1,4 +1,6 @@
 const storage = require('../storage');
+const commands = require('../commands');
+const utils = require('../utils');
 
 // команда по умолчанию (справка)
 module.exports.welcome = async ctx => {
@@ -31,12 +33,36 @@ module.exports.welcome = async ctx => {
 
 // нераспознанная команда
 module.exports.any = async ctx => {
+  console.log(`> ${ctx.message} (any)`);
+  // определение частей фразы без глагола
+  const cleanMsg = ctx.message.replace(/^запомни /, '').replace(/^что /, '');
+  const posts = utils.getMsgPosts(cleanMsg);
+  const words = cleanMsg.split(' ');
+  prepIndex = posts.indexOf('PREP');
+  if (prepIndex != -1) {
+    const question = words.slice(prepIndex, prepIndex + 2);
+    const answer = prepIndex === 0 ? words.slice(prepIndex + 2) : words.slice(0, prepIndex);
+    const possibleMsg = question.join(' ') + ' находится ' + answer.join(' ');
+    console.log(`< ${possibleMsg}?`);
+    return ctx.confirm(
+      possibleMsg + '?',
+      ctx => commands.processRemember(ctx, possibleMsg),
+      ctx =>
+        ctx.replyRandom([
+          'Я такое не понимаю...',
+          'Ну тогда не знаю... Попробуйте добавить глагол, так я лучше понимаю',
+          'Если вы правда имели в виду что что-то где-то находится, я это скоро пойму... Заходите через недельку'
+        ])
+    );
+  }
+
   if (ctx.message.match(/(вчера|завтра|сегодня)/) || ctx.message.match(/^запомни /)) {
     return ctx.replySimple('Вам нужно добавить глагол, например, запомни что завтра будет завтра', [
       'как запомнить',
       'примеры'
     ]);
   }
+
   const messages = [
     'Не поняла',
     'О чём вы?',

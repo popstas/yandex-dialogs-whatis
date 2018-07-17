@@ -198,16 +198,14 @@ module.exports.commands = ctx => {
 
 // команда "запомни ${question} находится ${answer}"
 module.exports.remember = async ctx => {
-  console.log(`> ${ctx.message} (remember)`);
-  // figures
-  // const question = ctx.body.question.replace(/^запомни /, '').replace(/^что /, '');
-  // const answer = ctx.body.answer;
+  return processRemember(ctx, ctx.message);
+};
 
+const processRemember = async (ctx, msg) => {
+  console.log(`> ${msg} (remember)`);
   // regexp
-  const cleanMsg = ctx.message.replace(/^запомни /, '').replace(/^что /, '');
+  const cleanMsg = msg.replace(/^запомни /, '').replace(/^что /, '');
   const { question, verb, answer } = utils.fixReversedRemember(utils.splitByVerb(cleanMsg));
-  // let [_, question, verb, answer] = utils.rememberRegex.exec(ctx.message);
-  // question = question.replace(/^запомни /, '').replace(/^что /, '');
 
   await storage.storeAnswer(ctx.userData, question, answer);
 
@@ -221,6 +219,7 @@ module.exports.remember = async ctx => {
   // const suffix = utils.getVerb(ctx.message);
   return ctx.reply(question + ' ' + verb + ' ' + answer + ', поняла');
 };
+module.exports.processRemember = processRemember;
 
 // команда "забудь всё"
 module.exports.clearData = async ctx => {

@@ -76,6 +76,7 @@ const getMsgPosts = msg => {
   });
   return posts;
 };
+module.exports.getMsgPosts = getMsgPosts;
 
 // находит глагол в команде
 module.exports.getVerb = message => {
