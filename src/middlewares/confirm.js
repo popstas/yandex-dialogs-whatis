@@ -1,7 +1,7 @@
 // спрашивает подтверждение
 module.exports = () => async ctx => {
-  ctx.confirm = (reply, onYes, onNo) => {
-    ctx.session.setData('confirm', { onYes, onNo });
+  ctx.confirm = (reply, yesCommand, noCommand, options) => {
+    ctx.session.setData('confirm', { yesCommand, noCommand, options });
     return ctx.reply(reply);
   };
   return ctx;

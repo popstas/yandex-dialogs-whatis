@@ -330,10 +330,23 @@ module.exports.confirm = async ctx => {
   const confirm = ctx.session.getData('confirm');
   if (confirm) {
     let cmd;
-    if (matchers.yes()(ctx)) {
-      cmd = confirm.onYes;
-    } else if (matchers.no()(ctx)) {
-      cmd = confirm.onNo;
+    const options = {
+      ...confirm.options,
+      ...{
+        yesMatcher: matchers.yes(),
+        noMatcher: matchers.no(),
+        anyCommand: ctx =>
+          ctx.replyRandom([
+            'Скажите "да" или "нет"',
+            'Не отстану, пока не получу ответ',
+            'А ответ-то какой?'
+          ])
+      }
+    };
+    if (options.yesMatcher(ctx)) {
+      cmd = confirm.yesCommand;
+    } else if (options.noMatcher(ctx)) {
+      cmd = confirm.noCommand;
     }
 
     if (cmd) {
@@ -341,11 +354,6 @@ module.exports.confirm = async ctx => {
       return await cmd(ctx);
     }
 
-    const reply = helpers.simpleRandom(
-      ctx,
-      ['Скажите "да" или "нет"', 'Не отстану, пока не получу ответ', 'А ответ-то какой?'],
-      []
-    );
-    return ctx.reply(reply.get());
+    return options.anyCommand(ctx);
   }
 };

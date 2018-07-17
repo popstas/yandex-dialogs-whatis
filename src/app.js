@@ -14,7 +14,6 @@ const fuseOptions = {
 };
 const config = require('./config');
 const commands = require('./commands/index');
-const helpers = require('./helpers');
 const utils = require('./utils');
 const commandsHelp = require('./commands/help');
 
@@ -63,7 +62,7 @@ class YandexDialogsWhatis {
     await utils.initMorph();
 
     // при наличии session.confirm запускаем сценарий подтверждения
-    alice.command(ctx => ctx.session.getData('confirm'), commands.confirm);
+    alice.command(matchers.confirm(), commands.confirm);
 
     // что ...
     alice.command(/^(что|кто) /, commands.whatIs);
