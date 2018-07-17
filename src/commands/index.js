@@ -322,3 +322,30 @@ module.exports.inAnswerProcess = async ctx => {
   }
   return ctx.reply(reply);
 };
+
+// команда подтверждения
+module.exports.confirm = async ctx => {
+  console.log(`> ${ctx.message} (confirm)`);
+  const confirm = ctx.session.getData('confirm');
+  if (confirm) {
+    let cmd;
+    if (ctx.message.match(/(да|ну да|ага|конечно|давай уже)/i)) {
+      cmd = confirm.onYes;
+    }
+    if (ctx.message.match(/(нет|неа|не|да нет?|да нет наверное)/i)) {
+      cmd = confirm.onNo;
+    }
+
+    if (cmd) {
+      ctx.session.setData('confirm', null);
+      return await cmd(ctx);
+    }
+
+    const reply = helpers.simpleRandom(
+      ctx,
+      ['Скажите "да" или "нет"', 'Не отстану, пока не получу ответ', 'А ответ-то какой?'],
+      []
+    );
+    return ctx.reply(reply.get());
+  }
+};

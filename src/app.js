@@ -7,6 +7,7 @@ const Scene = require('yandex-dialogs-sdk').Scene;
 const storeMiddleware = require('./middlewares/storeMiddleware');
 const correctorMiddleware = require('./middlewares/correctorMiddleware');
 const cleanerMiddleware = require('./middlewares/cleanerMiddleware');
+const confirmMiddleware = require('./middlewares/confirmMiddleware');
 const matchers = require('./matchers');
 const fuseOptions = {
   keys: ['name'],
@@ -24,6 +25,7 @@ const alice = new Alice({ fuseOptions });
 alice.use(storeMiddleware());
 alice.use(correctorMiddleware());
 alice.use(cleanerMiddleware());
+alice.use(confirmMiddleware());
 
 class YandexDialogsWhatis {
   constructor() {
@@ -57,6 +59,9 @@ class YandexDialogsWhatis {
 
   async init() {
     await utils.initMorph();
+
+    // при наличии session.confirm запускаем сценарий подтверждения
+    alice.command(ctx => ctx.session.getData('confirm'), commands.confirm);
 
     // что ...
     alice.command(/^(что|кто) /, commands.whatIs);
@@ -113,7 +118,9 @@ class YandexDialogsWhatis {
     );
     alice.command(/(забудь |удали(ть)? )(что )?.*/, commands.deleteQuestion);
 
-    alice.command(matchers.strings(['забудь всё', 'забудь все', 'удали все']), commands.clearData);
+    alice.command(matchers.strings(['забудь всё', 'забудь все', 'удали все']), ctx =>
+      ctx.confirm('Точно?', commands.clearData, ctx => ctx.reply('Как хочешь'))
+    );
 
     alice.command(
       matchers.strings(['спс', 'спасибо', 'благодарю']),
