@@ -3,6 +3,7 @@ const storage = require('../storage');
 const utils = require('../utils');
 const helpers = require('../helpers');
 const Fuse = require('fuse.js');
+const matchers = require('../matchers');
 
 const STAGE_IDLE = 'STAGE_IDLE';
 const STAGE_WAIT_FOR_ANSWER = 'STAGE_WAIT_FOR_ANSWER';
@@ -329,15 +330,9 @@ module.exports.confirm = async ctx => {
   const confirm = ctx.session.getData('confirm');
   if (confirm) {
     let cmd;
-    if (
-      ctx.message.match(
-        /^(да$|ну да|ага|угу|конечно$|давай$|валяй|поехали|начинай|пожалуй|продолжай|не помешает|не откажусь|изволь)/i
-      )
-    ) {
+    if (matchers.yes()(ctx)) {
       cmd = confirm.onYes;
-    } else if (
-      ctx.message.match(/^(не|да не|конечно не|зачем|нафиг|потом|отмена|отбой|стоп|отстань|отвали|нах|иди)/i)
-    ) {
+    } else if (matchers.no()(ctx)) {
       cmd = confirm.onNo;
     }
 
