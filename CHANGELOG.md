@@ -1,3 +1,21 @@
+<a name="1.6.0"></a>
+# [1.6.0](https://github.com/popstas/yandex-dialogs-whatis/compare/v1.5.1...v1.6.0) (2018-07-17)
+
+
+### Bug Fixes
+
+* более умные матчеры подтверждения ([60652ed](https://github.com/popstas/yandex-dialogs-whatis/commit/60652ed))
+* логирование "Я не знаю" ([e79a439](https://github.com/popstas/yandex-dialogs-whatis/commit/e79a439))
+
+
+### Features
+
+* запомни без глагола (с предлогом) ([b907787](https://github.com/popstas/yandex-dialogs-whatis/commit/b907787))
+* подтверждение "забудь всё", confirmMiddleware ([490164a](https://github.com/popstas/yandex-dialogs-whatis/commit/490164a))
+* удали все ([0c58120](https://github.com/popstas/yandex-dialogs-whatis/commit/0c58120))
+
+
+
 <a name="1.5.1"></a>
 ## [1.5.1](https://github.com/popstas/yandex-dialogs-whatis/compare/v1.5.0...v1.5.1) (2018-07-15)
 
