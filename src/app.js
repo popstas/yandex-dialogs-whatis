@@ -113,7 +113,7 @@ class YandexDialogsWhatis {
     );
     alice.command(/(забудь |удали(ть)? )(что )?.*/, commands.deleteQuestion);
 
-    alice.command(matchers.strings(['забудь всё', 'забудь все']), commands.clearData);
+    alice.command(matchers.strings(['забудь всё', 'забудь все', 'удали все']), commands.clearData);
 
     alice.command(
       matchers.strings(['спс', 'спасибо', 'благодарю']),
