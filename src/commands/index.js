@@ -170,7 +170,7 @@ module.exports.whereIs = ctx => {
       msg += ', но это неточно';
     }
 
-    console.log('answer: ', msg);
+    console.log(`< ${msg}`);
     ctx.reply(msg);
   } else {
     ctx.reply('Я не знаю');
