@@ -16,16 +16,3 @@ module.exports.simpleRandom = (ctx, messages, buttons) => {
 };
 
 // команда рандомного ответа
-module.exports.replyRandom = messages => {
-  return async ctx => {
-    const randomKey = Math.floor(Math.random() * messages.length);
-    return ctx.reply(messages[randomKey]);
-  };
-};
-
-module.exports.confirm = (ctx, reply, onYes, onNo) => {
-  return ctx => {
-    ctx.session.setData('confirm', { onYes, onNo });
-    return ctx.reply(reply);
-  };
-};

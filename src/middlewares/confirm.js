@@ -1,4 +1,4 @@
-// спрашивает подтверждение, виртуально проговаривает фразу при ответе
+// спрашивает подтверждение
 module.exports = () => async ctx => {
   ctx.confirm = (reply, onYes, onNo) => {
     ctx.session.setData('confirm', { onYes, onNo });

@@ -19,10 +19,15 @@ const utils = require('./utils');
 const commandsHelp = require('./commands/help');
 
 const alice = new Alice({ fuseOptions });
+
+// изменяют ctx во время запроса
 alice.use(middlewares.store());
 alice.use(middlewares.corrector());
 alice.use(middlewares.cleaner());
+
+// добавляют функции в ctx
 alice.use(middlewares.confirm());
+alice.use(middlewares.replyRandom());
 
 class YandexDialogsWhatis {
   constructor() {
@@ -119,9 +124,8 @@ class YandexDialogsWhatis {
       ctx.confirm('Точно?', commands.clearData, ctx => ctx.reply('Как хочешь'))
     );
 
-    alice.command(
-      matchers.strings(['спс', 'спасибо', 'благодарю']),
-      helpers.replyRandom([
+    alice.command(matchers.strings(['спс', 'спасибо', 'благодарю']), ctx =>
+      ctx.replyRandom([
         'Всегда пожалуйста',
         'Не за что',
         'Обращайся!',
@@ -133,9 +137,8 @@ class YandexDialogsWhatis {
       ])
     );
 
-    alice.command(
-      matchers.strings(['молодец', 'умница', 'отлично', 'прекрасно', 'круто']),
-      helpers.replyRandom([
+    alice.command(matchers.strings(['молодец', 'умница', 'отлично', 'прекрасно', 'круто']), ctx =>
+      ctx.replyRandom([
         'Спасибо, стараюсь :)',
         'Ой, так приятно )',
         'Ты же в курсе, что хвалишь бездушный алгоритм?',
