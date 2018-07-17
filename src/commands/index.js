@@ -329,10 +329,15 @@ module.exports.confirm = async ctx => {
   const confirm = ctx.session.getData('confirm');
   if (confirm) {
     let cmd;
-    if (ctx.message.match(/(да|ну да|ага|конечно|давай уже)/i)) {
+    if (
+      ctx.message.match(
+        /^(да$|ну да|ага|угу|конечно$|давай$|валяй|поехали|начинай|пожалуй|продолжай|не помешает|не откажусь|изволь)/i
+      )
+    ) {
       cmd = confirm.onYes;
-    }
-    if (ctx.message.match(/(нет|неа|не|да нет?|да нет наверное)/i)) {
+    } else if (
+      ctx.message.match(/^(не|да не|конечно не|зачем|нафиг|потом|отмена|отбой|стоп|отстань|отвали|нах|иди)/i)
+    ) {
       cmd = confirm.onNo;
     }
 
