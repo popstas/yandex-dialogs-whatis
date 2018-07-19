@@ -1,6 +1,6 @@
 {
   "name": "yandex-dialogs-whatis",
-  "version": "1.7.1",
+  "version": "1.7.2",
   "description": "Позволяет добавлять свои вопросы и потом получать на них ответы",
   "main": "src/lambda.js",
   "scripts": {

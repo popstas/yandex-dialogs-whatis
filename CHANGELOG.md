@@ -1,3 +1,30 @@
+<a name="1.7.2"></a>
+## [1.7.2](https://github.com/popstas/yandex-dialogs-whatis/compare/v1.7.1...v1.7.2) (2018-07-19)
+
+
+
+<a name="1.7.1"></a>
+## [1.7.1](https://github.com/popstas/yandex-dialogs-whatis/compare/v1.7.0...v1.7.1) (2018-07-19)
+
+
+
+<a name="1.7.0"></a>
+# [1.7.0](https://github.com/popstas/yandex-dialogs-whatis/compare/v1.6.0...v1.7.0) (2018-07-19)
+
+
+### Bug Fixes
+
+* npm add js-yaml ([6de6b0c](https://github.com/popstas/yandex-dialogs-whatis/commit/6de6b0c))
+* варианты для "забудь", "что ты знаешь", помощи по действиям ([1479d9d](https://github.com/popstas/yandex-dialogs-whatis/commit/1479d9d))
+* удален serverless, т.к. на awl lambda все равно не работает ([b895907](https://github.com/popstas/yandex-dialogs-whatis/commit/b895907))
+
+
+### Features
+
+* обучение на примере при первом заходе ([3776263](https://github.com/popstas/yandex-dialogs-whatis/commit/3776263))
+
+
+
 <a name="1.6.0"></a>
 # [1.6.0](https://github.com/popstas/yandex-dialogs-whatis/compare/v1.5.1...v1.6.0) (2018-07-17)
 
