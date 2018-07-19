@@ -75,7 +75,7 @@ const processDelete = async (ctx, question) => {
     return ctx.reply('При удалении что-то пошло не так...');
   }
 
-  console.log('Забыла, что ' + question);
+  console.log('< Забыла, что ' + question);
   return ctx.reply('Забыла, что ' + question);
 };
 

@@ -51,14 +51,3 @@
 ## Особенности диалога
 - Умеет отвечать на типичные фразы: приветствие, благодарность, оскорбление
 - Пытается понять, что пользователь сказал неправильно и подсказать
-
-### AWS Lambda
-- Создать/обновить лямбду: `npm run deploy`
-
-У пользователя AWS должны быть права на cloudformation, AWSLambdaFullAccess, IAMFullAccess, AmazonAPIGatewayAdministrator (может можно меньше, но эти работают).
-
-На данный момент на лямбде работать нормально не будет, т.к. сессия yandex-dialogs-sdk хранится в оперативке и не disposable (при желании можно дописать).
-
-## Пожелания к SDK:
-- легкий способ вывести многострочный текст с кнопками, simpleReply, [8e68436](https://github.com/popstas/yandex-dialogs-whatis/commit/8e6843652a7ea8cccb2d0a1fb62ed833103e5665)
-- мидварь "случайный ответ из списка", replyRandom, [9c33c69](https://github.com/popstas/yandex-dialogs-whatis/commit/9c33c692bc02c6f6f20b61f10e03d195cb00f54a)

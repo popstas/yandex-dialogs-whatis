@@ -33,14 +33,11 @@
     "fuse.js": "^3.2.1",
     "lokijs": "^1.5.5",
     "mongodb": "^3.1.1",
-    "serverless-http": "^1.6.0",
     "yandex-dialogs-sdk": "^1.4.6"
   },
   "devDependencies": {
     "axios": "^0.18.0",
     "conventional-changelog-cli": "^2.0.0",
-    "conventional-github-releaser": "^3.1.0",
-    "serverless": "^1.28.0",
-    "serverless-offline": "^3.25.6"
+    "conventional-github-releaser": "^3.1.0"
   }
 }
