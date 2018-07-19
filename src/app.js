@@ -88,6 +88,9 @@ class YandexDialogsWhatis {
 
     if (process.env.NODE_ENV != 'production') {
       alice.command(matchers.strings('демо данные'), commands.demoData);
+      alice.command(matchers.strings('забудь все вообще'), ctx =>
+        ctx.confirm('Точно?', commands.clearDataAll, ctx => ctx.reply('Как хочешь'))
+      );
     }
 
     alice.command(matchers.strings('отмена'), commands.cancel);
@@ -115,7 +118,14 @@ class YandexDialogsWhatis {
     );
 
     alice.command(
-      matchers.strings('удали последнее', 'забудь последнее', 'забудь последнюю запись', 'удали', 'удалить', 'забудь'),
+      matchers.strings(
+        'удали последнее',
+        'забудь последнее',
+        'забудь последнюю запись',
+        'удали',
+        'удалить',
+        'забудь'
+      ),
       commands.deleteLast
     );
     alice.command(/(забудь |удали(ть)? )(что )?.*/, commands.deleteQuestion);
@@ -157,16 +167,23 @@ class YandexDialogsWhatis {
       commands.known
     );
 
-    // это ломает команду "запомни что на дворе находится трава"
-    // alice.command(['что ты умеешь', 'что ты можешь'], commands.help);
+    // помощь
+    alice.command(matchers.strings('тур'), commandsHelp.tour);
+    alice.command(matchers.strings('первая помощь'), commandsHelp.firstHelp);
     alice.command(
       matchers.strings(['что ты умеешь', 'что ты можешь', 'помощь']),
       commandsHelp.help
     );
-    alice.command(matchers.strings(['запоминать', 'как запомнить', 'как запоминать']), commandsHelp.remember);
+    alice.command(
+      matchers.strings(['запоминать', 'как запомнить', 'как запоминать']),
+      commandsHelp.remember
+    );
     alice.command(matchers.strings(['отвечать что', 'отвечает что', 'что']), commandsHelp.whatis);
     alice.command(matchers.strings(['отвечать где', 'где']), commandsHelp.whereis);
-    alice.command(matchers.strings(['забывать', 'как забывать', 'как забыть']), commandsHelp.forget);
+    alice.command(
+      matchers.strings(['забывать', 'как забывать', 'как забыть']),
+      commandsHelp.forget
+    );
 
     alice.command(
       matchers.strings([

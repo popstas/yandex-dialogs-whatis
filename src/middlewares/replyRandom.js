@@ -1,7 +1,20 @@
 module.exports = () => async ctx => {
-  ctx.replyRandom = messages => {
+  ctx.replyRandom = (messages, buttons) => {
+    const replyMessage = ctx.replyBuilder;
+
     const randomKey = Math.floor(Math.random() * messages.length);
-    return ctx.reply(messages[randomKey]);
+    const lines = messages[randomKey];
+
+    if (typeof lines === 'string') replyMessage.text(lines);
+    else if (Array.isArray(lines)) replyMessage.text(lines.join('\n'));
+
+    if (Array.isArray(buttons)) {
+      for (let i in buttons) {
+        replyMessage.addButton({ ...ctx.buttonBuilder.text(buttons[i]).get() });
+      }
+    }
+
+    return ctx.reply(replyMessage.get());
   };
   return ctx;
 };

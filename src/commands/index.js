@@ -75,6 +75,20 @@ const processDelete = async (ctx, question) => {
     return ctx.reply('При удалении что-то пошло не так...');
   }
 
+  // tour step 3
+  if (ctx.user.state.tourStep === 'forget') {
+    ctx.user.state.tourStep = '';
+    storage.setState(ctx.userData, ctx.user.state);
+    return ctx.replySimple(
+      [
+        'Прекрасно, теперь вы умеете пользоваться сценарием "список покупок".',
+        'Чтобы узнать, как ещё можно использовать вторую память, скажите "примеры".',
+        'Чтобы узнать обо всех командах, скажите "помощь".'
+      ],
+      ['примеры', 'помощь', 'первая помощь']
+    );
+  }
+
   console.log('< Забыла, что ' + question);
   return ctx.reply('Забыла, что ' + question);
 };
@@ -125,10 +139,25 @@ module.exports.whatIs = ctx => {
     }
 
     console.log(`< ${msg}`);
+
+    // tour step 2
+    if (ctx.user.state.tourStep === 'whatis') {
+      ctx.user.state.tourStep = 'forget';
+      storage.setState(ctx.userData, ctx.user.state);
+      return ctx.replySimple(
+        [
+          msg,
+          'Теперь вы купили хлеб и хотите забыть о нем. Скажите "забудь что в магазине" или "удали последнее"'
+        ],
+        ['забудь что в магазине', 'удали последнее']
+      );
+    }
+
     ctx.reply(msg);
   } else {
-    ctx.reply(
-      'Я не знаю. Если вы мне только что это говорили, значит, скорее всего, нужно поменять местами части фразы слева и справа от глагола. Скоро я научусь понимать сама, обещаю!'
+    ctx.replySimple(
+      'Я не знаю. Если вы мне только что это говорили, значит, скорее всего, нужно поменять местами части фразы слева и справа от глагола. Скоро я научусь понимать сама, обещаю!',
+      ['что ты знаешь']
     );
     console.log(`< Я не знаю`);
   }
@@ -217,17 +246,37 @@ const processRemember = async (ctx, msg) => {
 
   ctx = await resetState(ctx);
   // const suffix = utils.getVerb(ctx.message);
+
+  // tour step 1
+  if (ctx.user.state.tourStep === 'remember') {
+    ctx.user.state.tourStep = 'whatis';
+    storage.setState(ctx.userData, ctx.user.state);
+    return ctx.replySimple(
+      'Отлично, запомнила. Теперь вы зашли в магазин и хотите вспомнить, зачем. Скажите: "что надо купить в магазине"',
+      ['что надо купить в магазине']
+    );
+  }
+
   return ctx.reply(question + ' ' + verb + ' ' + answer + ', поняла');
 };
 module.exports.processRemember = processRemember;
 
 // команда "забудь всё"
 module.exports.clearData = async ctx => {
-  console.log(`> ${ctx.message} (clear)`);
+  console.log(`> ${ctx.message} (clearData)`);
   await storage.clearData(ctx.userData);
-  ctx.user.state.lastWelcome = false;
   ctx = await resetState(ctx);
   return ctx.reply('Всё забыла...');
+};
+
+// команда "забудь всё вообще"
+module.exports.clearDataAll = async ctx => {
+  console.log(`> ${ctx.message} (clearDataAll)`);
+  await storage.clearData(ctx.userData);
+  ctx.user.state.lastWelcome = false;
+  ctx.user.state.tourStep = '';
+  ctx = await resetState(ctx);
+  return ctx.reply('Вообще всё забыла...');
 };
 
 // команда "демо данные"
@@ -329,11 +378,10 @@ module.exports.confirm = async ctx => {
         yesMatcher: matchers.yes(),
         noMatcher: matchers.no(),
         anyCommand: ctx =>
-          ctx.replyRandom([
-            'Скажите "да" или "нет"',
-            'Не отстану, пока не получу ответ',
-            'А ответ-то какой?'
-          ])
+          ctx.replyRandom(
+            ['Скажите "да" или "нет"', 'Не отстану, пока не получу ответ', 'А ответ-то какой?'],
+            ['да', 'нет']
+          )
       }
     };
     if (options.yesMatcher(ctx)) {
