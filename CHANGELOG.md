@@ -1,3 +1,13 @@
+<a name="1.7.3"></a>
+## [1.7.3](https://github.com/popstas/yandex-dialogs-whatis/compare/v1.7.2...v1.7.3) (2018-07-19)
+
+
+### Bug Fixes
+
+* подсказка про неправильное запоминание с днями недели ([11c3dcd](https://github.com/popstas/yandex-dialogs-whatis/commit/11c3dcd))
+
+
+
 <a name="1.7.2"></a>
 ## [1.7.2](https://github.com/popstas/yandex-dialogs-whatis/compare/v1.7.1...v1.7.2) (2018-07-19)
 
