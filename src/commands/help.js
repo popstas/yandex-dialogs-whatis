@@ -28,6 +28,19 @@ module.exports.welcome = async ctx => {
 // нераспознанная команда
 module.exports.any = async ctx => {
   if (ctx.message != 'ping') console.log(`> ${ctx.message} (any)`);
+
+  // время без глагола
+  if (
+    ctx.message.match(
+      /(вчера|завтра|сегодня|понедельник|вторник|среда|четверг|пятница|суббота|воскресенье)/i
+    )
+  ) {
+    return ctx.replySimple('Вам нужно добавить глагол, например, запомни что завтра БУДЕТ завтра', [
+      'как запомнить',
+      'примеры'
+    ]);
+  }
+
   // определение частей фразы без глагола
   const cleanMsg = ctx.message.replace(/^запомни /, '').replace(/^что /, '');
   const posts = utils.getMsgPosts(cleanMsg);
@@ -53,8 +66,9 @@ module.exports.any = async ctx => {
     );
   }
 
-  if (ctx.message.match(/(вчера|завтра|сегодня)/) || ctx.message.match(/^запомни /)) {
-    return ctx.replySimple('Вам нужно добавить глагол, например, запомни что завтра будет завтра', [
+  // неопределенное запомни
+  if (ctx.message.match(/^запомни /)) {
+    return ctx.replySimple('Вам нужно добавить глагол, например, на дворе растёт трава', [
       'как запомнить',
       'примеры'
     ]);
