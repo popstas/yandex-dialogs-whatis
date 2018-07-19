@@ -115,7 +115,7 @@ class YandexDialogsWhatis {
     );
 
     alice.command(
-      matchers.strings('удали последнее', 'забудь последнее', 'забудь последнюю запись'),
+      matchers.strings('удали последнее', 'забудь последнее', 'забудь последнюю запись', 'удали', 'удалить', 'забудь'),
       commands.deleteLast
     );
     alice.command(/(забудь |удали(ть)? )(что )?.*/, commands.deleteQuestion);
@@ -153,7 +153,7 @@ class YandexDialogsWhatis {
     // это ломает команды "удали последнее", "удали кокретное"
     // alice.command(['что ты знаешь', 'что ты помнишь'], commands.known);
     alice.command(
-      matchers.strings(['что ты знаешь', 'что ты помнишь', 'ты знаешь']),
+      matchers.strings(['что ты знаешь', 'что ты помнишь', 'ты знаешь', 'что ты запомнила']),
       commands.known
     );
 
@@ -163,10 +163,10 @@ class YandexDialogsWhatis {
       matchers.strings(['что ты умеешь', 'что ты можешь', 'помощь']),
       commandsHelp.help
     );
-    alice.command(matchers.strings(['запоминать', 'как запомнить']), commandsHelp.remember);
-    alice.command(matchers.strings(['отвечать что', 'отвечает что']), commandsHelp.whatis);
-    alice.command(matchers.strings('отвечать где'), commandsHelp.whereis);
-    alice.command(matchers.strings('забывать'), commandsHelp.forget);
+    alice.command(matchers.strings(['запоминать', 'как запомнить', 'как запоминать']), commandsHelp.remember);
+    alice.command(matchers.strings(['отвечать что', 'отвечает что', 'что']), commandsHelp.whatis);
+    alice.command(matchers.strings(['отвечать где', 'где']), commandsHelp.whereis);
+    alice.command(matchers.strings(['забывать', 'как забывать', 'как забыть']), commandsHelp.forget);
 
     alice.command(
       matchers.strings([
