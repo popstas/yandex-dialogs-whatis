@@ -7,7 +7,7 @@ module.exports = () => async ctx => {
 
     if (Array.isArray(buttons)) {
       for (let i in buttons) {
-        replyMessage.addButton({ ...ctx.buttonBuilder.text(buttons[i]).get() });
+        replyMessage.addButton({ ...ctx.buttonBuilder.title(buttons[i]).get() });
       }
     }
 
