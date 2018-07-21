@@ -30,7 +30,6 @@ class LokiDriver extends BaseDriver {
         this.db = await this.connect();
       } catch (err) {
         reject(err);
-        return ctx.reply('Ошибка при подключении к базе данных, попробуйте позже');
       }
     }
 
@@ -47,8 +46,7 @@ class LokiDriver extends BaseDriver {
       }
       return { data, state };
     } catch (err) {
-      ctx.reply('Ошибка при получении данных пользователя, попробуйте позже');
-      return false;
+      reject(err);
     }
   }
 

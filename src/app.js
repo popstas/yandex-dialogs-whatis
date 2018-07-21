@@ -65,6 +65,11 @@ class YandexDialogsWhatis {
     // при наличии session.confirm запускаем сценарий подтверждения
     alice.command(matchers.confirm(), commands.confirm);
 
+    // ошибка с базой данных
+    alice.command(matchers.error(), ctx =>
+      ctx.reply('Ой, что-то мне нехорошо, зайдите попозже...')
+    );
+
     // что ...
     alice.command(/^(что|кто) /, commands.whatIs);
 

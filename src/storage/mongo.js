@@ -38,7 +38,6 @@ class MongoDriver extends BaseDriver {
           // console.log('mongo connected');
         } catch (err) {
           reject(err);
-          return ctx.reply('Ошибка при подключении к базе данных, попробуйте позже');
         }
       }
 
@@ -56,7 +55,6 @@ class MongoDriver extends BaseDriver {
         resolve({ data, state });
       } catch (err) {
         reject(err);
-        return ctx.reply('Ошибка при получении данных пользователя, попробуйте позже');
       }
     });
   }
