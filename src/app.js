@@ -66,9 +66,13 @@ class YandexDialogsWhatis {
     alice.command(matchers.confirm(), commands.confirm);
 
     // ошибка с базой данных
-    alice.command(matchers.error(), ctx =>
-      ctx.reply('Ой, что-то мне нехорошо, зайдите попозже...')
-    );
+    alice.command(matchers.error(), ctx => {
+      console.log('! database error');
+      return ctx.reply('Ой, что-то мне нехорошо, зайдите попозже...');
+    });
+
+    // привет
+    alice.command(matchers.strings(['', 'привет', 'приветствие']), commandsHelp.welcome);
 
     // что ...
     alice.command(/^(что|кто) /, commands.whatIs);
@@ -87,10 +91,13 @@ class YandexDialogsWhatis {
     inAnswer.any(commands.inAnswerProcess);
     alice.registerScene(inAnswer);
 
+    // команда запомни ...
     alice.command(matchers.rememberSentence(), commands.remember);
 
+    // команды
     alice.command(matchers.strings('команды'), commands.commands);
 
+    // тестовые команды
     if (process.env.NODE_ENV != 'production') {
       alice.command(matchers.strings('демо данные'), commands.demoData);
       alice.command(matchers.strings('забудь все вообще'), ctx =>
@@ -98,28 +105,19 @@ class YandexDialogsWhatis {
       );
     }
 
+    // отмена
     alice.command(matchers.strings('отмена'), commands.cancel);
 
-    alice.command(
-      matchers.strings([
-        'пока',
-        'спасибо пока',
-        'отбой',
-        'все',
-        'всё',
-        'хватит',
-        'закройся',
-        'выключить',
-        'выключиcь'
-      ]),
-      commands.sessionEnd
-    );
+    // пока
+    alice.command(matchers.goodbye(), commands.sessionEnd);
 
+    // Алиса
     alice.command(matchers.strings(['алиса']), ctx =>
       ctx.reply('Чтобы вернуться к Алисе, скажите "Алиса вернись"')
     );
 
-    alice.command(/(тупая|тупой|дура|идиотка)/, ctx =>
+    // оскорбление
+    alice.command(matchers.abuse(), ctx =>
       ctx.reply('Я быстро учусь, вернитесь через пару дней и убедитесь!')
     );
 
@@ -133,7 +131,8 @@ class YandexDialogsWhatis {
       ctx.confirm('Точно?', commands.clearData, ctx => ctx.reply('Как хочешь'))
     );
 
-    alice.command(matchers.strings(['спс', 'спасибо', 'благодарю']), ctx =>
+    // спасибо
+    alice.command(matchers.thankyou(), ctx =>
       ctx.replyRandom([
         'Всегда пожалуйста',
         'Не за что',
@@ -146,7 +145,8 @@ class YandexDialogsWhatis {
       ])
     );
 
-    alice.command(matchers.strings(['молодец', 'умница', 'отлично', 'прекрасно', 'круто']), ctx =>
+    // молодец
+    alice.command(matchers.compliment(), ctx =>
       ctx.replyRandom([
         'Спасибо, стараюсь :)',
         'Ой, так приятно )',
@@ -166,13 +166,14 @@ class YandexDialogsWhatis {
       commands.known
     );
 
-    // помощь
+    // ниже все команды про помощь
+
     alice.command(matchers.strings('тур'), commandsHelp.tour);
     alice.command(matchers.strings('первая помощь'), commandsHelp.firstHelp);
-    alice.command(
-      matchers.strings(['что ты умеешь', 'что ты можешь', 'помощь']),
-      commandsHelp.help
-    );
+
+    // помощь
+    alice.command(matchers.help(), commandsHelp.help);
+
     alice.command(
       matchers.strings(['запоминать', 'как запомнить', 'как запоминать']),
       commandsHelp.remember
@@ -199,9 +200,6 @@ class YandexDialogsWhatis {
       commandsHelp.scenarios
     );
     alice.any(commandsHelp.any);
-
-    alice.command(matchers.strings(['', 'привет', 'приветствие']), commandsHelp.welcome);
-    // alice.welcome(commandsHelp.welcome);
   }
 
   listen(port) {
