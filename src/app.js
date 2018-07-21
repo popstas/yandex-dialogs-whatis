@@ -19,16 +19,6 @@ const commandsHelp = require('./commands/help');
 
 const alice = new Alice({ fuseOptions });
 
-// изменяют ctx во время запроса
-alice.use(middlewares.store());
-alice.use(middlewares.corrector());
-alice.use(middlewares.cleaner());
-
-// добавляют функции в ctx
-alice.use(middlewares.confirm());
-alice.use(middlewares.replyRandom());
-alice.use(middlewares.replySimple());
-
 class YandexDialogsWhatis {
   constructor() {
     this.init();
@@ -60,6 +50,16 @@ class YandexDialogsWhatis {
   }
 
   async init() {
+    // изменяют ctx во время запроса
+    alice.use(middlewares.store());
+    alice.use(middlewares.corrector());
+    alice.use(middlewares.cleaner());
+
+    // добавляют функции в ctx
+    alice.use(middlewares.confirm());
+    alice.use(middlewares.replyRandom());
+    alice.use(middlewares.replySimple());
+
     await utils.initMorph();
 
     // при наличии session.confirm запускаем сценарий подтверждения
