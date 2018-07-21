@@ -1,3 +1,14 @@
+<a name="1.7.5"></a>
+## [1.7.5](https://github.com/popstas/yandex-dialogs-whatis/compare/v1.7.4...v1.7.5) (2018-07-21)
+
+
+### Features
+
+* ну и ... ([603bd01](https://github.com/popstas/yandex-dialogs-whatis/commit/603bd01))
+* ответ при ошибке подключения к БД ([80cab79](https://github.com/popstas/yandex-dialogs-whatis/commit/80cab79))
+
+
+
 <a name="1.7.4"></a>
 ## [1.7.4](https://github.com/popstas/yandex-dialogs-whatis/compare/v1.7.3...v1.7.4) (2018-07-21)
 
