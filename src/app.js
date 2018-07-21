@@ -191,7 +191,7 @@ class YandexDialogsWhatis {
           'запомни номер'
         ]
       ]),
-      commandsHelp.scanarios
+      commandsHelp.scenarios
     );
     alice.any(commandsHelp.any);
 

@@ -227,7 +227,8 @@ module.exports.commands = ctx => {
 
 // команда "запомни ${question} находится ${answer}"
 module.exports.remember = async ctx => {
-  return processRemember(ctx, ctx.message);
+  processRemember(ctx, ctx.message);
+  return true;
 };
 
 const processRemember = async (ctx, msg) => {
@@ -316,7 +317,8 @@ module.exports.dontKnow = async ctx => {
 module.exports.cancel = async ctx => {
   console.log(`> ${ctx.message} (cancel)`);
   ctx = await resetState(ctx);
-  return ctx.reply('Всё отменено');
+  ctx.reply('Всё отменено');
+  return true;
 };
 
 // команда "пока"
@@ -353,7 +355,8 @@ module.exports.deleteQuestion = async ctx => {
 module.exports.inAnswerEnter = async ctx => {
   console.log(`> ${ctx.message} (inAnswerEnter)`);
   const reply = await processAnswer(ctx);
-  return ctx.reply(reply);
+  ctx.reply(reply);
+  return true;
 };
 
 // процесс заполнение вопроса в сцене in-answer
@@ -363,7 +366,8 @@ module.exports.inAnswerProcess = async ctx => {
   if (ctx.user.state.stage == STAGE_IDLE) {
     ctx.session.setData('currentScene', null);
   }
-  return ctx.reply(reply);
+  ctx.reply(reply);
+  return true;
 };
 
 // команда подтверждения

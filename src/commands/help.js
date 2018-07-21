@@ -115,7 +115,7 @@ module.exports.firstHelp = async ctx => {
 };
 
 // команда "сценарии"
-module.exports.scanarios = async ctx => {
+module.exports.scenarios = async ctx => {
   const msg = ctx.message;
   const scenarios = {
     'виртуальные подписи': [

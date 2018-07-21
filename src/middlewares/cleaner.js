@@ -1,5 +1,5 @@
 // убирает незначимые части
-module.exports = () => async ctx => {
+module.exports = () => ctx => {
   ctx.message = ctx.message.replace(/^(Алиса )?(привет )?(слушай )?(а )?(скажи )?(напомни )?/, '');
 
   // костыль на "что надо купить"
