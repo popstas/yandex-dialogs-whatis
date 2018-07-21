@@ -1,3 +1,19 @@
+<a name="1.7.4"></a>
+## [1.7.4](https://github.com/popstas/yandex-dialogs-whatis/compare/v1.7.3...v1.7.4) (2018-07-21)
+
+
+### Bug Fixes
+
+* freeze sdk at 1.4.6 ([291fd05](https://github.com/popstas/yandex-dialogs-whatis/commit/291fd05))
+* спасибо пока, поправлены команды "забудь" (не все работали) ([ba0af6e](https://github.com/popstas/yandex-dialogs-whatis/commit/ba0af6e))
+
+
+### Features
+
+* ответ на "дура" ([f0826da](https://github.com/popstas/yandex-dialogs-whatis/commit/f0826da))
+
+
+
 <a name="1.7.3"></a>
 ## [1.7.3](https://github.com/popstas/yandex-dialogs-whatis/compare/v1.7.2...v1.7.3) (2018-07-19)
 
