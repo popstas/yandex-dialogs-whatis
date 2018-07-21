@@ -1,6 +1,7 @@
 // убирает незначимые части
 module.exports = () => ctx => {
   ctx.message = ctx.message.replace(/^(Алиса )?(привет )?(слушай )?(а )?(скажи )?(напомни )?/, '');
+  ctx.message = ctx.message.replace(/^(ну )?(и )?/, '');
 
   // костыль на "что надо купить"
   ctx.message = ctx.message.replace(/ надо купить/, ' купить');
