@@ -1,3 +1,15 @@
+<a name="1.7.6"></a>
+## [1.7.6](https://github.com/popstas/yandex-dialogs-whatis/compare/v1.7.5...v1.7.6) (2018-07-23)
+
+
+### Bug Fixes
+
+* улучшена отмена ([f5d585c](https://github.com/popstas/yandex-dialogs-whatis/commit/f5d585c))
+* улучшено определение да/нет ([e982894](https://github.com/popstas/yandex-dialogs-whatis/commit/e982894))
+* улучшены вызовы "пока", "помощь" ([427649e](https://github.com/popstas/yandex-dialogs-whatis/commit/427649e))
+
+
+
 <a name="1.7.5"></a>
 ## [1.7.5](https://github.com/popstas/yandex-dialogs-whatis/compare/v1.7.4...v1.7.5) (2018-07-21)
 
