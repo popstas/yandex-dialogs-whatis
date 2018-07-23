@@ -51,16 +51,20 @@ const processAnswer = async ctx => {
 
 // процесс удаления вопроса
 // action
-const processDelete = async (ctx, question, answer) => {
+const processDelete = async (ctx, question) => {
   ctx = await resetState(ctx);
 
   let found = ctx.user.data.filter(item => {
     return item.questions.indexOf(question) != -1;
   });
-  if(found.length == 0){
+  if (found.length == 0) {
+    // ищем по "где"
     found = ctx.user.data.filter(item => {
-      return item.answer.indexOf(answer) != -1;
+      return item.answer.indexOf(question) != -1;
     });
+    if (found.length === 1) {
+      question = found[0].questions[0];
+    }
   }
 
   // не нашлось
@@ -68,10 +72,12 @@ const processDelete = async (ctx, question, answer) => {
     ctx.user.state.deleteFails = (ctx.user.state.deleteFails | 0) + 1;
     storage.setState(ctx.userData, ctx.user.state);
     // второй раз подряд не может удалить
-    if(ctx.user.state.deleteFails > 1){
-      return ctx.confirm('Не знаю такого, рассказать, что знаю?', module.exports.known, ctx => ctx.replyRandom(['ОК', 'Молчу', 'Я могу и всё забыть...']));
+    if (ctx.user.state.deleteFails > 1) {
+      return ctx.confirm('Не знаю такого, рассказать, что знаю?', module.exports.known, ctx =>
+        ctx.replyRandom(['ОК', 'Молчу', 'Я могу и всё забыть...'])
+      );
     }
-    return ctx.reply('Я не знаю, что ' + question);
+    return ctx.replyRandom([`Я не знаю про ${question}`, `Что за ${question}?`]);
   }
   ctx.user.state.deleteFails = 0;
   storage.setState(ctx.userData, ctx.user.state);
@@ -361,7 +367,7 @@ module.exports.deleteLast = async ctx => {
 module.exports.deleteQuestion = async ctx => {
   console.log(`> ${ctx.message} (deleteQuestion)`);
   // const question = ctx.body.question;
-  const question = ctx.message.replace(/(забудь |удали(ть)? )(что )?/, '');
+  const question = ctx.message.replace(/(забудь |удали(ть)? )(что )?(где )?/, '');
   return processDelete(ctx, question);
 };
 
