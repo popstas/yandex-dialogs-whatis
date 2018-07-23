@@ -102,9 +102,6 @@ class YandexDialogsWhatis {
     // команда запомни ...
     alice.command(matchers.rememberSentence(), commands.remember);
 
-    // покажи последние диалоги
-    alice.command(matchers.strings('покажи последние диалоги'), commands.remember);
-
     // команды
     alice.command(matchers.strings('команды'), commands.commands);
 
