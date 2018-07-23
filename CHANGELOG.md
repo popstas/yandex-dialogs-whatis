@@ -1,3 +1,14 @@
+<a name="1.8.0"></a>
+# [1.8.0](https://github.com/popstas/yandex-dialogs-whatis/compare/v1.7.6...v1.8.0) (2018-07-23)
+
+
+### Features
+
+* забудь где ([6bf4ac1](https://github.com/popstas/yandex-dialogs-whatis/commit/6bf4ac1))
+* подсказка при неудачном втором удалении ([83b2e25](https://github.com/popstas/yandex-dialogs-whatis/commit/83b2e25))
+
+
+
 <a name="1.7.6"></a>
 ## [1.7.6](https://github.com/popstas/yandex-dialogs-whatis/compare/v1.7.5...v1.7.6) (2018-07-23)
 
