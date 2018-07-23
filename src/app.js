@@ -120,7 +120,7 @@ class YandexDialogsWhatis {
     alice.command(matchers.goodbye(), commands.sessionEnd);
 
     // Алиса
-    alice.command(/алиса/i, ctx => ctx.reply('Чтобы вернуться к Алисе, скажите "Алиса вернись"'));
+    alice.command(/(алиса|алису)/i, ctx => ctx.reply('Чтобы вернуться к Алисе, скажите "Алиса вернись"'));
 
     // оскорбление
     alice.command(matchers.abuse(), ctx =>

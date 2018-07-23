@@ -51,22 +51,36 @@ const processAnswer = async ctx => {
 
 // процесс удаления вопроса
 // action
-const processDelete = async (ctx, question) => {
+const processDelete = async (ctx, question, answer) => {
   ctx = await resetState(ctx);
 
-  const found = ctx.user.data.filter(item => {
+  let found = ctx.user.data.filter(item => {
     return item.questions.indexOf(question) != -1;
   });
+  if(found.length == 0){
+    found = ctx.user.data.filter(item => {
+      return item.answer.indexOf(answer) != -1;
+    });
+  }
 
   // не нашлось
   if (found.length == 0) {
+    ctx.user.state.deleteFails = (ctx.user.state.deleteFails | 0) + 1;
+    storage.setState(ctx.userData, ctx.user.state);
+    // второй раз подряд не может удалить
+    if(ctx.user.state.deleteFails > 1){
+      return ctx.confirm('Не знаю такого, рассказать, что знаю?', module.exports.known, ctx => ctx.replyRandom(['ОК', 'Молчу', 'Я могу и всё забыть...']));
+    }
     return ctx.reply('Я не знаю, что ' + question);
   }
+  ctx.user.state.deleteFails = 0;
+  storage.setState(ctx.userData, ctx.user.state);
+
   // нашлось, но много
   if (found.length > 1) {
     console.log(found);
     console.log(`< Я не уверена что удалять...`);
-    return ctx.reply('Я не уверена что удалять...');
+    return ctx.reply('Я не уверена что удалять... Могу забыть всё');
   }
 
   const isSuccess = await storage.removeQuestion(ctx.userData, question);
