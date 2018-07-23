@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const Alice = require('yandex-dialogs-sdk');
 const Scene = require('yandex-dialogs-sdk').Scene;
 const middlewares = require('./middlewares');
+const { loggingMiddleware } = Alice;
 const matchers = require('./matchers');
 const fuseOptions = {
   keys: ['name'],
@@ -50,6 +51,13 @@ class YandexDialogsWhatis {
   }
 
   async init() {
+    // используют данные на стороне
+    /* alice.use(
+      loggingMiddleware({
+        level: 1
+      })
+    ); */
+
     // изменяют ctx во время запроса
     alice.use(middlewares.store());
     alice.use(middlewares.corrector());
@@ -86,13 +94,16 @@ class YandexDialogsWhatis {
     // запомни ...
     const inAnswer = new Scene('in-answer', { fuseOptions });
     inAnswer.enter(matchers.strings('запомни'), commands.inAnswerEnter);
-    inAnswer.leave(matchers.strings('отмена'), commands.cancel);
+    inAnswer.leave(/^отмена/i, commands.cancel);
     inAnswer.command(matchers.rememberSentence(), commands.remember);
     inAnswer.any(commands.inAnswerProcess);
     alice.registerScene(inAnswer);
 
     // команда запомни ...
     alice.command(matchers.rememberSentence(), commands.remember);
+
+    // покажи последние диалоги
+    alice.command(matchers.strings('покажи последние диалоги'), commands.remember);
 
     // команды
     alice.command(matchers.strings('команды'), commands.commands);
@@ -106,15 +117,13 @@ class YandexDialogsWhatis {
     }
 
     // отмена
-    alice.command(matchers.strings('отмена'), commands.cancel);
+    alice.command(/^отмена/i, commands.cancel);
 
     // пока
     alice.command(matchers.goodbye(), commands.sessionEnd);
 
     // Алиса
-    alice.command(matchers.strings(['алиса']), ctx =>
-      ctx.reply('Чтобы вернуться к Алисе, скажите "Алиса вернись"')
-    );
+    alice.command(/алиса/i, ctx => ctx.reply('Чтобы вернуться к Алисе, скажите "Алиса вернись"'));
 
     // оскорбление
     alice.command(matchers.abuse(), ctx =>
