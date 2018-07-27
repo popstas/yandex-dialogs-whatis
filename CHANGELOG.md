@@ -1,3 +1,16 @@
+<a name="1.8.1"></a>
+## [1.8.1](https://github.com/popstas/yandex-dialogs-whatis/compare/v1.8.0...v1.8.1) (2018-07-27)
+
+
+### Bug Fixes
+
+* 1 помощь ([457be89](https://github.com/popstas/yandex-dialogs-whatis/commit/457be89))
+* goodbye: показания ([2c1bfd9](https://github.com/popstas/yandex-dialogs-whatis/commit/2c1bfd9))
+* yes: так точно ([b489dbb](https://github.com/popstas/yandex-dialogs-whatis/commit/b489dbb))
+* пока, исключены фразы "все ..." ([6068c4c](https://github.com/popstas/yandex-dialogs-whatis/commit/6068c4c))
+
+
+
 <a name="1.8.0"></a>
 # [1.8.0](https://github.com/popstas/yandex-dialogs-whatis/compare/v1.7.6...v1.8.0) (2018-07-23)
 
