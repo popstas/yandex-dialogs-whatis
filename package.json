@@ -1,6 +1,6 @@
 {
   "name": "yandex-dialogs-whatis",
-  "version": "1.8.1",
+  "version": "1.8.2",
   "description": "Позволяет добавлять свои вопросы и потом получать на них ответы",
   "main": "src/lambda.js",
   "scripts": {
@@ -11,7 +11,7 @@
     "create": "serverless create",
     "deploy": "serverless deploy",
     "invoke-app": "serverless invoke local -f app -p tests/fixtures/event/default.json",
-    "version": "npm run changelog && git add CHANGELOG.md docker-compose.yml",
+    "version": "bash scripts/docker-version.sh && npm run changelog && git add CHANGELOG.md docker-compose.yml",
     "postversion": "git push && npm run release",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0",
     "release": "conventional-github-releaser -p angular"
