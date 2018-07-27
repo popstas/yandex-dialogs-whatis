@@ -175,7 +175,7 @@ class YandexDialogsWhatis {
     // ниже все команды про помощь
 
     alice.command(matchers.strings('тур'), commandsHelp.tour);
-    alice.command(matchers.strings('первая помощь'), commandsHelp.firstHelp);
+    alice.command(matchers.strings(['первая помощь', '1 помощь']), commandsHelp.firstHelp);
 
     // помощь
     alice.command(matchers.help(), commandsHelp.help);
