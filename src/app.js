@@ -120,7 +120,9 @@ class YandexDialogsWhatis {
     alice.command(matchers.goodbye(), commands.sessionEnd);
 
     // Алиса
-    alice.command(/(алиса|алису)/i, ctx => ctx.reply('Чтобы вернуться к Алисе, скажите "Алиса вернись"'));
+    alice.command(/(алиса|алису)/i, ctx =>
+      ctx.reply('Чтобы вернуться к Алисе, скажите "Алиса вернись"')
+    );
 
     // оскорбление
     alice.command(matchers.abuse(), ctx =>
@@ -133,8 +135,16 @@ class YandexDialogsWhatis {
     );
     alice.command(/(забудь |удали(ть)? )(что )?.*/, commands.deleteQuestion);
 
-    alice.command(matchers.strings(['забудь всё', 'забудь все', 'удали все', 'забыть все']), ctx =>
-      ctx.confirm('Точно?', commands.clearData, ctx => ctx.reply('Как хочешь'))
+    alice.command(
+      matchers.strings([
+        'забудь всё',
+        'забудь все',
+        'удали все',
+        'забыть все',
+        'сотри все',
+        'стереть все'
+      ]),
+      ctx => ctx.confirm('Точно?', commands.clearData, ctx => ctx.reply('Как хочешь'))
     );
 
     // спасибо
