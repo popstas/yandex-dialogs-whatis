@@ -36,8 +36,9 @@ module.exports.splitByVerb = msg => {
   const posts = getMsgPosts(msg);
   const countVerbs = posts.filter(post => post === 'VERB').length;
 
-  // может быть только один глагол и только посередине
-  if (countVerbs != 1) return false;
+  // может быть только один глагол и только посередине,
+  // но больше 1 глагола разрешено, чтобы не было исключений
+  if (countVerbs == 0) return false;
   const verbIndex = posts.indexOf('VERB');
   if (verbIndex === 0 || verbIndex == posts.length - 1) return false;
 
@@ -63,7 +64,7 @@ module.exports.fixReversedRemember = obj => {
 
 // возвращает массив частей речи фразы
 const getMsgPosts = msg => {
-  if (msg === '') return false;
+  if (msg === '' || !msg) return [];
   const words = msg.split(' ');
 
   // части речи
