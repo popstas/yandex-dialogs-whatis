@@ -1,3 +1,13 @@
+<a name="1.8.5"></a>
+## [1.8.5](https://github.com/popstas/yandex-dialogs-whatis/compare/v1.8.4...v1.8.5) (2018-09-14)
+
+
+### Features
+
+* меня зовут ([f40d03a](https://github.com/popstas/yandex-dialogs-whatis/commit/f40d03a))
+
+
+
 <a name="1.8.4"></a>
 ## [1.8.4](https://github.com/popstas/yandex-dialogs-whatis/compare/v1.8.3...v1.8.4) (2018-09-14)
 
