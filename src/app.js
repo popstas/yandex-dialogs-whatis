@@ -99,6 +99,11 @@ class YandexDialogsWhatis {
     inAnswer.any(commands.inAnswerProcess);
     alice.registerScene(inAnswer);
 
+    // меня зовут ...
+    alice.command(ctx => ctx.message.match(/^меня зовут /), ctx => {
+      return ctx.reply('Боитесь забыть своё имя? Я не буду это запоминать!');
+    });
+
     // команда запомни ...
     alice.command(matchers.rememberSentence(), commands.remember);
 
