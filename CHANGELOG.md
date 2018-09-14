@@ -1,3 +1,15 @@
+<a name="1.8.4"></a>
+## [1.8.4](https://github.com/popstas/yandex-dialogs-whatis/compare/v1.8.3...v1.8.4) (2018-09-14)
+
+
+### Bug Fixes
+
+* разрешено больше одного глагола во фразе ([6713edf](https://github.com/popstas/yandex-dialogs-whatis/commit/6713edf))
+* сотри все ([fe14ab2](https://github.com/popstas/yandex-dialogs-whatis/commit/fe14ab2))
+* ты молодец ([3bac231](https://github.com/popstas/yandex-dialogs-whatis/commit/3bac231))
+
+
+
 <a name="1.8.3"></a>
 ## [1.8.3](https://github.com/popstas/yandex-dialogs-whatis/compare/v1.8.2...v1.8.3) (2018-07-31)
 
