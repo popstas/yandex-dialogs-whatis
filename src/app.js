@@ -76,7 +76,11 @@ class YandexDialogsWhatis {
     // ошибка с базой данных
     alice.command(matchers.error(), ctx => {
       console.log('! database error');
-      return ctx.reply('Ой, что-то мне нехорошо, зайдите попозже...');
+      return ctx.replyRandom([
+        'Ой, что-то мне нехорошо, зайдите попозже...',
+        'Пятьсоттретья ошибка, позовите админа! Хотя он уже наверное в курсе.',
+        'Какой сейчас год? Кто я? Я потеряла память...'
+      ]);
     });
 
     // привет
@@ -100,9 +104,12 @@ class YandexDialogsWhatis {
     alice.registerScene(inAnswer);
 
     // меня зовут ...
-    alice.command(ctx => ctx.message.match(/^меня зовут /), ctx => {
-      return ctx.reply('Боитесь забыть своё имя? Я не буду это запоминать!');
-    });
+    alice.command(
+      ctx => ctx.message.match(/^меня зовут /),
+      ctx => {
+        return ctx.reply('Боитесь забыть своё имя? Я не буду это запоминать!');
+      }
+    );
 
     // команда запомни ...
     alice.command(matchers.rememberSentence(), commands.remember);
@@ -110,13 +117,13 @@ class YandexDialogsWhatis {
     // команды
     alice.command(matchers.strings('команды'), commands.commands);
 
-    // тестовые команды
-    if (process.env.NODE_ENV != 'production') {
-      alice.command(matchers.strings('демо данные'), commands.demoData);
-      alice.command(matchers.strings('забудь все вообще'), ctx =>
-        ctx.confirm('Точно?', commands.clearDataAll, ctx => ctx.reply('Как хочешь'))
-      );
-    }
+    // тестовые команды, не работают на продакшене
+    alice.command(matchers.strings('демо данные'), ctx =>
+      ctx.confirm('Точно?', commands.demoData, ctx => ctx.reply('Как хочешь'))
+    );
+    alice.command(matchers.strings('забудь все вообще'), ctx =>
+      ctx.confirm('Точно?', commands.clearDataAll, ctx => ctx.reply('Как хочешь'))
+    );
 
     // отмена
     alice.command(/^отмена/i, commands.cancel);
