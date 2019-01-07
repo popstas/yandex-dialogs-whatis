@@ -1,5 +1,5 @@
 // убирает незначимые части
-module.exports = () => ctx => {
+module.exports = () => (ctx, next) => {
   ctx.message = ctx.message.replace(/^(Алиса )?(привет )?(слушай )?(а )?(скажи )?(напомни )?/, '');
   ctx.message = ctx.message.replace(/^(ну )?(и )?/, '');
 
@@ -10,5 +10,8 @@ module.exports = () => ctx => {
   if (ctx.originalUtterance.toLowerCase().match(/^скажи/)) {
     ctx.message = ctx.message.replace(/^что /, '');
   }
-  return ctx;
+
+  ctx.data.request.command = ctx.message; // for string commands match
+
+  return next(ctx);
 };

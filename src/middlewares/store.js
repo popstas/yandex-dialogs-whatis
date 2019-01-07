@@ -1,7 +1,7 @@
 const storage = require('../storage');
 
 // прописывает данные в контекст
-module.exports = () => async ctx => {
+module.exports = () => async (ctx, next) => {
   try {
     ctx.userData = await storage.getUserData(ctx);
     ctx.user = {
@@ -14,5 +14,5 @@ module.exports = () => async ctx => {
       state: { error: 'database' }
     };
   }
-  return ctx;
+  return next(ctx);
 };

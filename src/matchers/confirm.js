@@ -1,1 +1,1 @@
-module.exports = () => ctx => ctx.session.getData('confirm');
+module.exports = () => ctx => !!ctx.session.get('confirm');

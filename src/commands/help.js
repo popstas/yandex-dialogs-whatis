@@ -9,20 +9,24 @@ module.exports.welcome = async ctx => {
   const buttons = ['помощь', 'примеры', 'что ты знаешь', 'команды'];
   if (ctx.user.state.lastWelcome) {
     const last = new Date(ctx.user.state.lastWelcome);
-    const lastLong = new Date().getTime() - last > 12 * 3600 * 1000;
+    const lastLong = new Date().getTime() - last > 86400 * 3 * 1000;
     msg = ['Привет' + (lastLong ? ', давно не виделись' : '')];
-    ctx.replySimple(msg, buttons);
+
+    // store last welcome
+    ctx.user.state.lastWelcome = new Date().getTime();
+    storage.setState(ctx.userData, ctx.user.state);
+    return ctx.replySimple(msg, buttons);
   } else {
     msg = [
       'Я умею запоминать, что где находится или что когда будет и напоминать об этом.',
       'Хотите ознакомиться с возможностями на примере?'
     ];
-    ctx.confirm(msg, module.exports.tour, module.exports.firstHelp);
-  }
 
-  // store last welcome
-  ctx.user.state.lastWelcome = new Date().getTime();
-  storage.setState(ctx.userData, ctx.user.state);
+    // store last welcome
+    ctx.user.state.lastWelcome = new Date().getTime();
+    storage.setState(ctx.userData, ctx.user.state);
+    return ctx.confirm(msg, module.exports.tour, module.exports.firstHelp);
+  }
 };
 
 // нераспознанная команда

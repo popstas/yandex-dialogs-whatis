@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node src/server.js",
     "start-prod": "cross-env NODE_ENV=production node src/server.js",
+    "test-true": "true",
     "test": "node tests/index.js",
     "dev-serverless": "serverless offline start",
     "create": "serverless create",
@@ -34,7 +35,7 @@
     "js-yaml": "^3.12.0",
     "lokijs": "^1.5.5",
     "mongodb": "^3.1.1",
-    "yandex-dialogs-sdk": "^1.4.9"
+    "yandex-dialogs-sdk": "^2.0.0"
   },
   "devDependencies": {
     "axios": "^0.18.0",

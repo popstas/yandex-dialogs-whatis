@@ -2,8 +2,7 @@
 
 const express = require('express');
 const bodyParser = require('body-parser');
-const Alice = require('yandex-dialogs-sdk');
-const Scene = require('yandex-dialogs-sdk').Scene;
+const { Alice, Reply, Stage, Scene } = require('yandex-dialogs-sdk');
 const middlewares = require('./middlewares');
 const { loggingMiddleware } = Alice;
 const matchers = require('./matchers');
@@ -36,8 +35,10 @@ class YandexDialogsWhatis {
     });
     app.use(express.static('static'));
     app.post(config.API_ENDPOINT, async (req, res) => {
-      const handleResponseCallback = response => res.send(response);
-      const replyMessage = await alice.handleRequestBody(req.body, handleResponseCallback);
+      const jsonAnswer = await alice.handleRequest(req.body);
+      res.json(jsonAnswer);
+      // const handleResponseCallback = response => res.send(response);
+      // const replyMessage = await alice.handleRequest(req.body, handleResponseCallback);
     });
     return app;
   }
@@ -45,7 +46,7 @@ class YandexDialogsWhatis {
   // эту функцию можно ставить ендпойнтом на aws lambda
   handlerLambda(event, context, callback) {
     const body = JSON.parse(event.body);
-    alice.handleRequestBody(body, res => {
+    alice.handleRequest(body, res => {
       callback(null, res);
     });
   }
@@ -65,8 +66,8 @@ class YandexDialogsWhatis {
 
     // добавляют функции в ctx
     alice.use(middlewares.confirm());
-    alice.use(middlewares.replyRandom());
     alice.use(middlewares.replySimple());
+    alice.use(middlewares.replyRandom());
 
     await utils.initMorph();
 
@@ -84,30 +85,32 @@ class YandexDialogsWhatis {
     });
 
     // привет
-    alice.command(matchers.strings(['', 'привет', 'приветствие']), commandsHelp.welcome);
+    alice.command(['', 'привет', 'приветствие'], commandsHelp.welcome);
 
-    // что ...
-    alice.command(/^(что|кто) /, commands.whatIs);
+    // тестовые команды, работают на продакшене
+    alice.command('демо данные', ctx =>
+      ctx.confirm('Точно?', commands.demoData, ctx => ctx.reply('Как хочешь'))
+    );
 
-    // где ...
-    alice.command(/^(где|когда|в чем) /, commands.whereIs);
-
-    // непонятное
-    alice.command(/^(как|зачем|почему) /, commands.dontKnow);
+    alice.command('забудь все вообще', ctx =>
+      ctx.confirm('Точно?', commands.clearDataAll, ctx => ctx.reply('Как хочешь'))
+    );
 
     // запомни ...
-    const inAnswer = new Scene('in-answer', { fuseOptions });
-    inAnswer.enter(matchers.strings('запомни'), commands.inAnswerEnter);
-    inAnswer.leave(/^отмена/i, commands.cancel);
-    inAnswer.command(matchers.rememberSentence(), commands.remember);
-    inAnswer.any(commands.inAnswerProcess);
-    alice.registerScene(inAnswer);
+    const inAnswerStage = new Stage();
+    const inAnswerScene = new Scene('in-answer', { fuseOptions });
+    inAnswerScene.command(/^отмена/i, commands.cancel);
+    inAnswerScene.command(matchers.rememberSentence(), commands.remember);
+    inAnswerScene.any(commands.inAnswerProcess);
+    alice.command('запомни', commands.inAnswerEnter);
+    inAnswerStage.addScene(inAnswerScene);
+    alice.use(inAnswerStage.getMiddleware());
 
     // меня зовут ...
     alice.command(
-      ctx => ctx.message.match(/^меня зовут /),
+      ctx => ctx.message.match(/^меня зовут /) ? 1 : 0,
       ctx => {
-        return ctx.reply('Боитесь забыть своё имя? Я не буду это запоминать!');
+        return Reply.text('Боитесь забыть своё имя? Я не буду это запоминать!');
       }
     );
 
@@ -115,15 +118,7 @@ class YandexDialogsWhatis {
     alice.command(matchers.rememberSentence(), commands.remember);
 
     // команды
-    alice.command(matchers.strings('команды'), commands.commands);
-
-    // тестовые команды, не работают на продакшене
-    alice.command(matchers.strings('демо данные'), ctx =>
-      ctx.confirm('Точно?', commands.demoData, ctx => ctx.reply('Как хочешь'))
-    );
-    alice.command(matchers.strings('забудь все вообще'), ctx =>
-      ctx.confirm('Точно?', commands.clearDataAll, ctx => ctx.reply('Как хочешь'))
-    );
+    alice.command('команды', commands.commands);
 
     // отмена
     alice.command(/^отмена/i, commands.cancel);
@@ -141,23 +136,25 @@ class YandexDialogsWhatis {
       ctx.reply('Я быстро учусь, вернитесь через пару дней и убедитесь!')
     );
 
+    // забудь все, должно быть перед "удали последнее"
     alice.command(
-      /^(удали последнее|забудь последнее|забудь последнюю запись|удали|удалить|забудь)$/i,
-      commands.deleteLast
-    );
-    alice.command(/(забудь |удали(ть)? )(что )?.*/, commands.deleteQuestion);
-
-    alice.command(
-      matchers.strings([
+      [
         'забудь всё',
         'забудь все',
         'удали все',
         'забыть все',
         'сотри все',
         'стереть все'
-      ]),
+      ],
       ctx => ctx.confirm('Точно?', commands.clearData, ctx => ctx.reply('Как хочешь'))
     );
+
+    // удали последнее
+    alice.command(
+      /^(удали последнее|забудь последнее|забудь последнюю запись|удали|удалить|забудь)$/i,
+      commands.deleteLast
+    );
+    alice.command(/(забудь |удали(ть)? )(что )?.*/, commands.deleteQuestion);
 
     // спасибо
     alice.command(matchers.thankyou(), ctx =>
@@ -190,31 +187,30 @@ class YandexDialogsWhatis {
     // это ломает команды "удали последнее", "удали кокретное"
     // alice.command(['что ты знаешь', 'что ты помнишь'], commands.known);
     alice.command(
-      matchers.strings(['что ты знаешь', 'что ты помнишь', 'ты знаешь', 'что ты запомнила']),
+      ['что ты знаешь', 'что ты помнишь', 'ты знаешь', 'что ты запомнила'],
       commands.known
     );
 
     // ниже все команды про помощь
-
-    alice.command(matchers.strings('тур'), commandsHelp.tour);
-    alice.command(matchers.strings(['первая помощь', '1 помощь']), commandsHelp.firstHelp);
+    alice.command('тур', commandsHelp.tour);
+    alice.command(['первая помощь', '1 помощь'], commandsHelp.firstHelp);
 
     // помощь
     alice.command(matchers.help(), commandsHelp.help);
 
     alice.command(
-      matchers.strings(['запоминать', 'как запомнить', 'как запоминать']),
+      ['запоминать', 'как запомнить', 'как запоминать'],
       commandsHelp.remember
     );
-    alice.command(matchers.strings(['отвечать что', 'отвечает что', 'что']), commandsHelp.whatis);
-    alice.command(matchers.strings(['отвечать где', 'где']), commandsHelp.whereis);
+    alice.command(['отвечать что', 'отвечает что', 'что'], commandsHelp.whatis);
+    alice.command(['отвечать где', 'где'], commandsHelp.whereis);
     alice.command(
-      matchers.strings(['забывать', 'как забывать', 'как забыть']),
+      ['забывать', 'как забывать', 'как забыть'],
       commandsHelp.forget
     );
 
     alice.command(
-      matchers.strings([
+      [
         ...['сценарии', 'примеры', 'примеры использования'],
         ...[
           'виртуальные подписи',
@@ -224,9 +220,18 @@ class YandexDialogsWhatis {
           'показания счетчиков',
           'запомни номер'
         ]
-      ]),
+      ],
       commandsHelp.scenarios
     );
+
+    // самые общие команды должны быть в конце
+    // что ...
+    alice.command(/^(что|кто) /, commands.whatIs);
+    // где ...
+    alice.command(/^(где|когда|в чем) /, commands.whereIs);
+    // непонятное
+    alice.command(/^(как|зачем|почему) /, commands.dontKnow);
+
     alice.any(commandsHelp.any);
   }
 

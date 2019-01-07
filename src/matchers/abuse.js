@@ -1,1 +1,1 @@
-module.exports = () => ctx => ctx.message.match(/(тупая|тупой|дура|идиотка)/i);
+module.exports = () => ctx => !!ctx.message.match(/(тупая|тупой|дура|идиотка)/i);

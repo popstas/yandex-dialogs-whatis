@@ -1,1 +1,1 @@
-module.exports = () => ctx => ctx.user.state.error;
+module.exports = () => ctx => !!ctx.user.state.error;

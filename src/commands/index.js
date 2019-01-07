@@ -3,6 +3,7 @@ const storage = require('../storage');
 const utils = require('../utils');
 const Fuse = require('fuse.js');
 const matchers = require('../matchers');
+const { Reply } = require('yandex-dialogs-sdk');
 
 const STAGE_IDLE = 'STAGE_IDLE';
 const STAGE_WAIT_FOR_ANSWER = 'STAGE_WAIT_FOR_ANSWER';
@@ -12,7 +13,7 @@ const STAGE_WAIT_FOR_ANSWER = 'STAGE_WAIT_FOR_ANSWER';
 // process, action
 const processAnswer = async ctx => {
   const q = ctx.message.replace(/^запомни/, '').trim();
-  const replyMessage = ctx.replyBuilder;
+  let answerText = '';
 
   if (!ctx.user.state.stage || ctx.user.state.stage === STAGE_IDLE) {
     ctx.user.state.answer = '';
@@ -20,18 +21,18 @@ const processAnswer = async ctx => {
     if (q != '') {
       // еще не знаем ни вопрос, ни ответ
       ctx.user.state.question = q;
-      replyMessage.text('Что ' + q + '?');
+      answerText = 'Что ' + q + '?';
       ctx.user.state.stage = STAGE_WAIT_FOR_ANSWER;
     } else {
-      replyMessage.text('Что запомнить?');
+      answerText = 'Что запомнить?';
     }
   } else if (ctx.user.state.stage === STAGE_WAIT_FOR_ANSWER) {
     // уже знаем вопрос, но не знаем ответ
     const verb = utils.getVerb(q);
     ctx.user.state.answer = utils.cleanQuestion(q);
     if (ctx.user.state.answer == '') ctx.user.state.answer = q;
-    // последний ответ можно удалить отдельной командой
 
+    // последний ответ можно удалить отдельной командой
     ctx.user.state.lastAddedItem = {
       questions: [ctx.user.state.question],
       answer: ctx.user.state.answer
@@ -40,13 +41,13 @@ const processAnswer = async ctx => {
     await storage.storeAnswer(ctx.userData, ctx.user.state.question, ctx.user.state.answer);
     const msg =
       ctx.user.state.question + (verb ? ` ${verb} ` : ' ') + ctx.user.state.answer + ', поняла';
-    replyMessage.text(msg);
+    answerText = msg;
     console.log(`< ${msg}`);
     ctx = await resetState(ctx);
   }
 
   storage.setState(ctx.userData, ctx.user.state);
-  return replyMessage.get();
+  return answerText;
 };
 
 // процесс удаления вопроса
@@ -119,8 +120,9 @@ const resetState = async ctx => {
   ctx.user.state.stage = STAGE_IDLE;
   ctx.user.state.question = '';
   ctx.user.state.answer = '';
+  ctx.leave();
+  // ctx.session.set('__currentScene', null);
   storage.setState(ctx.userData, ctx.user.state);
-  ctx.session.setData('currentScene', null);
   return ctx;
 };
 
@@ -173,15 +175,14 @@ module.exports.whatIs = ctx => {
       );
     }
 
-    ctx.reply(msg);
+    return ctx.reply(msg);
   } else {
-    ctx.replySimple(
+    console.log(`< Я не знаю`);
+    return ctx.replySimple(
       'Я не знаю. Если вы мне только что это говорили, значит, скорее всего, нужно поменять местами части фразы слева и справа от глагола. Скоро я научусь понимать сама, обещаю!',
       ['что ты знаешь']
     );
-    console.log(`< Я не знаю`);
   }
-  return true;
 };
 
 // команда "где ...""
@@ -219,11 +220,10 @@ module.exports.whereIs = ctx => {
     }
 
     console.log(`< ${msg}`);
-    ctx.reply(msg);
+    return ctx.reply(msg);
   } else {
-    ctx.reply('Я не знаю');
+    return ctx.reply('Я не знаю');
   }
-  return true;
 };
 
 // команда "команды"
@@ -247,8 +247,7 @@ module.exports.commands = ctx => {
 
 // команда "запомни ${question} находится ${answer}"
 module.exports.remember = async ctx => {
-  processRemember(ctx, ctx.message);
-  return true;
+  return processRemember(ctx, ctx.message);
 };
 
 const processRemember = async (ctx, msg) => {
@@ -336,21 +335,16 @@ module.exports.dontKnow = async ctx => {
 // команда "отмена"
 module.exports.cancel = async ctx => {
   console.log(`> ${ctx.message} (cancel)`);
+  ctx.leave();
   ctx = await resetState(ctx);
-  ctx.reply('Всё отменено');
-  return true;
+  return ctx.reply('Всё отменено');
 };
 
 // команда "пока"
 module.exports.sessionEnd = async ctx => {
   console.log(`> ${ctx.message} (sessionEnd)`);
   ctx = await resetState(ctx);
-  return ctx.reply(
-    ctx.replyBuilder
-      .text('До свидания!')
-      .shouldEndSession(true)
-      .get()
-  );
+  return Reply.text('До свидания!', { end_session: true });
 };
 
 // команда "удали последнее"
@@ -374,9 +368,9 @@ module.exports.deleteQuestion = async ctx => {
 // команда "запомни"
 module.exports.inAnswerEnter = async ctx => {
   console.log(`> ${ctx.message} (inAnswerEnter)`);
+  ctx.enter('in-answer');
   const reply = await processAnswer(ctx);
-  ctx.reply(reply);
-  return true;
+  return ctx.reply(reply);
 };
 
 // процесс заполнение вопроса в сцене in-answer
@@ -384,16 +378,16 @@ module.exports.inAnswerProcess = async ctx => {
   console.log(`> ${ctx.message} (inAnswerProcess)`);
   const reply = await processAnswer(ctx);
   if (ctx.user.state.stage == STAGE_IDLE) {
-    ctx.session.setData('currentScene', null);
+    ctx.leave();
+    // ctx.session.set('__currentScene', null);
   }
-  ctx.reply(reply);
-  return true;
+  return ctx.reply(reply);
 };
 
 // команда подтверждения
 module.exports.confirm = async ctx => {
   console.log(`> ${ctx.message} (confirm)`);
-  const confirm = ctx.session.getData('confirm');
+  const confirm = ctx.session.get('confirm');
   if (confirm) {
     let cmd;
     const options = {
@@ -415,7 +409,7 @@ module.exports.confirm = async ctx => {
     }
 
     if (cmd) {
-      ctx.session.setData('confirm', null);
+      ctx.session.set('confirm', null);
       return await cmd(ctx);
     }
 

@@ -1,17 +1,21 @@
-module.exports = () => ctx => {
-  ctx.replySimple = (lines, buttons) => {
-    const replyMessage = ctx.replyBuilder;
+const { Reply, Markup } = require('yandex-dialogs-sdk');
 
-    if (typeof lines === 'string') replyMessage.text(lines);
-    else if (Array.isArray(lines)) replyMessage.text(lines.join('\n'));
+module.exports = () => (ctx, next) => {
+  ctx.replySimple = (lines, buttons) => {
+    let text = '';
+    let resultButtons = [];
+
+    if (typeof lines === 'string') text = lines;
+    else if (Array.isArray(lines)) text = lines.join('\n');
 
     if (Array.isArray(buttons)) {
-      for (let i in buttons) {
-        replyMessage.addButton({ ...ctx.buttonBuilder.title(buttons[i]).get() });
-      }
+      resultButtons = buttons.map(button => Markup.button(button));
     }
 
-    return ctx.reply(replyMessage.get());
+    return Reply.text(text, { buttons: resultButtons });
   };
-  return ctx;
+
+  ctx.reply = (lines, buttons) => ctx.replySimple(lines, buttons);
+
+  return next(ctx);
 };
