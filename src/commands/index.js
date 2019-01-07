@@ -389,12 +389,14 @@ module.exports.confirm = async ctx => {
         noMatcher: matchers.no(),
         anyCommand: ctx =>
           ctx.replyRandom(
-            ['Скажите "да" или "нет"', 'Не отстану, пока не получу ответ', 'А ответ-то какой?'],
-            ['да', 'нет']
+            ['Скажите "да" или "нет"', 'Не отстану, пока не получу ответ', 'А ответ-то какой?', confirm.reply],
+            ['да', 'нет'],
           )
       }
     };
-    if (options.yesMatcher(ctx)) {
+    if (ctx.message.match(/^повтори/)){
+      return ctx.replySimple(confirm.reply, ['да', 'нет']);
+    } else if (options.yesMatcher(ctx)) {
       cmd = confirm.yesCommand;
     } else if (options.noMatcher(ctx)) {
       cmd = confirm.noCommand;
