@@ -45,7 +45,7 @@ const processAnswer = async ctx => {
     ctx = await resetState(ctx);
   }
 
-  storage.setState(ctx.userData, ctx.user.state);
+  // storage.setState(ctx.userData, ctx.user.state);
   return answerText;
 };
 
@@ -70,22 +70,22 @@ const processDelete = async (ctx, question) => {
   // не нашлось
   if (found.length == 0) {
     ctx.user.state.deleteFails = (ctx.user.state.deleteFails | 0) + 1;
-    storage.setState(ctx.userData, ctx.user.state);
+    // storage.setState(ctx.userData, ctx.user.state);
     // второй раз подряд не может удалить
     if (ctx.user.state.deleteFails > 1) {
-      return ctx.confirm('Не знаю такого, рассказать, что знаю?', module.exports.known, ctx =>
+      return await ctx.confirm('Не знаю такого, рассказать, что знаю?', module.exports.known, ctx =>
         ctx.replyRandom(['ОК', 'Молчу', 'Я могу и всё забыть...'])
       );
     }
-    return ctx.replyRandom([`Я не знаю про ${question}`, `Что за ${question}?`]);
+    return await ctx.replyRandom([`Я не знаю про ${question}`, `Что за ${question}?`]);
   }
   ctx.user.state.deleteFails = 0;
-  storage.setState(ctx.userData, ctx.user.state);
+  // storage.setState(ctx.userData, ctx.user.state);
 
   // нашлось, но много
   if (found.length > 1) {
     console.log(found);
-    return ctx.reply('Я не уверена что удалять... Могу забыть всё');
+    return await ctx.reply('Я не уверена что удалять... Могу забыть всё');
   }
 
   const isSuccess = await storage.removeQuestion(ctx.userData, question);
@@ -96,8 +96,8 @@ const processDelete = async (ctx, question) => {
   // tour step 3
   if (ctx.user.state.tourStep === 'forget') {
     ctx.user.state.tourStep = '';
-    storage.setState(ctx.userData, ctx.user.state);
-    return ctx.replySimple(
+    // storage.setState(ctx.userData, ctx.user.state);
+    return await ctx.replySimple(
       [
         'Прекрасно, теперь вы умеете пользоваться сценарием "список покупок".',
         'Чтобы узнать, как ещё можно использовать вторую память, скажите "примеры".',
@@ -118,12 +118,12 @@ const resetState = async ctx => {
   ctx.user.state.answer = '';
   ctx.leave();
   // ctx.session.set('__currentScene', null);
-  storage.setState(ctx.userData, ctx.user.state);
+  await storage.setState(ctx.userData, ctx.user.state);
   return ctx;
 };
 
 // команда "что ..."
-module.exports.whatIs = ctx => {
+module.exports.whatIs = async ctx => {
   ctx.logMessage(`> ${ctx.message} (whatis)`);
   const q = utils.cleanQuestion(ctx.message);
 
@@ -159,8 +159,8 @@ module.exports.whatIs = ctx => {
     // tour step 2
     if (ctx.user.state.tourStep === 'whatis') {
       ctx.user.state.tourStep = 'forget';
-      storage.setState(ctx.userData, ctx.user.state);
-      return ctx.replySimple(
+      // storage.setState(ctx.userData, ctx.user.state);
+      return await ctx.replySimple(
         [
           msg,
           'Теперь вы купили хлеб и хотите забыть о нем. Скажите "забудь что в магазине" или "удали последнее"'
@@ -262,8 +262,8 @@ const processRemember = async (ctx, msg) => {
   // tour step 1
   if (ctx.user.state.tourStep === 'remember') {
     ctx.user.state.tourStep = 'whatis';
-    storage.setState(ctx.userData, ctx.user.state);
-    return ctx.replySimple(
+    // storage.setState(ctx.userData, ctx.user.state);
+    return await ctx.replySimple(
       'Отлично, запомнила. Теперь вы зашли в магазин и хотите вспомнить, зачем. Скажите: "что надо купить в магазине"',
       ['что надо купить в магазине']
     );
@@ -285,7 +285,8 @@ module.exports.clearData = async ctx => {
 module.exports.clearDataAll = async ctx => {
   ctx.logMessage(`> ${ctx.message} (clearDataAll)`);
   await storage.clearData(ctx.userData);
-  ctx.user.state.lastWelcome = false;
+  ctx.user.state.visitor = { visits: 1 };
+  ctx.user.state.visit = { messages: 0 };
   ctx.user.state.tourStep = '';
   ctx = await resetState(ctx);
   return ctx.reply('Вообще всё забыла...');
@@ -362,7 +363,7 @@ module.exports.inAnswerEnter = async ctx => {
   ctx.logMessage(`> ${ctx.message} (inAnswerEnter)`);
   ctx.enter('in-answer');
   const reply = await processAnswer(ctx);
-  return ctx.reply(reply);
+  return await ctx.reply(reply);
 };
 
 // процесс заполнение вопроса в сцене in-answer
@@ -373,7 +374,7 @@ module.exports.inAnswerProcess = async ctx => {
     ctx.leave();
     // ctx.session.set('__currentScene', null);
   }
-  return ctx.reply(reply);
+  return await ctx.reply(reply);
 };
 
 // команда подтверждения
@@ -389,12 +390,17 @@ module.exports.confirm = async ctx => {
         noMatcher: matchers.no(),
         anyCommand: ctx =>
           ctx.replyRandom(
-            ['Скажите "да" или "нет"', 'Не отстану, пока не получу ответ', 'А ответ-то какой?', confirm.reply],
-            ['да', 'нет'],
+            [
+              'Скажите "да" или "нет"',
+              'Не отстану, пока не получу ответ',
+              'А ответ-то какой?',
+              confirm.reply
+            ],
+            ['да', 'нет']
           )
       }
     };
-    if (ctx.message.match(/^повтори/)){
+    if (ctx.message.match(/^повтори/)) {
       return ctx.replySimple(confirm.reply, ['да', 'нет']);
     } else if (options.yesMatcher(ctx)) {
       cmd = confirm.yesCommand;

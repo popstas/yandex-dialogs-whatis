@@ -1,7 +1,8 @@
 const { Reply, Markup } = require('yandex-dialogs-sdk');
+const storage = require('../storage');
 
 module.exports = () => (ctx, next) => {
-  ctx.replySimple = (lines, buttons) => {
+  ctx.replySimple = async (lines, buttons) => {
     let text = '';
     let resultButtons = [];
 
@@ -12,7 +13,12 @@ module.exports = () => (ctx, next) => {
       resultButtons = buttons.map(button => Markup.button(button));
     }
 
+    // store state
+    await storage.setState(ctx.userData, ctx.user.state);
+
+    // log outgoing message
     if (ctx.message != 'ping') ctx.logMessage(`< ${text.split('\n').join(' [n] ')}`);
+
     return Reply.text(text, { buttons: resultButtons });
   };
 

@@ -7,24 +7,14 @@ module.exports.welcome = async ctx => {
   if (ctx.message != 'ping') ctx.logMessage(`> ${ctx.message} (welcome)`);
   let msg;
   const buttons = ['помощь', 'примеры', 'что ты знаешь', 'команды'];
-  if (ctx.user.state.lastWelcome) {
-    const last = new Date(ctx.user.state.lastWelcome);
-    const lastLong = new Date().getTime() - last > 86400 * 3 * 1000;
-    msg = ['Привет' + (lastLong ? ', давно не виделись' : '')];
-
-    // store last welcome
-    ctx.user.state.lastWelcome = new Date().getTime();
-    storage.setState(ctx.userData, ctx.user.state);
+  if (ctx.user.state.visitor.visits > 1 || ctx.user.state.visit.messages > 1) {
+    msg = ['Привет' + (ctx.user.state.visitor.lastVisitLong ? ', давно не виделись' : '')];
     return ctx.replySimple(msg, buttons);
   } else {
     msg = [
       'Я умею запоминать, что где находится или что когда будет и напоминать об этом.',
       'Хотите ознакомиться с возможностями на примере?'
     ];
-
-    // store last welcome
-    ctx.user.state.lastWelcome = new Date().getTime();
-    storage.setState(ctx.userData, ctx.user.state);
     return ctx.confirm(msg, module.exports.tour, module.exports.firstHelp);
   }
 };
@@ -91,8 +81,8 @@ module.exports.any = async ctx => {
 module.exports.tour = async ctx => {
   ctx.logMessage(`> ${ctx.message} (tour)`);
   ctx.user.state.tourStep = 'remember';
-  storage.setState(ctx.userData, ctx.user.state);
-  return ctx.replySimple(
+  // storage.setState(ctx.userData, ctx.user.state);
+  return await ctx.replySimple(
     'Допустим, вы собрались в магазин. Скажите: "в магазине надо купить хлеб"',
     ['в магазине надо купить хлеб']
   );

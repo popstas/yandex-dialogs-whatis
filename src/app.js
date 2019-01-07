@@ -59,16 +59,17 @@ class YandexDialogsWhatis {
       })
     ); */
 
-    // изменяют ctx во время запроса
-    alice.use(middlewares.store());
-    alice.use(middlewares.corrector());
-    alice.use(middlewares.cleaner());
-
     // добавляют функции в ctx
     alice.use(middlewares.confirm());
     alice.use(middlewares.replySimple());
     alice.use(middlewares.replyRandom());
     alice.use(middlewares.logMessage());
+
+    // изменяют ctx во время запроса
+    alice.use(middlewares.store());
+    alice.use(middlewares.corrector());
+    alice.use(middlewares.cleaner());
+    alice.use(middlewares.counter());
 
     await utils.initMorph();
 
