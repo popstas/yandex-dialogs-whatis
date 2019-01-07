@@ -1,3 +1,13 @@
+<a name="2.0.4"></a>
+## [2.0.4](https://github.com/popstas/yandex-dialogs-whatis/compare/v2.0.3...v2.0.4) (2019-01-07)
+
+
+### Bug Fixes
+
+* на столе ключи запомни ([75f2f4e](https://github.com/popstas/yandex-dialogs-whatis/commit/75f2f4e))
+
+
+
 <a name="2.0.3"></a>
 ## [2.0.3](https://github.com/popstas/yandex-dialogs-whatis/compare/v2.0.2...v2.0.3) (2019-01-07)
 
