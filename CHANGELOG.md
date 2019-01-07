@@ -1,3 +1,14 @@
+<a name="2.0.2"></a>
+## [2.0.2](https://github.com/popstas/yandex-dialogs-whatis/compare/v2.0.1...v2.0.2) (2019-01-07)
+
+
+### Features
+
+* **confirm:** повтори [вопрос] ([9c01faf](https://github.com/popstas/yandex-dialogs-whatis/commit/9c01faf))
+* **goodbye:** заканчиваем, закончить ([85636a7](https://github.com/popstas/yandex-dialogs-whatis/commit/85636a7))
+
+
+
 <a name="2.0.1"></a>
 ## [2.0.1](https://github.com/popstas/yandex-dialogs-whatis/compare/v2.0.0...v2.0.1) (2019-01-07)
 
