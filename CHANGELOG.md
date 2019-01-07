@@ -1,3 +1,8 @@
+<a name="2.0.1"></a>
+## [2.0.1](https://github.com/popstas/yandex-dialogs-whatis/compare/v2.0.0...v2.0.1) (2019-01-07)
+
+
+
 <a name="2.0.0"></a>
 # [2.0.0](https://github.com/popstas/yandex-dialogs-whatis/compare/v1.8.5...v2.0.0) (2019-01-07)
 
