@@ -6,6 +6,8 @@ module.exports = () => (ctx, next) => {
   // костыль на "что надо купить"
   ctx.message = ctx.message.replace(/ надо купить/, ' купить');
 
+  ctx.message = ctx.message.replace(/ запомни$/, '');
+
   // скажи подразумевает запись, а "что" здесь естественно напрашивается
   if (ctx.originalUtterance.toLowerCase().match(/^скажи/)) {
     ctx.message = ctx.message.replace(/^что /, '');

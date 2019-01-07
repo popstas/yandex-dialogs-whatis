@@ -26,13 +26,15 @@ module.exports = () => (ctx, next) => {
 
   if (isNewVisit) {
     ctx.user.state.visitor.visits++;
-    console.log('');
-    ctx.logMessage(
-      `new visit: ${ctx.user.state.visitor.visits}` +
-        (ctx.user.state.visitor.visits > 1
-          ? `last visit has ${ctx.user.state.visit.messages} messages`
-          : '')
-    );
+    if (ctx.message != 'ping') {
+      console.log('');
+      ctx.logMessage(
+        `new visit: ${ctx.user.state.visitor.visits}` +
+          (ctx.user.state.visitor.visits > 1
+            ? `, last visit has ${ctx.user.state.visit.messages} messages`
+            : '')
+      );
+    }
 
     ctx.user.state.visit = {
       messages: 0
