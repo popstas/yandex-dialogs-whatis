@@ -1,3 +1,13 @@
+<a name="2.0.0"></a>
+# [2.0.0](https://github.com/popstas/yandex-dialogs-whatis/compare/v1.8.5...v2.0.0) (2019-01-07)
+
+
+### Bug Fixes
+
+* "забудь все вообще" и "демо данные" разрешены на боевом навыке ([5e5ef6e](https://github.com/popstas/yandex-dialogs-whatis/commit/5e5ef6e))
+
+
+
 <a name="1.8.5"></a>
 ## [1.8.5](https://github.com/popstas/yandex-dialogs-whatis/compare/v1.8.4...v1.8.5) (2018-09-14)
 
