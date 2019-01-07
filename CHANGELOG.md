@@ -1,3 +1,13 @@
+<a name="2.0.3"></a>
+## [2.0.3](https://github.com/popstas/yandex-dialogs-whatis/compare/v2.0.2...v2.0.3) (2019-01-07)
+
+
+### Features
+
+* **counter:** подсчет сообщений и визитов у юзера ([7192763](https://github.com/popstas/yandex-dialogs-whatis/commit/7192763))
+
+
+
 <a name="2.0.2"></a>
 ## [2.0.2](https://github.com/popstas/yandex-dialogs-whatis/compare/v2.0.1...v2.0.2) (2019-01-07)
 
