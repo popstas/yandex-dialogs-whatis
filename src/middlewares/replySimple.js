@@ -12,7 +12,7 @@ module.exports = () => (ctx, next) => {
       resultButtons = buttons.map(button => Markup.button(button));
     }
 
-    ctx.logMessage(`< ${text.split('\n').join(' [n] ')}`);
+    if (ctx.message != 'ping') ctx.logMessage(`< ${text.split('\n').join(' [n] ')}`);
     return Reply.text(text, { buttons: resultButtons });
   };
 
