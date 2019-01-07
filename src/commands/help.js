@@ -4,7 +4,7 @@ const utils = require('../utils');
 
 // команда по умолчанию (справка)
 module.exports.welcome = async ctx => {
-  if (ctx.message != 'ping') console.log(`> ${ctx.message} (welcome)`);
+  if (ctx.message != 'ping') ctx.logMessage(`> ${ctx.message} (welcome)`);
   let msg;
   const buttons = ['помощь', 'примеры', 'что ты знаешь', 'команды'];
   if (ctx.user.state.lastWelcome) {
@@ -31,7 +31,7 @@ module.exports.welcome = async ctx => {
 
 // нераспознанная команда
 module.exports.any = async ctx => {
-  if (ctx.message != 'ping') console.log(`> ${ctx.message} (any)`);
+  if (ctx.message != 'ping') ctx.logMessage(`> ${ctx.message} (any)`);
 
   // время без глагола
   if (
@@ -54,7 +54,6 @@ module.exports.any = async ctx => {
     const question = words.slice(prepIndex, prepIndex + 2);
     const answer = prepIndex === 0 ? words.slice(prepIndex + 2) : words.slice(0, prepIndex);
     const possibleMsg = question.join(' ') + ' находится ' + answer.join(' ');
-    console.log(`< ${possibleMsg}?`);
     return ctx.confirm(
       possibleMsg + '?',
       ctx => commands.processRemember(ctx, possibleMsg),
@@ -90,7 +89,7 @@ module.exports.any = async ctx => {
 
 // команда "тур"
 module.exports.tour = async ctx => {
-  console.log(`> ${ctx.message} (tour)`);
+  ctx.logMessage(`> ${ctx.message} (tour)`);
   ctx.user.state.tourStep = 'remember';
   storage.setState(ctx.userData, ctx.user.state);
   return ctx.replySimple(
@@ -101,7 +100,7 @@ module.exports.tour = async ctx => {
 
 // помощь при первом входе "тур"
 module.exports.firstHelp = async ctx => {
-  console.log(`> ${ctx.message} (welcomeHelp)`);
+  ctx.logMessage(`> ${ctx.message} (welcomeHelp)`);
   const buttons = ['помощь', 'примеры', 'что ты знаешь', 'команды'];
   return ctx.replySimple(
     [
@@ -165,7 +164,7 @@ module.exports.scenarios = async ctx => {
 
 // команда "помощь"
 module.exports.help = async ctx => {
-  if (ctx.message != 'ping') console.log(`> ${ctx.message} (help)`);
+  if (ctx.message != 'ping') ctx.logMessage(`> ${ctx.message} (help)`);
   return ctx.replySimple(
     'Я умею запоминать, отвечать что, отвечать где или забывать. Что из этого вы хотите знать?',
     [
@@ -182,7 +181,7 @@ module.exports.help = async ctx => {
 
 // команда помощь: "запоминать"
 module.exports.remember = async ctx => {
-  console.log(`> ${ctx.message} (remember)`);
+  ctx.logMessage(`> ${ctx.message} (remember)`);
   const buttons = ['запомни на дворе находится трава', 'в среду будет дождь'];
   return ctx.replySimple(
     [
@@ -200,7 +199,7 @@ module.exports.remember = async ctx => {
 
 // команда помощь: "отвечать что"
 module.exports.whatis = async ctx => {
-  console.log(`> ${ctx.message} (whatis)`);
+  ctx.logMessage(`> ${ctx.message} (whatis)`);
   const buttons = ['что на дворе', 'что в среду в столовой', 'что на ужин'];
   return ctx.replySimple(
     [
@@ -214,7 +213,7 @@ module.exports.whatis = async ctx => {
 
 // команда помощь: "отвечать где"
 module.exports.whereis = async ctx => {
-  console.log(`> ${ctx.message} (whereis)`);
+  ctx.logMessage(`> ${ctx.message} (whereis)`);
   const buttons = ['где трава', 'где находится трава'];
   return ctx.replySimple(
     [
@@ -228,7 +227,7 @@ module.exports.whereis = async ctx => {
 
 // команда помощь: "забывать"
 module.exports.forget = async ctx => {
-  console.log(`> ${ctx.message} (forget)`);
+  ctx.logMessage(`> ${ctx.message} (forget)`);
   const buttons = ['удали последнее', 'удали на дворе', 'забудь все'];
   return ctx.replySimple(
     [

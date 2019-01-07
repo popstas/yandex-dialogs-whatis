@@ -68,6 +68,7 @@ class YandexDialogsWhatis {
     alice.use(middlewares.confirm());
     alice.use(middlewares.replySimple());
     alice.use(middlewares.replyRandom());
+    alice.use(middlewares.logMessage());
 
     await utils.initMorph();
 
@@ -88,13 +89,15 @@ class YandexDialogsWhatis {
     alice.command(['', 'привет', 'приветствие'], commandsHelp.welcome);
 
     // тестовые команды, работают на продакшене
-    alice.command('демо данные', ctx =>
-      ctx.confirm('Точно?', commands.demoData, ctx => ctx.reply('Как хочешь'))
-    );
+    alice.command('демо данные', ctx => {
+      ctx.logMessage(`> ${ctx.message} (demoData confirm)`);
+      ctx.confirm('Точно?', commands.demoData, ctx => ctx.reply('Как хочешь'));
+    });
 
-    alice.command('забудь все вообще', ctx =>
-      ctx.confirm('Точно?', commands.clearDataAll, ctx => ctx.reply('Как хочешь'))
-    );
+    alice.command('забудь все вообще', ctx => {
+      ctx.logMessage(`> ${ctx.message} (clearDataAll confirm)`);
+      return ctx.confirm('Точно?', commands.clearDataAll, ctx => ctx.reply('Как хочешь'));
+    });
 
     // запомни ...
     const inAnswerStage = new Stage();
@@ -108,7 +111,7 @@ class YandexDialogsWhatis {
 
     // меня зовут ...
     alice.command(
-      ctx => ctx.message.match(/^меня зовут /) ? 1 : 0,
+      ctx => (ctx.message.match(/^меня зовут /) ? 1 : 0),
       ctx => {
         return Reply.text('Боитесь забыть своё имя? Я не буду это запоминать!');
       }
@@ -138,14 +141,7 @@ class YandexDialogsWhatis {
 
     // забудь все, должно быть перед "удали последнее"
     alice.command(
-      [
-        'забудь всё',
-        'забудь все',
-        'удали все',
-        'забыть все',
-        'сотри все',
-        'стереть все'
-      ],
+      ['забудь всё', 'забудь все', 'удали все', 'забыть все', 'сотри все', 'стереть все'],
       ctx => ctx.confirm('Точно?', commands.clearData, ctx => ctx.reply('Как хочешь'))
     );
 
@@ -198,16 +194,10 @@ class YandexDialogsWhatis {
     // помощь
     alice.command(matchers.help(), commandsHelp.help);
 
-    alice.command(
-      ['запоминать', 'как запомнить', 'как запоминать'],
-      commandsHelp.remember
-    );
+    alice.command(['запоминать', 'как запомнить', 'как запоминать'], commandsHelp.remember);
     alice.command(['отвечать что', 'отвечает что', 'что'], commandsHelp.whatis);
     alice.command(['отвечать где', 'где'], commandsHelp.whereis);
-    alice.command(
-      ['забывать', 'как забывать', 'как забыть'],
-      commandsHelp.forget
-    );
+    alice.command(['забывать', 'как забывать', 'как забыть'], commandsHelp.forget);
 
     alice.command(
       [
