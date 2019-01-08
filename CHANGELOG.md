@@ -1,3 +1,18 @@
+<a name="2.1.0"></a>
+# [2.1.0](https://github.com/popstas/yandex-dialogs-whatis/compare/v2.0.8...v2.1.0) (2019-01-08)
+
+
+### Bug Fixes
+
+* host и url убраны из метрики, теперь там только команда ([c0f3fec](https://github.com/popstas/yandex-dialogs-whatis/commit/c0f3fec))
+
+
+### Features
+
+* yametrika как отдельный middleware ([c171b5d](https://github.com/popstas/yandex-dialogs-whatis/commit/c171b5d))
+
+
+
 <a name="2.0.8"></a>
 ## [2.0.8](https://github.com/popstas/yandex-dialogs-whatis/compare/v2.0.7...v2.0.8) (2019-01-08)
 
