@@ -4,7 +4,6 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const { Alice, Reply, Stage, Scene } = require('yandex-dialogs-sdk');
 const middlewares = require('./middlewares');
-const { loggingMiddleware } = Alice;
 const matchers = require('./matchers');
 const fuseOptions = {
   keys: ['name'],
@@ -24,41 +23,7 @@ class YandexDialogsWhatis {
     this.init();
   }
 
-  // returns express instance
-  handlerExpress() {
-    const app = express();
-    app.use(bodyParser.json());
-    app.use(function(req, res, next) {
-      res.header('Access-Control-Allow-Origin', '*');
-      res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-      next();
-    });
-    app.use(express.static('static'));
-    app.post(config.API_ENDPOINT, async (req, res) => {
-      const jsonAnswer = await alice.handleRequest(req.body);
-      res.json(jsonAnswer);
-      // const handleResponseCallback = response => res.send(response);
-      // const replyMessage = await alice.handleRequest(req.body, handleResponseCallback);
-    });
-    return app;
-  }
-
-  // эту функцию можно ставить ендпойнтом на aws lambda
-  handlerLambda(event, context, callback) {
-    const body = JSON.parse(event.body);
-    alice.handleRequest(body, res => {
-      callback(null, res);
-    });
-  }
-
   async init() {
-    // используют данные на стороне
-    /* alice.use(
-      loggingMiddleware({
-        level: 1
-      })
-    ); */
-
     // добавляют функции в ctx
     alice.use(middlewares.confirm());
     alice.use(middlewares.replySimple());
@@ -89,12 +54,13 @@ class YandexDialogsWhatis {
     // привет
     alice.command(['', 'привет', 'приветствие'], commandsHelp.welcome);
 
-    // тестовые команды, работают на продакшене
+    // демо данные
     alice.command('демо данные', ctx => {
       ctx.logMessage(`> ${ctx.message} (demoData confirm)`);
       ctx.confirm('Точно?', commands.demoData, ctx => ctx.reply('Как хочешь'));
     });
 
+    // забудь все вообще
     alice.command('забудь все вообще', ctx => {
       ctx.logMessage(`> ${ctx.message} (clearDataAll confirm)`);
       return ctx.confirm('Точно?', commands.clearDataAll, ctx => ctx.reply('Как хочешь'));
@@ -194,7 +160,6 @@ class YandexDialogsWhatis {
 
     // помощь
     alice.command(matchers.help(), commandsHelp.help);
-
     alice.command(['запоминать', 'как запомнить', 'как запоминать'], commandsHelp.remember);
     alice.command(['отвечать что', 'отвечает что', 'что'], commandsHelp.whatis);
     alice.command(['отвечать где', 'где'], commandsHelp.whereis);
@@ -224,6 +189,33 @@ class YandexDialogsWhatis {
     alice.command(/^(как|зачем|почему) /, commands.dontKnow);
 
     alice.any(commandsHelp.any);
+  }
+
+  // returns express instance
+  handlerExpress() {
+    const app = express();
+    app.use(bodyParser.json());
+    app.use(function(req, res, next) {
+      res.header('Access-Control-Allow-Origin', '*');
+      res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+      next();
+    });
+    app.use(express.static('static'));
+    app.post(config.API_ENDPOINT, async (req, res) => {
+      const jsonAnswer = await alice.handleRequest(req.body);
+      res.json(jsonAnswer);
+      // const handleResponseCallback = response => res.send(response);
+      // const replyMessage = await alice.handleRequest(req.body, handleResponseCallback);
+    });
+    return app;
+  }
+
+  // эту функцию можно ставить ендпойнтом на aws lambda
+  handlerLambda(event, context, callback) {
+    const body = JSON.parse(event.body);
+    alice.handleRequest(body, res => {
+      callback(null, res);
+    });
   }
 
   listen(port) {
