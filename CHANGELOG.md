@@ -1,3 +1,13 @@
+<a name="2.0.7"></a>
+## [2.0.7](https://github.com/popstas/yandex-dialogs-whatis/compare/v2.0.6...v2.0.7) (2019-01-08)
+
+
+### Bug Fixes
+
+* не отправлять метрику на ping ([3680293](https://github.com/popstas/yandex-dialogs-whatis/commit/3680293))
+
+
+
 <a name="2.0.6"></a>
 ## [2.0.6](https://github.com/popstas/yandex-dialogs-whatis/compare/v2.0.5...v2.0.6) (2019-01-08)
 
