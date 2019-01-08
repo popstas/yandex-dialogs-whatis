@@ -6,3 +6,5 @@ require('fs')
     const moduleName = file.split('.')[0];
     if (file !== 'index.js') exports[moduleName] = require('./' + file);
   });
+
+exports.chatbase = require('yandex-dialogs-sdk-chatbase');
