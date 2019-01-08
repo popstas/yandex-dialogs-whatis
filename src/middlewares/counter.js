@@ -59,9 +59,15 @@ module.exports = () => (ctx, next) => {
 
   // передача данных в яндекс метрику
   if (process.env.NODE_ENV == 'production') {
+    const visitParams = {
+      messages: ctx.user.state.visit.messages
+    };
+
     const userParams = {
       userID: ctx.data.session.user_id,
-      userAgent: ctx.data.meta.client_id
+      userAgent: ctx.data.meta.client_id,
+      visits: ctx.user.state.visitor.visits,
+      __ymu: visitParams
     };
 
     yametrika._request = {
