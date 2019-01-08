@@ -58,7 +58,7 @@ module.exports = () => (ctx, next) => {
   ctx.user.state.visit.messages++;
 
   // передача данных в яндекс метрику
-  if (process.env.NODE_ENV == 'production') {
+  if (process.env.NODE_ENV == 'production' && ctx.message != 'ping') {
     const visitParams = {
       messages: ctx.user.state.visit.messages
     };
