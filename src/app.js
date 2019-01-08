@@ -30,6 +30,7 @@ class YandexDialogsWhatis {
     alice.use(middlewares.replyRandom());
     alice.use(middlewares.logMessage());
     alice.use(middlewares.yametrika(config.YAMETRIKA_ID));
+    alice.use(middlewares.chatbase(config.CHATBASE_KEY));
 
     // изменяют ctx во время запроса
     alice.use(middlewares.store());

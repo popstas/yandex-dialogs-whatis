@@ -8,6 +8,8 @@ const onShutdown = async (ctx, text) => {
   ctx.yametrika.onShutdown(url);
   ctx.user.state.referer = url;
 
+  ctx.chatbase.onShutdown(text);
+
   // store state
   await storage.setState(ctx.userData, ctx.user.state);
 };
