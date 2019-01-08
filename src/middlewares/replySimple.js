@@ -1,6 +1,17 @@
 const { Reply, Markup } = require('yandex-dialogs-sdk');
 const storage = require('../storage');
 
+const onShutdown = async (ctx, text) => {
+  // send yandex metrika
+  text = text.substring(0, 100);
+  let url = `d://${ctx.message}/${text}`;
+  ctx.yametrika.onShutdown(text);
+  ctx.user.state.referer = url;
+
+  // store state
+  await storage.setState(ctx.userData, ctx.user.state);
+};
+
 module.exports = () => (ctx, next) => {
   ctx.replySimple = async (lines, buttons) => {
     let text = '';
@@ -13,8 +24,7 @@ module.exports = () => (ctx, next) => {
       resultButtons = buttons.map(button => Markup.button(button));
     }
 
-    // store state
-    await storage.setState(ctx.userData, ctx.user.state);
+    await onShutdown(ctx, text);
 
     // log outgoing message
     if (ctx.message != 'ping') ctx.logMessage(`< ${text.split('\n').join(' [n] ')}`);
