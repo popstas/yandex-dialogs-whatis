@@ -1,5 +1,4 @@
-const storage = require('../storage');
-const yametrika = require('yametrika').counter({ id: 51825527 });
+const yametrika = require('yametrika').counter({ id: 51827108 });
 
 const longPauseDays = 3;
 const maxVisitPauseMins = 10;
