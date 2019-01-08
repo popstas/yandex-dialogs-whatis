@@ -1,3 +1,13 @@
+<a name="2.0.5"></a>
+## [2.0.5](https://github.com/popstas/yandex-dialogs-whatis/compare/v2.0.4...v2.0.5) (2019-01-08)
+
+
+### Features
+
+* yametrika, передача данных в яндекс.метрику ([8d4257f](https://github.com/popstas/yandex-dialogs-whatis/commit/8d4257f))
+
+
+
 <a name="2.0.4"></a>
 ## [2.0.4](https://github.com/popstas/yandex-dialogs-whatis/compare/v2.0.3...v2.0.4) (2019-01-07)
 
