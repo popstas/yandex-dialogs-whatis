@@ -5,7 +5,7 @@ const onShutdown = async (ctx, text) => {
   // send yandex metrika
   text = text.substring(0, 100);
   let url = `d://${ctx.message}/${text}`;
-  ctx.yametrika.onShutdown(text);
+  ctx.yametrika.onShutdown(url);
   ctx.user.state.referer = url;
 
   // store state
