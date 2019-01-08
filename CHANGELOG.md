@@ -1,3 +1,18 @@
+<a name="2.1.2"></a>
+## [2.1.2](https://github.com/popstas/yandex-dialogs-whatis/compare/v2.1.1...v2.1.2) (2019-01-08)
+
+
+### Bug Fixes
+
+* chatbase отключен на тестовом ([b5d99ed](https://github.com/popstas/yandex-dialogs-whatis/commit/b5d99ed))
+
+
+### Features
+
+* chatbase аналитика ([224a138](https://github.com/popstas/yandex-dialogs-whatis/commit/224a138))
+
+
+
 <a name="2.1.1"></a>
 ## [2.1.1](https://github.com/popstas/yandex-dialogs-whatis/compare/v2.1.0...v2.1.1) (2019-01-08)
 
