@@ -70,8 +70,7 @@ module.exports = () => (ctx, next) => {
     };
 
     yametrika._request = {
-      host: 'whatis.dialogs.popstas.ru',
-      url: 'http://whatis.dialogs.popstas.ru/' + ctx.message,
+      url: ctx.message,
       referer: '',
       'user-agent': ctx.data.meta.client_id,
       ip: ipFromUserId(ctx.data.session.user_id)
