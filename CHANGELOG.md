@@ -1,3 +1,13 @@
+<a name="2.0.8"></a>
+## [2.0.8](https://github.com/popstas/yandex-dialogs-whatis/compare/v2.0.7...v2.0.8) (2019-01-08)
+
+
+### Bug Fixes
+
+* изменен id счетчика метрики ([f87d8c4](https://github.com/popstas/yandex-dialogs-whatis/commit/f87d8c4))
+
+
+
 <a name="2.0.7"></a>
 ## [2.0.7](https://github.com/popstas/yandex-dialogs-whatis/compare/v2.0.6...v2.0.7) (2019-01-08)
 
