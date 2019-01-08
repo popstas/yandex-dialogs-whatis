@@ -35,6 +35,7 @@
     "js-yaml": "^3.12.0",
     "lokijs": "^1.5.5",
     "mongodb": "^3.1.1",
+    "yametrika": "^2.0.0",
     "yandex-dialogs-sdk": "^2.0.0"
   },
   "devDependencies": {

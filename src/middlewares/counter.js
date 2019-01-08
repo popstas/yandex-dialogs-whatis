@@ -1,7 +1,20 @@
 const storage = require('../storage');
+const yametrika = require('yametrika').counter({ id: 51825527 });
 
 const longPauseDays = 3;
 const maxVisitPauseMins = 10;
+
+// генерит виртуальный ip из userId
+const ipFromUserId = userId => {
+  const parts = [
+    userId.substring(0, 2),
+    userId.substring(2, 4),
+    userId.substring(4, 6),
+    userId.substring(6, 8)
+  ];
+  const ip = parts.map(part => parseInt(part, 16)).join('.');
+  return ip;
+};
 
 // запоминает последнее посещение юзера и несколько других метрик
 module.exports = () => (ctx, next) => {
@@ -43,6 +56,23 @@ module.exports = () => (ctx, next) => {
 
   ctx.user.state.visitor.lastMessageDate = new Date().getTime();
   ctx.user.state.visit.messages++;
+
+  // передача данных в яндекс метрику
+  if (process.env.NODE_ENV == 'production') {
+    const userParams = {
+      userID: ctx.data.session.user_id,
+      userAgent: ctx.data.meta.client_id
+    };
+
+    yametrika._request = {
+      host: 'whatis.dialogs.popstas.ru',
+      url: 'http://whatis.dialogs.popstas.ru/' + ctx.message,
+      referer: '',
+      'user-agent': ctx.data.meta.client_id,
+      ip: ipFromUserId(ctx.data.session.user_id)
+    };
+    yametrika.hit('', '', '', userParams);
+  }
 
   return next(ctx);
 };
