@@ -1,3 +1,13 @@
+<a name="2.1.1"></a>
+## [2.1.1](https://github.com/popstas/yandex-dialogs-whatis/compare/v2.1.0...v2.1.1) (2019-01-08)
+
+
+### Bug Fixes
+
+* yametrika, передавался только вопрос, теперь с ответом ([58a5545](https://github.com/popstas/yandex-dialogs-whatis/commit/58a5545))
+
+
+
 <a name="2.1.0"></a>
 # [2.1.0](https://github.com/popstas/yandex-dialogs-whatis/compare/v2.0.8...v2.1.0) (2019-01-08)
 
