@@ -1,3 +1,13 @@
+<a name="2.0.6"></a>
+## [2.0.6](https://github.com/popstas/yandex-dialogs-whatis/compare/v2.0.5...v2.0.6) (2019-01-08)
+
+
+### Bug Fixes
+
+* передача параметров визита в метрику ([d9cf01b](https://github.com/popstas/yandex-dialogs-whatis/commit/d9cf01b))
+
+
+
 <a name="2.0.5"></a>
 ## [2.0.5](https://github.com/popstas/yandex-dialogs-whatis/compare/v2.0.4...v2.0.5) (2019-01-08)
 
