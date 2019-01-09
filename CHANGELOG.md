@@ -1,4 +1,7 @@
-<a name="2.2.1"></a>
+## [2.2.2](https://github.com/popstas/yandex-dialogs-whatis/compare/v2.2.1...v2.2.2) (2019-01-09)
+
+
+
 ## [2.2.1](https://github.com/popstas/yandex-dialogs-whatis/compare/v2.2.0...v2.2.1) (2019-01-09)
 
 
@@ -8,7 +11,6 @@
 
 
 
-<a name="2.2.0"></a>
 # [2.2.0](https://github.com/popstas/yandex-dialogs-whatis/compare/v2.1.2...v2.2.0) (2019-01-09)
 
 
@@ -24,7 +26,6 @@
 
 
 
-<a name="2.1.2"></a>
 ## [2.1.2](https://github.com/popstas/yandex-dialogs-whatis/compare/v2.1.1...v2.1.2) (2019-01-08)
 
 
@@ -39,7 +40,6 @@
 
 
 
-<a name="2.1.1"></a>
 ## [2.1.1](https://github.com/popstas/yandex-dialogs-whatis/compare/v2.1.0...v2.1.1) (2019-01-08)
 
 
@@ -49,7 +49,6 @@
 
 
 
-<a name="2.1.0"></a>
 # [2.1.0](https://github.com/popstas/yandex-dialogs-whatis/compare/v2.0.8...v2.1.0) (2019-01-08)
 
 
@@ -64,7 +63,6 @@
 
 
 
-<a name="2.0.8"></a>
 ## [2.0.8](https://github.com/popstas/yandex-dialogs-whatis/compare/v2.0.7...v2.0.8) (2019-01-08)
 
 
@@ -74,7 +72,6 @@
 
 
 
-<a name="2.0.7"></a>
 ## [2.0.7](https://github.com/popstas/yandex-dialogs-whatis/compare/v2.0.6...v2.0.7) (2019-01-08)
 
 
@@ -84,7 +81,6 @@
 
 
 
-<a name="2.0.6"></a>
 ## [2.0.6](https://github.com/popstas/yandex-dialogs-whatis/compare/v2.0.5...v2.0.6) (2019-01-08)
 
 
@@ -94,7 +90,6 @@
 
 
 
-<a name="2.0.5"></a>
 ## [2.0.5](https://github.com/popstas/yandex-dialogs-whatis/compare/v2.0.4...v2.0.5) (2019-01-08)
 
 
@@ -104,7 +99,6 @@
 
 
 
-<a name="2.0.4"></a>
 ## [2.0.4](https://github.com/popstas/yandex-dialogs-whatis/compare/v2.0.3...v2.0.4) (2019-01-07)
 
 
@@ -114,7 +108,6 @@
 
 
 
-<a name="2.0.3"></a>
 ## [2.0.3](https://github.com/popstas/yandex-dialogs-whatis/compare/v2.0.2...v2.0.3) (2019-01-07)
 
 
@@ -124,7 +117,6 @@
 
 
 
-<a name="2.0.2"></a>
 ## [2.0.2](https://github.com/popstas/yandex-dialogs-whatis/compare/v2.0.1...v2.0.2) (2019-01-07)
 
 
@@ -135,12 +127,10 @@
 
 
 
-<a name="2.0.1"></a>
 ## [2.0.1](https://github.com/popstas/yandex-dialogs-whatis/compare/v2.0.0...v2.0.1) (2019-01-07)
 
 
 
-<a name="2.0.0"></a>
 # [2.0.0](https://github.com/popstas/yandex-dialogs-whatis/compare/v1.8.5...v2.0.0) (2019-01-07)
 
 
@@ -150,7 +140,6 @@
 
 
 
-<a name="1.8.5"></a>
 ## [1.8.5](https://github.com/popstas/yandex-dialogs-whatis/compare/v1.8.4...v1.8.5) (2018-09-14)
 
 
@@ -160,7 +149,6 @@
 
 
 
-<a name="1.8.4"></a>
 ## [1.8.4](https://github.com/popstas/yandex-dialogs-whatis/compare/v1.8.3...v1.8.4) (2018-09-14)
 
 
@@ -172,7 +160,6 @@
 
 
 
-<a name="1.8.3"></a>
 ## [1.8.3](https://github.com/popstas/yandex-dialogs-whatis/compare/v1.8.2...v1.8.3) (2018-07-31)
 
 
@@ -185,12 +172,10 @@
 
 
 
-<a name="1.8.2"></a>
 ## [1.8.2](https://github.com/popstas/yandex-dialogs-whatis/compare/v1.8.1...v1.8.2) (2018-07-27)
 
 
 
-<a name="1.8.1"></a>
 ## [1.8.1](https://github.com/popstas/yandex-dialogs-whatis/compare/v1.8.0...v1.8.1) (2018-07-27)
 
 
@@ -203,7 +188,6 @@
 
 
 
-<a name="1.8.0"></a>
 # [1.8.0](https://github.com/popstas/yandex-dialogs-whatis/compare/v1.7.6...v1.8.0) (2018-07-23)
 
 
@@ -214,7 +198,6 @@
 
 
 
-<a name="1.7.6"></a>
 ## [1.7.6](https://github.com/popstas/yandex-dialogs-whatis/compare/v1.7.5...v1.7.6) (2018-07-23)
 
 
@@ -226,7 +209,6 @@
 
 
 
-<a name="1.7.5"></a>
 ## [1.7.5](https://github.com/popstas/yandex-dialogs-whatis/compare/v1.7.4...v1.7.5) (2018-07-21)
 
 
@@ -237,7 +219,6 @@
 
 
 
-<a name="1.7.4"></a>
 ## [1.7.4](https://github.com/popstas/yandex-dialogs-whatis/compare/v1.7.3...v1.7.4) (2018-07-21)
 
 
@@ -253,7 +234,6 @@
 
 
 
-<a name="1.7.3"></a>
 ## [1.7.3](https://github.com/popstas/yandex-dialogs-whatis/compare/v1.7.2...v1.7.3) (2018-07-19)
 
 
@@ -263,17 +243,14 @@
 
 
 
-<a name="1.7.2"></a>
 ## [1.7.2](https://github.com/popstas/yandex-dialogs-whatis/compare/v1.7.1...v1.7.2) (2018-07-19)
 
 
 
-<a name="1.7.1"></a>
 ## [1.7.1](https://github.com/popstas/yandex-dialogs-whatis/compare/v1.7.0...v1.7.1) (2018-07-19)
 
 
 
-<a name="1.7.0"></a>
 # [1.7.0](https://github.com/popstas/yandex-dialogs-whatis/compare/v1.6.0...v1.7.0) (2018-07-19)
 
 
@@ -290,7 +267,6 @@
 
 
 
-<a name="1.6.0"></a>
 # [1.6.0](https://github.com/popstas/yandex-dialogs-whatis/compare/v1.5.1...v1.6.0) (2018-07-17)
 
 
@@ -308,7 +284,6 @@
 
 
 
-<a name="1.5.1"></a>
 ## [1.5.1](https://github.com/popstas/yandex-dialogs-whatis/compare/v1.5.0...v1.5.1) (2018-07-15)
 
 
@@ -318,7 +293,6 @@
 
 
 
-<a name="1.5.0"></a>
 # [1.5.0](https://github.com/popstas/yandex-dialogs-whatis/compare/v1.4.2...v1.5.0) (2018-07-15)
 
 
@@ -329,7 +303,6 @@
 
 
 
-<a name="1.4.2"></a>
 ## [1.4.2](https://github.com/popstas/yandex-dialogs-whatis/compare/v1.4.1...v1.4.2) (2018-07-15)
 
 
@@ -347,7 +320,6 @@
 
 
 
-<a name="1.4.1"></a>
 ## [1.4.1](https://github.com/popstas/yandex-dialogs-whatis/compare/v1.4.0...v1.4.1) (2018-07-14)
 
 
@@ -360,7 +332,6 @@
 
 
 
-<a name="1.4.0"></a>
 # [1.4.0](https://github.com/popstas/yandex-dialogs-whatis/compare/v1.3.1...v1.4.0) (2018-07-14)
 
 
@@ -375,7 +346,6 @@
 
 
 
-<a name="1.3.1"></a>
 ## [1.3.1](https://github.com/popstas/yandex-dialogs-whatis/compare/v1.3.0...v1.3.1) (2018-07-14)
 
 
@@ -385,7 +355,6 @@
 
 
 
-<a name="1.3.0"></a>
 # [1.3.0](https://github.com/popstas/yandex-dialogs-whatis/compare/v1.2.0...v1.3.0) (2018-07-14)
 
 
@@ -405,7 +374,6 @@
 
 
 
-<a name="1.2.0"></a>
 # [1.2.0](https://github.com/popstas/yandex-dialogs-whatis/compare/v1.1.0...v1.2.0) (2018-07-10)
 
 
@@ -427,7 +395,6 @@
 
 
 
-<a name="1.1.0"></a>
 # [1.1.0](https://github.com/popstas/yandex-dialogs-whatis/compare/v1.0.1...v1.1.0) (2018-07-08)
 
 
@@ -443,7 +410,6 @@
 
 
 
-<a name="1.0.1"></a>
 ## [1.0.1](https://github.com/popstas/yandex-dialogs-whatis/compare/v1.0.0...v1.0.1) (2018-07-07)
 
 
@@ -454,7 +420,6 @@
 
 
 
-<a name="1.0.0"></a>
 # [1.0.0](https://github.com/popstas/yandex-dialogs-whatis/compare/8cf6ca0...v1.0.0) (2018-07-07)
 
 
