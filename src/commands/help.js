@@ -1,4 +1,3 @@
-const storage = require('../storage');
 const commands = require('../commands');
 const utils = require('../utils');
 
@@ -12,7 +11,7 @@ module.exports.welcome = async ctx => {
     return ctx.replySimple(msg, buttons);
   } else {
     msg = [
-      'Я умею запоминать, что где находится или что когда будет и напоминать об этом.',
+      'Я умею запоминать что где лежит и напоминать об этом.',
       'Хотите ознакомиться с возможностями на примере?'
     ];
     return ctx.confirm(msg, module.exports.tour, module.exports.firstHelp);
@@ -45,8 +44,9 @@ module.exports.any = async ctx => {
     const question = words.slice(prepIndex, prepIndex + 2);
     const answer = prepIndex === 0 ? words.slice(prepIndex + 2) : words.slice(0, prepIndex);
     const possibleMsg = question.join(' ') + ' находится ' + answer.join(' ');
+    ctx.chatbase.setIntent('rememberConfirm');
     return ctx.confirm(
-      possibleMsg + '?',
+      `Вы хотите запомнить: ${possibleMsg}?`,
       ctx => commands.processRemember(ctx, possibleMsg),
       ctx => {
         ctx.chatbase.setNotHandled();
@@ -159,7 +159,7 @@ module.exports.scenarios = async ctx => {
   return ctx.replySimple(
     [
       'Примеры сценариев использования второй памяти, назовите сценарий, чтобы узнать подробности:',
-      names.join('\n')
+      names.join(',\n')
     ],
     names
   );
@@ -189,16 +189,16 @@ module.exports.remember = async ctx => {
   ctx.chatbase.setIntent('helpRemember');
   ctx.logMessage(`> ${ctx.message} (helpRemember)`);
 
-  const buttons = ['запомни на дворе находится трава', 'в среду будет дождь'];
+  const buttons = ['запомни на дворе находится трава', 'в синей бутылке налита вода'];
   return ctx.replySimple(
     [
       'Скажите "запомни", чтобы добавить новый ответ пошагово.',
-      'Вы можете запоминать вопросы со смыслом "что где" и "что когда".',
-      'Можно быстро добавить новый ответ так: "запомни [что-то] находится [где-то]".',
+      'Вы можете запоминать вопросы со смыслом "что где", "что в чём".',
+      'Можно быстро добавить новый ответ так: "запомни на столе лежит телефон".',
       'Между вопросом и ответом обязательно должен быть глагол.',
       'Необязательно говорить "запомни" в начале, скорее всего, я вас пойму и так.',
       'Примеры:',
-      buttons.join('\n')
+      buttons.join(',\n')
     ],
     buttons
   );
@@ -214,7 +214,7 @@ module.exports.whatis = async ctx => {
     [
       'Начните фразу со "что", чтобы получить ответ. Например: "что на дворе".',
       'Вы можете задавать вопросы со смыслом "что где" и "что когда". Например:',
-      buttons.join('\n')
+      buttons.join(',\n')
     ],
     buttons
   );
@@ -225,12 +225,12 @@ module.exports.whereis = async ctx => {
   ctx.chatbase.setIntent('helpWhereis');
   ctx.logMessage(`> ${ctx.message} (helpWhereis)`);
 
-  const buttons = ['где трава', 'где находится трава'];
+  const buttons = ['где трава', 'где находится трава', 'где вода'];
   return ctx.replySimple(
     [
       'Начните фразу с "где", чтобы найти место, где это что-то лежит.',
       'Примеры:',
-      buttons.join('\n')
+      buttons.join(',\n')
     ],
     buttons
   );

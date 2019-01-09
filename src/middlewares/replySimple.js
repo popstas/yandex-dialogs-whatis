@@ -15,7 +15,7 @@ const onShutdown = async (ctx, text) => {
 };
 
 module.exports = () => (ctx, next) => {
-  ctx.replySimple = async (lines, buttons) => {
+  ctx.replySimple = async (lines, buttons, params = {}) => {
     let text = '';
     let resultButtons = [];
 
@@ -31,10 +31,10 @@ module.exports = () => (ctx, next) => {
     // log outgoing message
     if (ctx.message != 'ping') ctx.logMessage(`< ${text.split('\n').join(' [n] ')}`);
 
-    return Reply.text(text, { buttons: resultButtons });
+    return Reply.text(text, { ...{ buttons: resultButtons }, ...params });
   };
 
-  ctx.reply = (lines, buttons) => ctx.replySimple(lines, buttons);
+  ctx.reply = (lines, buttons, params = {}) => ctx.replySimple(lines, buttons, params);
 
   return next(ctx);
 };

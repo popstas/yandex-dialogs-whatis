@@ -3,7 +3,6 @@ const storage = require('../storage');
 const utils = require('../utils');
 const Fuse = require('fuse.js');
 const matchers = require('../matchers');
-const { Reply } = require('yandex-dialogs-sdk');
 
 const STAGE_IDLE = 'STAGE_IDLE';
 const STAGE_WAIT_FOR_ANSWER = 'STAGE_WAIT_FOR_ANSWER';
@@ -73,6 +72,7 @@ const processDelete = async (ctx, question) => {
     // storage.setState(ctx.userData, ctx.user.state);
     // второй раз подряд не может удалить
     if (ctx.user.state.deleteFails > 1) {
+      ctx.chatbase.setIntent('knownConfirm');
       return await ctx.confirm('Не знаю такого, рассказать, что знаю?', module.exports.known, ctx =>
         ctx.replyRandom(['ОК', 'Молчу', 'Я могу и всё забыть...'])
       );
@@ -130,6 +130,7 @@ module.exports.whatIs = async ctx => {
   const q = utils.cleanQuestion(ctx.message);
 
   if (ctx.user.data.length == 0) {
+    ctx.chatbase.setNotHandled();
     return ctx.reply('Я еще ничего не знаю, сначала расскажите мне, что где находится.');
   }
 
@@ -174,8 +175,11 @@ module.exports.whatIs = async ctx => {
     return ctx.reply(msg);
   } else {
     ctx.chatbase.setNotHandled();
-    return ctx.replySimple(
-      'Я не знаю. Если вы мне только что это говорили, значит, скорее всего, нужно поменять местами части фразы слева и справа от глагола. Скоро я научусь понимать сама, обещаю!',
+    return ctx.replyRandom(
+      [
+        'Я не знаю',
+        'Я не знаю, если вы мне только что это говорили, значит, я не так записала, спросите "что ты знаешь"'
+      ],
       ['что ты знаешь']
     );
   }
@@ -189,6 +193,7 @@ module.exports.whereIs = ctx => {
   const q = utils.cleanQuestion(ctx.message);
 
   if (ctx.user.data.length == 0) {
+    ctx.chatbase.setNotHandled();
     return ctx.reply('Я еще ничего не знаю, сначала расскажите мне, что где находится.');
   }
 
@@ -219,6 +224,7 @@ module.exports.whereIs = ctx => {
 
     return ctx.reply(msg);
   } else {
+    ctx.chatbase.setNotHandled();
     return ctx.reply('Я не знаю');
   }
 };
@@ -327,9 +333,10 @@ module.exports.known = async ctx => {
   // text
   let text = [];
   if (questions.length > 0) {
-    text.push('У меня есть информация об этих объектах:\n');
+    text.push('Я знаю об этом:\n');
     text.push(questions.join('\n'));
   } else {
+    ctx.chatbase.setNotHandled();
     text.push('Я еще ничего не знаю, сначала расскажите мне, что где находится.');
   }
 
@@ -348,6 +355,7 @@ module.exports.dontKnow = async ctx => {
 module.exports.cancel = async ctx => {
   ctx.chatbase.setIntent('cancel');
   ctx.logMessage(`> ${ctx.message} (cancel)`);
+  ctx.chatbase.setNotHandled();
 
   ctx.leave();
   ctx = await resetState(ctx);
@@ -360,7 +368,7 @@ module.exports.sessionEnd = async ctx => {
   ctx.logMessage(`> ${ctx.message} (sessionEnd)`);
 
   ctx = await resetState(ctx);
-  return Reply.text('До свидания!', { end_session: true });
+  return ctx.reply('До свидания!', [], { end_session: true });
 };
 
 // команда "удали последнее"
@@ -369,6 +377,7 @@ module.exports.deleteLast = async ctx => {
   ctx.logMessage(`> ${ctx.message} (deleteLast)`);
 
   if (!ctx.user.state.lastAddedItem) {
+    ctx.chatbase.setNotHandled();
     return ctx.reply('Я ничего не запоминала в последнее время...');
   }
   const question = ctx.user.state.lastAddedItem.questions[0];

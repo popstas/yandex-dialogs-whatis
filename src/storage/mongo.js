@@ -69,7 +69,7 @@ class MongoDriver extends BaseDriver {
   }
 
   async setState(userData, state) {
-    const result = await userData.state.update(
+    const result = await userData.state.updateOne(
       { name: 'state' },
       { $set: { state } },
       { upsert: true }
@@ -90,7 +90,7 @@ class MongoDriver extends BaseDriver {
   }
 
   async storeAnswer(userData, question, answer) {
-    const result = await userData.data.update(
+    const result = await userData.data.updateOne(
       { questions: question },
       { $set: { answer }, $setOnInsert: { questions: [question] } },
       { upsert: true }
