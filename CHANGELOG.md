@@ -1,3 +1,12 @@
+# [2.3.0](https://github.com/popstas/yandex-dialogs-whatis/compare/v2.2.3...v2.3.0) (2019-01-09)
+
+
+### Bug Fixes
+
+* много мелких исправлений ([04fa747](https://github.com/popstas/yandex-dialogs-whatis/commit/04fa747))
+
+
+
 ## [2.2.3](https://github.com/popstas/yandex-dialogs-whatis/compare/v2.2.2...v2.2.3) (2019-01-09)
 
 
