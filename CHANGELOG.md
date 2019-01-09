@@ -1,3 +1,17 @@
+## [2.3.1](https://github.com/popstas/yandex-dialogs-whatis/compare/v2.3.0...v2.3.1) (2019-01-09)
+
+
+### Bug Fixes
+
+* версия, правильное произношение ([b34aa3b](https://github.com/popstas/yandex-dialogs-whatis/commit/b34aa3b))
+
+
+### Features
+
+* версия, запусти навык 2 память ([da323a8](https://github.com/popstas/yandex-dialogs-whatis/commit/da323a8))
+
+
+
 # [2.3.0](https://github.com/popstas/yandex-dialogs-whatis/compare/v2.2.3...v2.3.0) (2019-01-09)
 
 
