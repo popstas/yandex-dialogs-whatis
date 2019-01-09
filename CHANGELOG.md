@@ -1,3 +1,13 @@
+## [2.2.3](https://github.com/popstas/yandex-dialogs-whatis/compare/v2.2.2...v2.2.3) (2019-01-09)
+
+
+### Bug Fixes
+
+* **chatbase:** разметка агентских сообщений ([c99656e](https://github.com/popstas/yandex-dialogs-whatis/commit/c99656e))
+* **yametrika:** не отправлять пустые сообщения ([3d15bfa](https://github.com/popstas/yandex-dialogs-whatis/commit/3d15bfa))
+
+
+
 ## [2.2.2](https://github.com/popstas/yandex-dialogs-whatis/compare/v2.2.1...v2.2.2) (2019-01-09)
 
 
