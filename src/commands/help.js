@@ -72,7 +72,7 @@ module.exports.any = async ctx => {
   }
 
   ctx.chatbase.setHandled(false);
-  return ctx.replyRendom(
+  return ctx.replyRandom(
     [
       'Не поняла',
       'О чём вы?',
