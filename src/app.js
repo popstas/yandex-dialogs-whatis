@@ -117,6 +117,22 @@ class YandexDialogsWhatis {
       return ctx.reply('Чтобы вернуться к Алисе, скажите "Алиса вернись"');
     });
 
+    // запусти навык 2 память
+    alice.command('запусти навык 2 память', ctx => {
+      ctx.chatbase.setIntent('selfRun');
+      ctx.logMessage(`> ${ctx.message} (selfRun)`);
+
+      return ctx.reply('Я уже тут');
+    });
+
+    // версия
+    alice.command('версия', ctx => {
+      ctx.chatbase.setIntent('version');
+      ctx.logMessage(`> ${ctx.message} (version)`);
+
+      return ctx.reply(packageJson.version);
+    });
+
     // оскорбление
     alice.command(matchers.abuse(), ctx => {
       ctx.chatbase.setIntent('abuse');
