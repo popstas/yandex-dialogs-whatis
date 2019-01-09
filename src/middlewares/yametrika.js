@@ -17,7 +17,7 @@ module.exports = counter_id => (ctx, next) => {
   // функцию нужно вызвать в самом конце, перед отправкой ответа пользователю
   ctx.yametrika.onShutdown = async url => {
     // передача данных в яндекс метрику
-    if (process.env.NODE_ENV == 'production' && ctx.message != 'ping' && ctx.yametrika._id) {
+    if (process.env.NODE_ENV == 'production' && ctx.message && ctx.message != 'ping' && ctx.yametrika._id) {
       const visitParams = {
         messages: ctx.user.state.visit.messages
       };
