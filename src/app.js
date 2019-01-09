@@ -130,7 +130,9 @@ class YandexDialogsWhatis {
       ctx.chatbase.setIntent('version');
       ctx.logMessage(`> ${ctx.message} (version)`);
 
-      return ctx.reply(packageJson.version);
+      return ctx.reply(packageJson.version, [], {
+        tts: packageJson.version.split('.').join(' точка ')
+      });
     });
 
     // оскорбление
