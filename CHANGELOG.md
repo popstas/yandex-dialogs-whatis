@@ -1,3 +1,19 @@
+<a name="2.2.0"></a>
+# [2.2.0](https://github.com/popstas/yandex-dialogs-whatis/compare/v2.1.2...v2.2.0) (2019-01-09)
+
+
+### Bug Fixes
+
+* **chatbase:** onShutdown -> sendEvent ([785f9f2](https://github.com/popstas/yandex-dialogs-whatis/commit/785f9f2))
+* работа тестов с отключенной отправкой метрик ([0f2b2f9](https://github.com/popstas/yandex-dialogs-whatis/commit/0f2b2f9))
+
+
+### Features
+
+* **chatbase:** навык размечен с учетом intents, handled messages и остальным, что можно передать в chatbase ([291ad1a](https://github.com/popstas/yandex-dialogs-whatis/commit/291ad1a))
+
+
+
 <a name="2.1.2"></a>
 ## [2.1.2](https://github.com/popstas/yandex-dialogs-whatis/compare/v2.1.1...v2.1.2) (2019-01-08)
 
