@@ -173,7 +173,7 @@ module.exports.whatIs = async ctx => {
 
     return ctx.reply(msg);
   } else {
-    ctx.chatbase.setHandled(false);
+    ctx.chatbase.setNotHandled();
     return ctx.replySimple(
       'Я не знаю. Если вы мне только что это говорили, значит, скорее всего, нужно поменять местами части фразы слева и справа от глагола. Скоро я научусь понимать сама, обещаю!',
       ['что ты знаешь']
@@ -338,7 +338,7 @@ module.exports.known = async ctx => {
 
 // ответ на непонятное
 module.exports.dontKnow = async ctx => {
-  ctx.chatbase.setHandled(false);
+  ctx.chatbase.setNotHandled();
   ctx.logMessage(`> ${ctx.message} (dontKnow)`);
 
   return ctx.reply('Я не знаю хороший ответ на этот вопрос');

@@ -37,7 +37,7 @@
     "mongodb": "^3.1.1",
     "yametrika": "^2.0.0",
     "yandex-dialogs-sdk": "^2.0.0",
-    "yandex-dialogs-sdk-chatbase": "^1.1.2"
+    "yandex-dialogs-sdk-chatbase": "^1.2.0"
   },
   "devDependencies": {
     "axios": "^0.18.0",

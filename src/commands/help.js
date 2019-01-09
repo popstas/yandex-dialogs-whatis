@@ -29,7 +29,7 @@ module.exports.any = async ctx => {
       /(вчера|завтра|сегодня|понедельник|вторник|среда|четверг|пятница|суббота|воскресенье)/i
     )
   ) {
-    ctx.chatbase.setHandled(false);
+    ctx.chatbase.setNotHandled();
     return ctx.replySimple('Вам нужно добавить глагол, например, запомни что завтра БУДЕТ завтра', [
       'как запомнить',
       'примеры'
@@ -49,7 +49,7 @@ module.exports.any = async ctx => {
       possibleMsg + '?',
       ctx => commands.processRemember(ctx, possibleMsg),
       ctx => {
-        ctx.chatbase.setHandled(false);
+        ctx.chatbase.setNotHandled();
         return ctx.replyRandom(
           [
             'Я такое не понимаю...',
@@ -64,14 +64,14 @@ module.exports.any = async ctx => {
 
   // неопределенное запомни
   if (ctx.message.match(/^запомни /)) {
-    ctx.chatbase.setHandled(false);
+    ctx.chatbase.setNotHandled();
     return ctx.replySimple('Вам нужно добавить глагол, например, на дворе растёт трава', [
       'как запомнить',
       'примеры'
     ]);
   }
 
-  ctx.chatbase.setHandled(false);
+  ctx.chatbase.setNotHandled();
   return ctx.replyRandom(
     [
       'Не поняла',

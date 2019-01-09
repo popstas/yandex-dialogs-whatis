@@ -32,7 +32,7 @@ class YandexDialogsWhatis {
     alice.use(middlewares.replyRandom());
     alice.use(middlewares.logMessage());
     alice.use(middlewares.yametrika(this.config.YAMETRIKA_ID));
-    alice.use(middlewares.chatbase(this.config.CHATBASE_KEY));
+    alice.use(middlewares.chatbase(this.config.CHATBASE_KEY, packageJson.version));
 
     // изменяют ctx во время запроса
     alice.use(middlewares.store());
@@ -41,11 +41,6 @@ class YandexDialogsWhatis {
     alice.use(middlewares.counter());
 
     await utils.initMorph();
-
-    alice.use((ctx, next) => {
-      ctx.chatbase.setVersion(packageJson.version);
-      return next(ctx);
-    });
 
     // при наличии session.confirm запускаем сценарий подтверждения
     alice.command(matchers.confirm(), commands.confirm);
