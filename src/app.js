@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const { Alice, Reply, Stage, Scene } = require('yandex-dialogs-sdk');
 const middlewares = require('./middlewares');
 const matchers = require('./matchers');
+const packageJson = require('../package.json');
 const fuseOptions = {
   keys: ['name'],
   threshold: 0.3,
@@ -40,6 +41,11 @@ class YandexDialogsWhatis {
 
     await utils.initMorph();
 
+    alice.use((ctx, next) => {
+      ctx.chatbase.setVersion(packageJson.version);
+      return next(ctx);
+    });
+
     // при наличии session.confirm запускаем сценарий подтверждения
     alice.command(matchers.confirm(), commands.confirm);
 
@@ -58,13 +64,17 @@ class YandexDialogsWhatis {
 
     // демо данные
     alice.command('демо данные', ctx => {
+      ctx.chatbase.setIntent('demoData');
       ctx.logMessage(`> ${ctx.message} (demoData confirm)`);
-      ctx.confirm('Точно?', commands.demoData, ctx => ctx.reply('Как хочешь'));
+
+      return ctx.confirm('Точно?', commands.demoData, ctx => ctx.reply('Как хочешь'));
     });
 
     // забудь все вообще
     alice.command('забудь все вообще', ctx => {
+      ctx.chatbase.setIntent('clearDataAll');
       ctx.logMessage(`> ${ctx.message} (clearDataAll confirm)`);
+
       return ctx.confirm('Точно?', commands.clearDataAll, ctx => ctx.reply('Как хочешь'));
     });
 
@@ -82,7 +92,10 @@ class YandexDialogsWhatis {
     alice.command(
       ctx => (ctx.message.match(/^меня зовут /) ? 1 : 0),
       ctx => {
-        return Reply.text('Боитесь забыть своё имя? Я не буду это запоминать!');
+        ctx.chatbase.setIntent('myName');
+        ctx.logMessage(`> ${ctx.message} (myName)`);
+
+        return ctx.reply('Боитесь забыть своё имя? Я не буду это запоминать!');
       }
     );
 
@@ -99,19 +112,31 @@ class YandexDialogsWhatis {
     alice.command(matchers.goodbye(), commands.sessionEnd);
 
     // Алиса
-    alice.command(/(алиса|алису)/i, ctx =>
-      ctx.reply('Чтобы вернуться к Алисе, скажите "Алиса вернись"')
-    );
+    alice.command(/(алиса|алису)/i, ctx => {
+      ctx.chatbase.setIntent('alice');
+      ctx.logMessage(`> ${ctx.message} (alice)`);
+
+      return ctx.reply('Чтобы вернуться к Алисе, скажите "Алиса вернись"');
+    });
 
     // оскорбление
-    alice.command(matchers.abuse(), ctx =>
-      ctx.reply('Я быстро учусь, вернитесь через пару дней и убедитесь!')
-    );
+    alice.command(matchers.abuse(), ctx => {
+      ctx.chatbase.setIntent('abuse');
+      ctx.chatbase.setAsFeedback();
+      ctx.logMessage(`> ${ctx.message} (abuse)`);
+
+      return ctx.reply('Я быстро учусь, вернитесь через пару дней и убедитесь!');
+    });
 
     // забудь все, должно быть перед "удали последнее"
     alice.command(
       ['забудь всё', 'забудь все', 'удали все', 'забыть все', 'сотри все', 'стереть все'],
-      ctx => ctx.confirm('Точно?', commands.clearData, ctx => ctx.reply('Как хочешь'))
+      ctx => {
+        ctx.chatbase.setIntent('clearData');
+        ctx.logMessage(`> ${ctx.message} (clearData confirm)`);
+
+        return ctx.confirm('Точно?', commands.clearData, ctx => ctx.reply('Как хочешь'));
+      }
     );
 
     // удали последнее
@@ -122,8 +147,12 @@ class YandexDialogsWhatis {
     alice.command(/(забудь |удали(ть)? )(что )?.*/, commands.deleteQuestion);
 
     // спасибо
-    alice.command(matchers.thankyou(), ctx =>
-      ctx.replyRandom([
+    alice.command(matchers.thankyou(), ctx => {
+      ctx.chatbase.setAsFeedback();
+      ctx.chatbase.setIntent('thankyou');
+      ctx.logMessage(`> ${ctx.message} (thankyou)`);
+
+      return ctx.replyRandom([
         'Всегда пожалуйста',
         'Не за что',
         'Обращайся!',
@@ -132,12 +161,16 @@ class YandexDialogsWhatis {
         'Пожалуйста',
         'Пожалуйста',
         'Пожалуйста'
-      ])
-    );
+      ]);
+    });
 
     // молодец
-    alice.command(matchers.compliment(), ctx =>
-      ctx.replyRandom([
+    alice.command(matchers.compliment(), ctx => {
+      ctx.chatbase.setAsFeedback();
+      ctx.chatbase.setIntent('compliment');
+      ctx.logMessage(`> ${ctx.message} (compliment)`);
+
+      return ctx.replyRandom([
         'Спасибо, стараюсь :)',
         'Ой, так приятно )',
         'Ты же в курсе, что хвалишь бездушный алгоритм?',
@@ -146,8 +179,8 @@ class YandexDialogsWhatis {
         'Спасибо!',
         'Спасибо!',
         'Спасибо!'
-      ])
-    );
+      ]);
+    });
 
     // это ломает команды "удали последнее", "удали кокретное"
     // alice.command(['что ты знаешь', 'что ты помнишь'], commands.known);

@@ -124,7 +124,9 @@ const resetState = async ctx => {
 
 // команда "что ..."
 module.exports.whatIs = async ctx => {
+  ctx.chatbase.setIntent('whatis');
   ctx.logMessage(`> ${ctx.message} (whatis)`);
+
   const q = utils.cleanQuestion(ctx.message);
 
   if (ctx.user.data.length == 0) {
@@ -171,6 +173,7 @@ module.exports.whatIs = async ctx => {
 
     return ctx.reply(msg);
   } else {
+    ctx.chatbase.setHandled(false);
     return ctx.replySimple(
       'Я не знаю. Если вы мне только что это говорили, значит, скорее всего, нужно поменять местами части фразы слева и справа от глагола. Скоро я научусь понимать сама, обещаю!',
       ['что ты знаешь']
@@ -180,7 +183,9 @@ module.exports.whatIs = async ctx => {
 
 // команда "где ...""
 module.exports.whereIs = ctx => {
+  ctx.chatbase.setIntent('whereis');
   ctx.logMessage(`> ${ctx.message} (whereis)`);
+
   const q = utils.cleanQuestion(ctx.message);
 
   if (ctx.user.data.length == 0) {
@@ -220,7 +225,9 @@ module.exports.whereIs = ctx => {
 
 // команда "команды"
 module.exports.commands = ctx => {
+  ctx.chatbase.setIntent('commands');
   ctx.logMessage(`> ${ctx.message} (commands)`);
+
   const buttons = [
     'запомни в чем-то находится что-то',
     'удали последнее',
@@ -243,7 +250,9 @@ module.exports.remember = async ctx => {
 };
 
 const processRemember = async (ctx, msg) => {
+  ctx.chatbase.setIntent('remember');
   ctx.logMessage(`> ${msg} (remember)`);
+
   // regexp
   const cleanMsg = msg.replace(/^запомни /, '').replace(/^что /, '');
   const { question, verb, answer } = utils.fixReversedRemember(utils.splitByVerb(cleanMsg));
@@ -275,7 +284,9 @@ module.exports.processRemember = processRemember;
 
 // команда "забудь всё"
 module.exports.clearData = async ctx => {
+  ctx.chatbase.setIntent('clearData');
   ctx.logMessage(`> ${ctx.message} (clearData)`);
+
   await storage.clearData(ctx.userData);
   ctx = await resetState(ctx);
   return ctx.reply('Всё забыла...');
@@ -283,7 +294,9 @@ module.exports.clearData = async ctx => {
 
 // команда "забудь всё вообще"
 module.exports.clearDataAll = async ctx => {
+  ctx.chatbase.setIntent('clearDataAll');
   ctx.logMessage(`> ${ctx.message} (clearDataAll)`);
+
   await storage.clearData(ctx.userData);
   ctx.user.state.visitor = { visits: 1 };
   ctx.user.state.visit = { messages: 0 };
@@ -294,7 +307,9 @@ module.exports.clearDataAll = async ctx => {
 
 // команда "демо данные"
 module.exports.demoData = async ctx => {
+  ctx.chatbase.setIntent('demoData');
   ctx.logMessage(`> ${ctx.message} (demoData)`);
+
   await storage.fillDemoData(ctx.userData);
   ctx = await resetState(ctx);
   return ctx.reply('Данные сброшены на демонстрационные');
@@ -302,7 +317,9 @@ module.exports.demoData = async ctx => {
 
 // команда "что ты знаешь"
 module.exports.known = async ctx => {
+  ctx.chatbase.setIntent('known');
   ctx.logMessage(`> ${ctx.message} (known)`);
+
   // buttons
   let questions = ctx.user.data.map(item => item.questions[0]);
   const buttons = questions.map(question => 'что ' + question);
@@ -321,13 +338,17 @@ module.exports.known = async ctx => {
 
 // ответ на непонятное
 module.exports.dontKnow = async ctx => {
+  ctx.chatbase.setHandled(false);
   ctx.logMessage(`> ${ctx.message} (dontKnow)`);
+
   return ctx.reply('Я не знаю хороший ответ на этот вопрос');
 };
 
 // команда "отмена"
 module.exports.cancel = async ctx => {
+  ctx.chatbase.setIntent('cancel');
   ctx.logMessage(`> ${ctx.message} (cancel)`);
+
   ctx.leave();
   ctx = await resetState(ctx);
   return ctx.reply('Всё отменено');
@@ -335,14 +356,18 @@ module.exports.cancel = async ctx => {
 
 // команда "пока"
 module.exports.sessionEnd = async ctx => {
+  ctx.chatbase.setIntent('sessionEnd');
   ctx.logMessage(`> ${ctx.message} (sessionEnd)`);
+
   ctx = await resetState(ctx);
   return Reply.text('До свидания!', { end_session: true });
 };
 
 // команда "удали последнее"
 module.exports.deleteLast = async ctx => {
+  ctx.chatbase.setIntent('deleteLast');
   ctx.logMessage(`> ${ctx.message} (deleteLast)`);
+
   if (!ctx.user.state.lastAddedItem) {
     return ctx.reply('Я ничего не запоминала в последнее время...');
   }
@@ -352,7 +377,9 @@ module.exports.deleteLast = async ctx => {
 
 // команда "удали ..."
 module.exports.deleteQuestion = async ctx => {
+  ctx.chatbase.setIntent('deleteQuestion');
   ctx.logMessage(`> ${ctx.message} (deleteQuestion)`);
+
   // const question = ctx.body.question;
   const question = ctx.message.replace(/(забудь |удали(ть)? )(что )?(где )?/, '');
   return processDelete(ctx, question);
@@ -360,7 +387,9 @@ module.exports.deleteQuestion = async ctx => {
 
 // команда "запомни"
 module.exports.inAnswerEnter = async ctx => {
+  ctx.chatbase.setIntent('inAnswerEnter');
   ctx.logMessage(`> ${ctx.message} (inAnswerEnter)`);
+
   ctx.enter('in-answer');
   const reply = await processAnswer(ctx);
   return await ctx.reply(reply);
@@ -368,7 +397,9 @@ module.exports.inAnswerEnter = async ctx => {
 
 // процесс заполнение вопроса в сцене in-answer
 module.exports.inAnswerProcess = async ctx => {
+  ctx.chatbase.setIntent('inAnswerProcess');
   ctx.logMessage(`> ${ctx.message} (inAnswerProcess)`);
+
   const reply = await processAnswer(ctx);
   if (ctx.user.state.stage == STAGE_IDLE) {
     ctx.leave();
@@ -401,6 +432,7 @@ module.exports.confirm = async ctx => {
       }
     };
     if (ctx.message.match(/^повтори/)) {
+      ctx.chatbase.setIntent('confirmRepeat');
       return ctx.replySimple(confirm.reply, ['да', 'нет']);
     } else if (options.yesMatcher(ctx)) {
       cmd = confirm.yesCommand;
