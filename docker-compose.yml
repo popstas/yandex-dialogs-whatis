@@ -13,7 +13,7 @@ services:
     #   - 27017:27017
 
   yandex-dialogs-whatis:
-    image: popstas/yandex-dialogs-whatis:v2.2.0
+    image: popstas/yandex-dialogs-whatis:v2.2.1
     # build: .
     environment:
       NODE_ENV: production
