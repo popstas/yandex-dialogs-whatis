@@ -46,8 +46,8 @@ class Scenario {
 
     this.messageId = 1;
     this.sessionNew = false;
-    this.sessionId = 1;
-    this.userId = 1;
+    this.sessionId = '1234567890ABCDEF';
+    this.userId = '123ABC456';
 
     this.versose = false;
     this.timeout = 200000;

@@ -1,5 +1,6 @@
 'use strict';
 const { Scenarios } = require('./scenarios');
+const defaultConfig = require('../src/config');
 process.env.DB_DRIVER = 'loki';
 const app = require('../src/app');
 
@@ -7,7 +8,14 @@ const app = require('../src/app');
 const port = 28463;
 const url = process.env.URL || 'http://localhost:' + port;
 
-const bot = new app();
+const config = {
+  ...defaultConfig,
+  ...{
+    YAMETRIKA_ID: '',
+    CHATBASE_KEY: ''
+  }
+};
+const bot = new app(config);
 bot.listen(port);
 
 (async () => {

@@ -2,7 +2,7 @@
 
 const express = require('express');
 const bodyParser = require('body-parser');
-const { Alice, Reply, Stage, Scene } = require('yandex-dialogs-sdk');
+const { Alice, Stage, Scene } = require('yandex-dialogs-sdk');
 const middlewares = require('./middlewares');
 const matchers = require('./matchers');
 const packageJson = require('../package.json');
@@ -12,7 +12,7 @@ const fuseOptions = {
   maxPatternLength: 50,
   location: 68
 };
-const config = require('./config');
+const defaultConfig = require('./config');
 const commands = require('./commands/index');
 const utils = require('./utils');
 const commandsHelp = require('./commands/help');
@@ -20,7 +20,8 @@ const commandsHelp = require('./commands/help');
 const alice = new Alice({ fuseOptions });
 
 class YandexDialogsWhatis {
-  constructor() {
+  constructor(config = defaultConfig) {
+    this.config = config
     this.init();
   }
 
@@ -30,8 +31,8 @@ class YandexDialogsWhatis {
     alice.use(middlewares.replySimple());
     alice.use(middlewares.replyRandom());
     alice.use(middlewares.logMessage());
-    alice.use(middlewares.yametrika(config.YAMETRIKA_ID));
-    alice.use(middlewares.chatbase(config.CHATBASE_KEY));
+    alice.use(middlewares.yametrika(this.config.YAMETRIKA_ID));
+    alice.use(middlewares.chatbase(this.config.CHATBASE_KEY));
 
     // изменяют ctx во время запроса
     alice.use(middlewares.store());
@@ -236,7 +237,7 @@ class YandexDialogsWhatis {
       next();
     });
     app.use(express.static('static'));
-    app.post(config.API_ENDPOINT, async (req, res) => {
+    app.post(this.config.API_ENDPOINT, async (req, res) => {
       const jsonAnswer = await alice.handleRequest(req.body);
       res.json(jsonAnswer);
       // const handleResponseCallback = response => res.send(response);
