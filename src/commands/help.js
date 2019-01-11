@@ -5,9 +5,9 @@ const utils = require('../utils');
 module.exports.welcome = async ctx => {
   if (ctx.message != 'ping') ctx.logMessage(`> ${ctx.message} (welcome)`);
   let msg;
-  const buttons = ['помощь', 'примеры', 'что ты знаешь', 'команды'];
+  const buttons = ['помощь', 'примеры', 'что ты знаешь', 'команды', 'что нового'];
   if (ctx.user.state.visitor.visits > 1 || ctx.user.state.visit.messages > 1) {
-    msg = ['Привет' + (ctx.user.state.visitor.lastVisitLong ? ', давно не виделись' : '')];
+    msg = 'Привет' + (ctx.user.state.visitor.lastVisitLong ? ', давно не виделись, спросите "что нового", чтобы узнать об обновлениях' : '');
     return ctx.replySimple(msg, buttons);
   } else {
     msg = [
