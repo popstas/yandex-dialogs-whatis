@@ -1,3 +1,20 @@
+# [2.4.0](https://github.com/popstas/yandex-dialogs-whatis/compare/v2.3.1...v2.4.0) (2019-01-11)
+
+
+### Bug Fixes
+
+* confirm не сбрасывался после выхода из навыка ([d2e81cd](https://github.com/popstas/yandex-dialogs-whatis/commit/d2e81cd))
+* dockerignore data/ relative ([87dfb56](https://github.com/popstas/yandex-dialogs-whatis/commit/87dfb56))
+* научилась лучше понимать команды "удали последнее", "что ты знаешь" ([593d1c5](https://github.com/popstas/yandex-dialogs-whatis/commit/593d1c5))
+
+
+### Features
+
+* visitor.lastVisitDate ([afafd71](https://github.com/popstas/yandex-dialogs-whatis/commit/afafd71))
+* команда "что нового", changelog ([e44bc18](https://github.com/popstas/yandex-dialogs-whatis/commit/e44bc18))
+
+
+
 ## [2.3.1](https://github.com/popstas/yandex-dialogs-whatis/compare/v2.3.0...v2.3.1) (2019-01-09)
 
 
