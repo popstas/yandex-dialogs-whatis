@@ -247,7 +247,7 @@ module.exports.commands = ctx => {
     buttons.push('приветствие');
   }
 
-  return ctx.replySimple(['Вот примеры разных команд:', buttons.join('\n')], buttons);
+  return ctx.replySimple(['Вот примеры разных команд:', buttons.join(',\n')], buttons);
 };
 
 // команда "запомни ${question} находится ${answer}"
@@ -334,7 +334,7 @@ module.exports.known = async ctx => {
   let text = [];
   if (questions.length > 0) {
     text.push('Я знаю об этом:\n');
-    text.push(questions.join('\n'));
+    text.push(questions.join(',\n'));
   } else {
     ctx.chatbase.setNotHandled();
     text.push('Я еще ничего не знаю, сначала расскажите мне, что где находится.');
