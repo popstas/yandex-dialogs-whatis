@@ -167,8 +167,8 @@ module.exports.whatIs = async ctx => {
       // storage.setState(ctx.userData, ctx.user.state);
       return await ctx.replySimple(
         [
-          msg,
-          'Теперь вы купили хлеб и хотите забыть о нем. Скажите "забудь что в магазине" или "удали последнее"'
+          msg + '.',
+          'Теперь вы купили хлеб и хотите забыть о нем. Скажите "удали последнее" или "забудь что в магазине"'
         ],
         ['забудь что в магазине', 'удали последнее']
       );
@@ -281,7 +281,10 @@ const processRemember = async (ctx, msg) => {
     ctx.user.state.tourStep = 'whatis';
     // storage.setState(ctx.userData, ctx.user.state);
     return await ctx.replySimple(
-      'Отлично, запомнила. Теперь вы зашли в магазин и хотите вспомнить, зачем. Скажите: "что надо купить в магазине"',
+      [
+        question + ' ' + verb + ' ' + answer + ', поняла.',
+        'Теперь вы собрались идти в магазин и хотите вспомнить, зачем. Скажите: "что надо купить в магазине"'
+      ],
       ['что надо купить в магазине']
     );
   }
