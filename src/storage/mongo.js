@@ -77,11 +77,11 @@ class MongoDriver extends BaseDriver {
   }
 
   async clearData(userData) {
-    await userData.data.remove({});
+    await userData.data.deleteMany({});
   }
 
   async clearState(userData) {
-    await userData.state.remove({});
+    await userData.state.deleteMany({});
   }
 
   async fillDemoData(userData) {

@@ -226,27 +226,6 @@ module.exports.whereIs = ctx => {
   }
 };
 
-// команда "команды"
-module.exports.commands = ctx => {
-  ctx.chatbase.setIntent('commands');
-  ctx.logMessage(`> ${ctx.message} (commands)`);
-
-  const buttons = [
-    'запомни в чем-то находится что-то',
-    'удали последнее',
-    'отмена',
-    'забудь всё',
-    'запомни',
-    'что нового'
-  ];
-  if (process.env.NODE_ENV != 'production') {
-    buttons.push('демо данные');
-    buttons.push('приветствие');
-  }
-
-  return ctx.replySimple(['Вот примеры разных команд:', buttons.join(',\n')], buttons);
-};
-
 // команда "запомни ${question} находится ${answer}"
 module.exports.remember = async ctx => {
   return processRemember(ctx, ctx.message);
@@ -316,26 +295,6 @@ module.exports.dontKnow = async ctx => {
   ctx.logMessage(`> ${ctx.message} (dontKnow)`);
 
   return ctx.reply('Я не знаю хороший ответ на этот вопрос');
-};
-
-// команда "отмена"
-module.exports.cancel = async ctx => {
-  ctx.chatbase.setIntent('cancel');
-  ctx.logMessage(`> ${ctx.message} (cancel)`);
-  ctx.chatbase.setNotHandled();
-
-  ctx.leave();
-  ctx = await utils.resetState(ctx);
-  return ctx.reply('Всё отменено');
-};
-
-// команда "пока"
-module.exports.sessionEnd = async ctx => {
-  ctx.chatbase.setIntent('sessionEnd');
-  ctx.logMessage(`> ${ctx.message} (sessionEnd)`);
-
-  ctx = await utils.resetState(ctx);
-  return ctx.reply('До свидания!', [], { end_session: true });
 };
 
 // команда "удали последнее"

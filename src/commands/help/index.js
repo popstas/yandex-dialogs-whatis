@@ -1,7 +1,16 @@
-const commands = require('../commands');
-const utils = require('../utils');
+const commands = require('../../commands');
+const utils = require('../../utils');
 
-// нераспознанная команда
+var normalizedPath = require('path').join(__dirname, '.');
+
+require('fs')
+  .readdirSync(normalizedPath)
+  .forEach(function(file) {
+    const moduleName = file.split('.')[0];
+    if (file !== 'index.js') exports[moduleName] = require('./' + file);
+  });
+
+  // нераспознанная команда
 module.exports.any = async ctx => {
   if (ctx.message != 'ping') ctx.logMessage(`> ${ctx.message} (any)`);
 

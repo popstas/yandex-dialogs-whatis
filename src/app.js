@@ -19,7 +19,9 @@ const utils = require('./utils');
 const alice = new Alice({ fuseOptions });
 
 // подключение команд, которые возвращают { matcher, handler }
-const useCommand = (alice, command) => alice.command(command.matcher, command.handler);
+const useCommand = (alice, command) => {
+  alice.command(command.matcher, command.handler);
+};
 
 class YandexDialogsWhatis {
   constructor(config = defaultConfig) {
@@ -62,48 +64,23 @@ class YandexDialogsWhatis {
     // забудь все вообще
     useCommand(alice, commands.clearDataAll);
 
-    // запомни ...
-    const inAnswerStage = new Stage();
-    const inAnswerScene = new Scene('in-answer', { fuseOptions });
-    inAnswerScene.command(/^отмена/i, commands.cancel);
-    inAnswerScene.command(matchers.rememberSentence(), commands.remember);
-    inAnswerScene.any(commands.inAnswerProcess);
-    alice.command('запомни', commands.inAnswerEnter);
-    inAnswerStage.addScene(inAnswerScene);
-    alice.use(inAnswerStage.getMiddleware());
-
     // меня зовут ...
-    alice.command(
-      ctx => (ctx.message.match(/^меня зовут /) ? 1 : 0),
-      ctx => {
-        ctx.chatbase.setIntent('myName');
-        ctx.chatbase.setNotHandled();
-        ctx.logMessage(`> ${ctx.message} (myName)`);
-
-        return ctx.reply('Боитесь забыть своё имя? Я не буду это запоминать!');
-      }
-    );
+    useCommand(alice, commands.myName);
 
     // команда запомни ...
     alice.command(matchers.rememberSentence(), commands.remember);
 
     // команды
-    alice.command('команды', commands.commands);
+    useCommand(alice, commands.help.commands);
 
     // отмена
-    alice.command(/^отмена/i, commands.cancel);
+    useCommand(alice, commands.core.cancel);
 
     // пока
-    alice.command(matchers.goodbye(), commands.sessionEnd);
+    useCommand(alice, commands.core.sessionEnd);
 
     // Алиса
-    alice.command(/(алиса|алису)/i, ctx => {
-      ctx.chatbase.setIntent('alice');
-      ctx.chatbase.setNotHandled();
-      ctx.logMessage(`> ${ctx.message} (alice)`);
-
-      return ctx.reply('Чтобы вернуться к Алисе, скажите "Алиса вернись"');
-    });
+    useCommand(alice, commands.core.alice);
 
     // запусти навык 2 память
     alice.command('запусти навык 2 память', ctx => {
@@ -221,6 +198,16 @@ class YandexDialogsWhatis {
       ],
       commands.help.scenarios
     );
+
+    // запомни ...
+    const inAnswerStage = new Stage();
+    const inAnswerScene = new Scene('in-answer', { fuseOptions });
+    useCommand(inAnswerScene, commands.core.cancel);
+    inAnswerScene.command(matchers.rememberSentence(), commands.remember);
+    inAnswerScene.any(commands.inAnswerProcess);
+    alice.command('запомни', commands.inAnswerEnter);
+    inAnswerStage.addScene(inAnswerScene);
+    alice.use(inAnswerStage.getMiddleware());
 
     // самые общие команды должны быть в конце
     // что ...
