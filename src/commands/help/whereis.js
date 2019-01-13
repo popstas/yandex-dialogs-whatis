@@ -4,7 +4,7 @@ module.exports = {
 
   async handler(ctx) {
     const buttons = ['где трава', 'где находится трава', 'где вода'];
-    return ctx.replySimple(
+    return ctx.reply(
       [
         'Начните фразу с "где", чтобы найти место, где это что-то лежит.',
         'Примеры:',

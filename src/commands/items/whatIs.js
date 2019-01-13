@@ -42,7 +42,7 @@ module.exports = {
       if (ctx.user.state.tourStep === 'whatis') {
         ctx.user.state.tourStep = 'forget';
         // storage.setState(ctx.userData, ctx.user.state);
-        return await ctx.replySimple(
+        return await ctx.reply(
           [
             msg + '.',
             'Теперь вы купили хлеб и хотите забыть о нем. Скажите "удали последнее" или "забудь что в магазине"'

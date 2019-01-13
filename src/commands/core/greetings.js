@@ -15,7 +15,7 @@ module.exports = {
         (ctx.user.state.visitor.lastVisitLong
           ? ', давно не виделись, спросите "что нового", чтобы узнать об обновлениях'
           : '');
-      return ctx.replySimple(msg, buttons);
+      return ctx.reply(msg, buttons);
     } else {
       msg = [
         'Я умею запоминать что где лежит и напоминать об этом.',

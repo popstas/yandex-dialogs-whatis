@@ -15,7 +15,7 @@ module.exports = {
       )
     ) {
       ctx.chatbase.setNotHandled();
-      return ctx.replySimple(
+      return ctx.reply(
         'Вам нужно добавить глагол, например, запомни что завтра БУДЕТ завтра',
         ['как запомнить', 'примеры']
       );
@@ -51,7 +51,7 @@ module.exports = {
     // неопределенное запомни
     if (ctx.message.match(/^запомни /)) {
       ctx.chatbase.setNotHandled();
-      return ctx.replySimple('Вам нужно добавить глагол, например, на дворе растёт трава', [
+      return ctx.reply('Вам нужно добавить глагол, например, на дворе растёт трава', [
         'как запомнить',
         'примеры'
       ]);

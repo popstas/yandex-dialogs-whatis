@@ -45,9 +45,9 @@ module.exports = {
     const names = Object.keys(scenarios);
 
     const scenario = scenarios[msg];
-    if (scenario) return ctx.replySimple(scenario, names);
+    if (scenario) return ctx.reply(scenario, names);
 
-    return ctx.replySimple(
+    return ctx.reply(
       [
         'Примеры сценариев использования второй памяти, назовите сценарий, чтобы узнать подробности:',
         names.join(',\n')

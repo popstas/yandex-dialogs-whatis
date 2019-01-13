@@ -101,7 +101,7 @@ module.exports.confirm = async ctx => {
     };
     if (ctx.message.match(/^повтори/)) {
       ctx.chatbase.setIntent('confirmRepeat');
-      return ctx.replySimple(confirm.reply, ['да', 'нет']);
+      return ctx.reply(confirm.reply, ['да', 'нет']);
     } else if (options.yesMatcher(ctx)) {
       cmd = confirm.yesCommand;
     } else if (options.noMatcher(ctx)) {

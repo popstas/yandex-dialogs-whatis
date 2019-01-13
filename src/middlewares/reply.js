@@ -15,7 +15,7 @@ const onShutdown = async (ctx, text) => {
 };
 
 module.exports = () => (ctx, next) => {
-  ctx.replySimple = async (lines, buttons, params = {}) => {
+  ctx.reply = async (lines, buttons, params = {}) => {
     let text = '';
     let resultButtons = [];
 
@@ -33,8 +33,6 @@ module.exports = () => (ctx, next) => {
 
     return Reply.text(text, { ...{ buttons: resultButtons }, ...params });
   };
-
-  ctx.reply = (lines, buttons, params = {}) => ctx.replySimple(lines, buttons, params);
 
   return next(ctx);
 };

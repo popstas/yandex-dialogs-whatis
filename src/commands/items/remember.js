@@ -24,7 +24,7 @@ const processRemember = async (ctx, msg) => {
   if (ctx.user.state.tourStep === 'remember') {
     ctx.user.state.tourStep = 'whatis';
     // storage.setState(ctx.userData, ctx.user.state);
-    return await ctx.replySimple(
+    return await ctx.reply(
       [
         question + ' ' + verb + ' ' + answer + ', поняла.',
         'Теперь вы собрались идти в магазин и хотите вспомнить, зачем. Скажите: "что надо купить в магазине"'

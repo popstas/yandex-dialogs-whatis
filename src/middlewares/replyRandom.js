@@ -1,4 +1,4 @@
-// зависит от replySimple
+// зависит от reply
 module.exports = () => (ctx, next) => {
   ctx.replyRandom = (messages, buttons) => {
     const replyMessage = ctx.replyBuilder;
@@ -6,7 +6,7 @@ module.exports = () => (ctx, next) => {
     const randomKey = Math.floor(Math.random() * messages.length);
     const lines = messages[randomKey];
 
-    return ctx.replySimple(lines, buttons);
+    return ctx.reply(lines, buttons);
   };
   return next(ctx);
 };

@@ -16,6 +16,6 @@ module.exports = {
       buttons.push('приветствие');
     }
 
-    return ctx.replySimple(['Вот примеры разных команд:', buttons.join(',\n')], buttons);
+    return ctx.reply(['Вот примеры разных команд:', buttons.join(',\n')], buttons);
   }
 };

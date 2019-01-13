@@ -49,7 +49,7 @@ const processDelete = async (ctx, question) => {
   if (ctx.user.state.tourStep === 'forget') {
     ctx.user.state.tourStep = '';
     // storage.setState(ctx.userData, ctx.user.state);
-    return await ctx.replySimple(
+    return await ctx.reply(
       [
         'Прекрасно, теперь вы умеете пользоваться сценарием "список покупок".',
         'Чтобы узнать, как ещё можно использовать вторую память, скажите "примеры".',

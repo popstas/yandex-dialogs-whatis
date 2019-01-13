@@ -42,7 +42,7 @@ class YandexDialogsWhatis {
   async init() {
     // добавляют функции в ctx
     alice.use(middlewares.confirm());
-    alice.use(middlewares.replySimple());
+    alice.use(middlewares.reply());
     alice.use(middlewares.replyRandom());
     alice.use(middlewares.logMessage());
     alice.use(middlewares.yametrika(this.config.YAMETRIKA_ID));

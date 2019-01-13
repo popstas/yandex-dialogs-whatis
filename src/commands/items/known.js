@@ -24,6 +24,6 @@ module.exports = {
       text.push('Я еще ничего не знаю, сначала расскажите мне, что где находится.');
     }
 
-    return ctx.replySimple(text, buttons);
+    return ctx.reply(text, buttons);
   }
 };
