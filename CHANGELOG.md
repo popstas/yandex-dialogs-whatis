@@ -1,3 +1,19 @@
+# [3.0.0](https://github.com/popstas/yandex-dialogs-whatis/compare/v2.4.0...v3.0.0) (2019-01-13)
+
+
+### Bug Fixes
+
+* changelog не запоминался ([ffd1af4](https://github.com/popstas/yandex-dialogs-whatis/commit/ffd1af4))
+* правки текстов в туре ([b19e125](https://github.com/popstas/yandex-dialogs-whatis/commit/b19e125))
+
+
+### Features
+
+* проговаривание услышанного в tts ([8504534](https://github.com/popstas/yandex-dialogs-whatis/commit/8504534))
+* **cleaner:** убирание "то" и "же" ([d31b8c3](https://github.com/popstas/yandex-dialogs-whatis/commit/d31b8c3))
+
+
+
 # [2.4.0](https://github.com/popstas/yandex-dialogs-whatis/compare/v2.3.1...v2.4.0) (2019-01-11)
 
 
