@@ -2,6 +2,8 @@
 module.exports = () => (ctx, next) => {
   ctx.message = ctx.message.replace(/^(Алиса )?(привет )?(слушай )?(а )?(скажи )?(напомни )?/, '');
   ctx.message = ctx.message.replace(/^(ну )?(и )?/, '');
+  ctx.message = ctx.message.replace(/(^|\s)же($|\s)/, ' ');
+  ctx.message = ctx.message.replace(/(^|\s)то($|\s)/, ' ');
 
   // костыль на "что надо купить"
   ctx.message = ctx.message.replace(/ надо купить/, ' купить');
