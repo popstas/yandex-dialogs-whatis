@@ -83,39 +83,19 @@ class YandexDialogsWhatis {
     useCommand(alice, commands.core.alice);
 
     // запусти навык 2 память
-    alice.command('запусти навык 2 память', ctx => {
-      ctx.chatbase.setIntent('selfRun');
-      ctx.logMessage(`> ${ctx.message} (selfRun)`);
-
-      return ctx.reply('Я уже тут');
-    });
+    useCommand(alice, commands.core.selfRun);
 
     // версия
-    alice.command('версия', ctx => {
-      ctx.chatbase.setIntent('version');
-      ctx.logMessage(`> ${ctx.message} (version)`);
-
-      return ctx.reply(packageJson.version, [], {
-        tts: packageJson.version.split('.').join(' точка ')
-      });
-    });
+    useCommand(alice, commands.core.version);
 
     // оскорбление
-    alice.command(matchers.abuse(), ctx => {
-      ctx.chatbase.setIntent('abuse');
-      ctx.chatbase.setNotHandled();
-      ctx.chatbase.setAsFeedback();
-      ctx.logMessage(`> ${ctx.message} (abuse)`);
+    useCommand(alice, commands.core.abuse);
 
-      return ctx.replyRandom([
-        'Вот сейчас обидно было...',
-        'Я быстро учусь, вернитесь через пару дней и убедитесь...',
-        'Я такая тупая...'
-      ]);
-    });
+    // спасибо
+    useCommand(alice, commands.core.thankyou);
 
     // что нового, changelog
-    alice.command('что нового', commands.changelog);
+    useCommand(alice, commands.core.changelog);
 
     // удали последнее
     alice.command(
@@ -123,24 +103,6 @@ class YandexDialogsWhatis {
       commands.deleteLast
     );
     alice.command(/(забудь |удали(ть)? )(что )?.*/, commands.deleteQuestion);
-
-    // спасибо
-    alice.command(matchers.thankyou(), ctx => {
-      ctx.chatbase.setAsFeedback();
-      ctx.chatbase.setIntent('thankyou');
-      ctx.logMessage(`> ${ctx.message} (thankyou)`);
-
-      return ctx.replyRandom([
-        'Всегда пожалуйста',
-        'Не за что',
-        'Обращайся!',
-        'Пожалуйста',
-        'Пожалуйста',
-        'Пожалуйста',
-        'Пожалуйста',
-        'Пожалуйста'
-      ]);
-    });
 
     // молодец
     alice.command(matchers.compliment(), ctx => {
