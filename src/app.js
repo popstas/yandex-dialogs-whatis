@@ -85,8 +85,6 @@ class YandexDialogsWhatis {
     // меня зовут ...
     useCommand(alice, commands.myName);
 
-
-
     useCommand(alice, commands.items.known);
 
     // команда запомни ...
@@ -102,13 +100,10 @@ class YandexDialogsWhatis {
     useCommand(alice, commands.items.demoData);
 
     // удали последнее
-    alice.command(
-      /^(удали|удалить|забудь) ?(последнее|последний|последние|последнюю запись)?$/i,
-      commands.deleteLast
-    );
+    useCommand(alice, commands.items.deleteLast);
 
     // удали конкретное
-    alice.command(/(забудь |удали(ть)? )(что )?.*/, commands.deleteQuestion);
+    useCommand(alice, commands.items.deleteQuestion);
 
     // ниже все команды про помощь
     alice.command('тур', commands.help.tour);
@@ -152,11 +147,11 @@ class YandexDialogsWhatis {
 
     // самые общие команды должны быть в конце
     // что ...
-    alice.command(/^(что|кто) /, commands.whatIs);
+    useCommand(alice, commands.items.whatIs);
     // где ...
-    alice.command(/^(где|когда|в чем) /, commands.whereIs);
+    useCommand(alice, commands.items.whereIs);
     // непонятное
-    alice.command(/^(как|зачем|почему) /, commands.dontKnow);
+    useCommand(alice, commands.core.dontKnow); // должна быть после всех "как"
 
     alice.any(commands.help.any);
   }
