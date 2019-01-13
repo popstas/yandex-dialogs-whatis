@@ -1,7 +1,5 @@
 module.exports = {
-    matcher: '',
-  
-    async handler(ctx) {
-    }
-  };
-  
+  matcher: '',
+
+  async handler(ctx) {}
+};

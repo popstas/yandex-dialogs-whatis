@@ -22,11 +22,12 @@ module.exports = {
     let fromDate = new Date(0);
     if (ctx.user.state.visitor.lastChangelogDate) {
       fromDate = new Date(ctx.user.state.visitor.lastChangelogDate);
-    } else {
-      ctx.user.state.visitor.lastChangelogDate = new Date(
-        ctx.user.state.visitor.lastVisitDate || 0
-      );
     }
+
+    ctx.user.state.visitor.lastChangelogDate = new Date(
+      ctx.user.state.visitor.lastVisitDate || 0
+    ).getTime();
+
     fromDate = new Date(fromDate.getFullYear(), fromDate.getMonth(), fromDate.getDate());
 
     // получение строк лога
