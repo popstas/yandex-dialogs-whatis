@@ -1,4 +1,5 @@
 const Az = require('az');
+const storage = require('./storage');
 // здесь мелкие обработки текста
 
 const verbs = [
@@ -116,3 +117,15 @@ module.exports.cleanQuestion = message => {
   let msg = message.replace(/^(что|кто) /, '').replace(/^(где|когда|в чем) /, '');
   return cleanVerb(msg);
 };
+
+// очищает состояние заполнение ответа на вопрос
+module.exports.resetState = async ctx => {
+  ctx.user.state.stage = 'STAGE_IDLE';
+  ctx.user.state.question = '';
+  ctx.user.state.answer = '';
+  ctx.leave();
+  // ctx.session.set('__currentScene', null);
+  await storage.setState(ctx.userData, ctx.user.state);
+  return ctx;
+};
+

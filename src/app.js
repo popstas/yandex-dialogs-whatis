@@ -48,33 +48,19 @@ class YandexDialogsWhatis {
     alice.command(matchers.confirm(), commands.confirm);
 
     // ошибка с базой данных
-    alice.command(matchers.error(), ctx => {
-      console.log('! database error');
-      return ctx.replyRandom([
-        'Ой, что-то мне нехорошо, зайдите попозже...',
-        'Пятьсоттретья ошибка, позовите админа! Хотя он уже наверное в курсе.',
-        'Какой сейчас год? Кто я? Я потеряла память...'
-      ]);
-    });
+    useCommand(alice, commands.core.error);
 
     // привет
     useCommand(alice, commands.core.greetings);
 
     // демо данные
-    alice.command('демо данные', ctx => {
-      ctx.chatbase.setIntent('demoDataConfirm');
-      ctx.logMessage(`> ${ctx.message} (demoData confirm)`);
+    useCommand(alice, commands.demoData);
 
-      return ctx.confirm('Точно?', commands.demoData, ctx => ctx.reply('Как хочешь'));
-    });
+    // забудь все, должно быть перед "удали последнее"
+    useCommand(alice, commands.clearData);
 
     // забудь все вообще
-    alice.command('забудь все вообще', ctx => {
-      ctx.chatbase.setIntent('clearDataAllConfirm');
-      ctx.logMessage(`> ${ctx.message} (clearDataAll confirm)`);
-
-      return ctx.confirm('Точно?', commands.clearDataAll, ctx => ctx.reply('Как хочешь'));
-    });
+    useCommand(alice, commands.clearDataAll);
 
     // запомни ...
     const inAnswerStage = new Stage();
@@ -153,17 +139,6 @@ class YandexDialogsWhatis {
 
     // что нового, changelog
     alice.command('что нового', commands.changelog);
-
-    // забудь все, должно быть перед "удали последнее"
-    alice.command(
-      ['забудь всё', 'забудь все', 'удали все', 'забыть все', 'сотри все', 'стереть все'],
-      ctx => {
-        ctx.chatbase.setIntent('clearDataConfirm');
-        ctx.logMessage(`> ${ctx.message} (clearData confirm)`);
-
-        return ctx.confirm('Точно?', commands.clearData, ctx => ctx.reply('Как хочешь'));
-      }
-    );
 
     // удали последнее
     alice.command(

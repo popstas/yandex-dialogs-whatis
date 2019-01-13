@@ -6,8 +6,15 @@ const matchers = require('../matchers');
 const yaml = require('js-yaml');
 const fs = require('fs');
 
-const STAGE_IDLE = 'STAGE_IDLE';
-const STAGE_WAIT_FOR_ANSWER = 'STAGE_WAIT_FOR_ANSWER';
+
+// include recursive
+var normalizedPath = require('path').join(__dirname, '.');
+require('fs')
+  .readdirSync(normalizedPath)
+  .forEach(function(file) {
+    const moduleName = file.split('.')[0];
+    if (file !== 'index.js') exports[moduleName] = require('./' + file);
+  });
 
 // процесс ответа на вопрос, кажется, это называется fullfillment
 // https://github.com/dialogflow/dialogflow-fulfillment-nodejs
@@ -16,18 +23,18 @@ const processAnswer = async ctx => {
   const q = ctx.message.replace(/^запомни/, '').trim();
   let answerText = '';
 
-  if (!ctx.user.state.stage || ctx.user.state.stage === STAGE_IDLE) {
+  if (!ctx.user.state.stage || ctx.user.state.stage === 'STAGE_IDLE') {
     ctx.user.state.answer = '';
 
     if (q != '') {
       // еще не знаем ни вопрос, ни ответ
       ctx.user.state.question = q;
       answerText = 'Что ' + q + '?';
-      ctx.user.state.stage = STAGE_WAIT_FOR_ANSWER;
+      ctx.user.state.stage = 'STAGE_WAIT_FOR_ANSWER';
     } else {
       answerText = 'Что запомнить?';
     }
-  } else if (ctx.user.state.stage === STAGE_WAIT_FOR_ANSWER) {
+  } else if (ctx.user.state.stage === 'STAGE_WAIT_FOR_ANSWER') {
     // уже знаем вопрос, но не знаем ответ
     const verb = utils.getVerb(q);
     ctx.user.state.answer = utils.cleanQuestion(q);
@@ -43,7 +50,7 @@ const processAnswer = async ctx => {
     const msg =
       ctx.user.state.question + (verb ? ` ${verb} ` : ' ') + ctx.user.state.answer + ', поняла';
     answerText = msg;
-    ctx = await resetState(ctx);
+    ctx = await utils.resetState(ctx);
   }
 
   // storage.setState(ctx.userData, ctx.user.state);
@@ -53,7 +60,7 @@ const processAnswer = async ctx => {
 // процесс удаления вопроса
 // action
 const processDelete = async (ctx, question) => {
-  ctx = await resetState(ctx);
+  ctx = await utils.resetState(ctx);
 
   let found = ctx.user.data.filter(item => {
     return item.questions.indexOf(question) != -1;
@@ -110,18 +117,6 @@ const processDelete = async (ctx, question) => {
   }
 
   return ctx.reply('Забыла, что ' + question);
-};
-
-// очищает состояние заполнение ответа на вопрос
-// action
-const resetState = async ctx => {
-  ctx.user.state.stage = STAGE_IDLE;
-  ctx.user.state.question = '';
-  ctx.user.state.answer = '';
-  ctx.leave();
-  // ctx.session.set('__currentScene', null);
-  await storage.setState(ctx.userData, ctx.user.state);
-  return ctx;
 };
 
 // команда "что ..."
@@ -186,9 +181,6 @@ module.exports.whatIs = async ctx => {
     );
   }
 };
-
-module.exports.core = require('./core');
-module.exports.help = require('./help');
 
 // команда "где ...""
 module.exports.whereIs = ctx => {
@@ -276,7 +268,7 @@ const processRemember = async (ctx, msg) => {
     answer: answer
   };
 
-  ctx = await resetState(ctx);
+  ctx = await utils.resetState(ctx);
   // const suffix = utils.getVerb(ctx.message);
 
   // tour step 1
@@ -295,39 +287,6 @@ const processRemember = async (ctx, msg) => {
   return ctx.reply(question + ' ' + verb + ' ' + answer + ', поняла');
 };
 module.exports.processRemember = processRemember;
-
-// команда "забудь всё"
-module.exports.clearData = async ctx => {
-  ctx.chatbase.setIntent('clearData');
-  ctx.logMessage(`> ${ctx.message} (clearData)`);
-
-  await storage.clearData(ctx.userData);
-  ctx = await resetState(ctx);
-  return ctx.reply('Всё забыла...');
-};
-
-// команда "забудь всё вообще"
-module.exports.clearDataAll = async ctx => {
-  ctx.chatbase.setIntent('clearDataAll');
-  ctx.logMessage(`> ${ctx.message} (clearDataAll)`);
-
-  await storage.clearData(ctx.userData);
-  ctx.user.state.visitor = { visits: 1 };
-  ctx.user.state.visit = { messages: 0 };
-  ctx.user.state.tourStep = '';
-  ctx = await resetState(ctx);
-  return ctx.reply('Вообще всё забыла...');
-};
-
-// команда "демо данные"
-module.exports.demoData = async ctx => {
-  ctx.chatbase.setIntent('demoData');
-  ctx.logMessage(`> ${ctx.message} (demoData)`);
-
-  await storage.fillDemoData(ctx.userData);
-  ctx = await resetState(ctx);
-  return ctx.reply('Данные сброшены на демонстрационные');
-};
 
 // команда "что ты знаешь"
 module.exports.known = async ctx => {
@@ -366,7 +325,7 @@ module.exports.cancel = async ctx => {
   ctx.chatbase.setNotHandled();
 
   ctx.leave();
-  ctx = await resetState(ctx);
+  ctx = await utils.resetState(ctx);
   return ctx.reply('Всё отменено');
 };
 
@@ -375,7 +334,7 @@ module.exports.sessionEnd = async ctx => {
   ctx.chatbase.setIntent('sessionEnd');
   ctx.logMessage(`> ${ctx.message} (sessionEnd)`);
 
-  ctx = await resetState(ctx);
+  ctx = await utils.resetState(ctx);
   return ctx.reply('До свидания!', [], { end_session: true });
 };
 
@@ -418,7 +377,7 @@ module.exports.inAnswerProcess = async ctx => {
   ctx.logMessage(`> ${ctx.message} (inAnswerProcess)`);
 
   const reply = await processAnswer(ctx);
-  if (ctx.user.state.stage == STAGE_IDLE) {
+  if (ctx.user.state.stage == 'STAGE_IDLE') {
     ctx.leave();
     // ctx.session.set('__currentScene', null);
   }
