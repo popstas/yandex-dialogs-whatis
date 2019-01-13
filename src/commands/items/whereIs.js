@@ -41,7 +41,7 @@ module.exports = {
       return ctx.reply(msg);
     } else {
       ctx.chatbase.setNotHandled();
-      return ctx.reply('Я не знаю');
+      return ctx.reply('Я не знаю', [], { tts: `Я не знаю, ${ctx.message}` });
     }
   }
 };

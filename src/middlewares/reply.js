@@ -19,8 +19,15 @@ module.exports = () => (ctx, next) => {
     let text = '';
     let resultButtons = [];
 
+    // строка
     if (typeof lines === 'string') text = lines;
+    // массив строк
     else if (Array.isArray(lines)) text = lines.join('\n');
+    // сырой объект yandex api
+    else if (typeof lines === 'object') {
+      text = lines.text;
+      params = { ...params, ...lines };
+    }
 
     if (Array.isArray(buttons)) {
       resultButtons = buttons.map(button => Markup.button(button));
