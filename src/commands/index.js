@@ -108,7 +108,6 @@ module.exports.confirm = async ctx => {
       cmd = confirm.noCommand;
     }
 
-    console.log('cmd: ', cmd);
     if (cmd) {
       ctx.session.set('confirm', null);
       return await cmd(ctx);

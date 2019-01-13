@@ -82,10 +82,13 @@ class YandexDialogsWhatis {
     // что нового, changelog
     useCommand(alice, commands.core.changelog);
 
-    // меня зовут ...
-    useCommand(alice, commands.myName);
 
+
+    // что ты знаешь
     useCommand(alice, commands.items.known);
+
+    // меня зовут ... , должен быть перед commands.items.remember
+    useCommand(alice, commands.items.myName);
 
     // команда запомни ...
     useCommand(alice, commands.items.remember);
@@ -105,6 +108,18 @@ class YandexDialogsWhatis {
     // удали конкретное
     useCommand(alice, commands.items.deleteQuestion);
 
+    // запомни ...
+    const inAnswerStage = new Stage();
+    const inAnswerScene = new Scene('in-answer', { fuseOptions });
+    useCommand(inAnswerScene, commands.core.cancel);
+    useCommand(inAnswerScene, commands.items.remember);
+    inAnswerScene.any(commands.inAnswerProcess);
+    alice.command('запомни', commands.inAnswerEnter);
+    inAnswerStage.addScene(inAnswerScene);
+    alice.use(inAnswerStage.getMiddleware());
+
+
+
     // ниже все команды про помощь
     useCommand(alice, commands.help.tour);
     useCommand(alice, commands.help.firstHelp);
@@ -123,15 +138,7 @@ class YandexDialogsWhatis {
     // примеры использования
     useCommand(alice, commands.help.scenarios);
 
-    // запомни ...
-    const inAnswerStage = new Stage();
-    const inAnswerScene = new Scene('in-answer', { fuseOptions });
-    useCommand(inAnswerScene, commands.core.cancel);
-    useCommand(inAnswerScene, commands.items.remember);
-    inAnswerScene.any(commands.inAnswerProcess);
-    alice.command('запомни', commands.inAnswerEnter);
-    inAnswerStage.addScene(inAnswerScene);
-    alice.use(inAnswerStage.getMiddleware());
+
 
     // самые общие команды должны быть в конце
     // что ...
