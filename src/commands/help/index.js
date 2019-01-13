@@ -39,7 +39,7 @@ module.exports.any = async ctx => {
     ctx.chatbase.setIntent('rememberConfirm');
     return ctx.confirm(
       `Вы хотите запомнить: ${possibleMsg}?`,
-      ctx => commands.processRemember(ctx, possibleMsg),
+      ctx => commands.items.remember.processRemember(ctx, possibleMsg),
       ctx => {
         ctx.chatbase.setNotHandled();
         return ctx.replyRandom(

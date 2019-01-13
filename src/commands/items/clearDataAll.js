@@ -1,5 +1,5 @@
-const storage = require('../storage');
-const utils = require('../utils');
+const storage = require('../../storage');
+const utils = require('../../utils');
 
 module.exports = {
   matcher: 'забудь все вообще',

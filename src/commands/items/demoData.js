@@ -1,4 +1,4 @@
-const storage = require('../storage');
+const storage = require('../../storage');
 
 // команда "демо данные"
 module.exports = {

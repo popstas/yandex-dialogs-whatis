@@ -224,69 +224,6 @@ module.exports.whereIs = ctx => {
   }
 };
 
-// команда "запомни ${question} находится ${answer}"
-module.exports.remember = async ctx => {
-  return processRemember(ctx, ctx.message);
-};
-
-const processRemember = async (ctx, msg) => {
-  ctx.chatbase.setIntent('remember');
-  ctx.logMessage(`> ${msg} (remember)`);
-
-  // regexp
-  const cleanMsg = msg.replace(/^запомни /, '').replace(/^что /, '');
-  const { question, verb, answer } = utils.fixReversedRemember(utils.splitByVerb(cleanMsg));
-
-  await storage.storeAnswer(ctx.userData, question, answer);
-
-  // последний ответ можно удалить отдельной командой
-  ctx.user.state.lastAddedItem = {
-    questions: [question],
-    answer: answer
-  };
-
-  ctx = await utils.resetState(ctx);
-  // const suffix = utils.getVerb(ctx.message);
-
-  // tour step 1
-  if (ctx.user.state.tourStep === 'remember') {
-    ctx.user.state.tourStep = 'whatis';
-    // storage.setState(ctx.userData, ctx.user.state);
-    return await ctx.replySimple(
-      [
-        question + ' ' + verb + ' ' + answer + ', поняла.',
-        'Теперь вы собрались идти в магазин и хотите вспомнить, зачем. Скажите: "что надо купить в магазине"'
-      ],
-      ['что надо купить в магазине']
-    );
-  }
-
-  return ctx.reply(question + ' ' + verb + ' ' + answer + ', поняла');
-};
-module.exports.processRemember = processRemember;
-
-// команда "что ты знаешь"
-module.exports.known = async ctx => {
-  ctx.chatbase.setIntent('known');
-  ctx.logMessage(`> ${ctx.message} (known)`);
-
-  // buttons
-  let questions = ctx.user.data.map(item => item.questions[0]);
-  const buttons = questions.map(question => 'что ' + question);
-
-  // text
-  let text = [];
-  if (questions.length > 0) {
-    text.push('Я знаю об этом:\n');
-    text.push(questions.join(',\n'));
-  } else {
-    ctx.chatbase.setNotHandled();
-    text.push('Я еще ничего не знаю, сначала расскажите мне, что где находится.');
-  }
-
-  return ctx.replySimple(text, buttons);
-};
-
 // ответ на непонятное
 module.exports.dontKnow = async ctx => {
   ctx.chatbase.setNotHandled();

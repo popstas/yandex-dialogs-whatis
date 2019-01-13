@@ -55,24 +55,6 @@ class YandexDialogsWhatis {
     // привет
     useCommand(alice, commands.core.greetings);
 
-    // демо данные
-    useCommand(alice, commands.demoData);
-
-    // забудь все, должно быть перед "удали последнее"
-    useCommand(alice, commands.clearData);
-
-    // забудь все вообще
-    useCommand(alice, commands.clearDataAll);
-
-    // меня зовут ...
-    useCommand(alice, commands.myName);
-
-    // команда запомни ...
-    alice.command(matchers.rememberSentence(), commands.remember);
-
-    // команды
-    useCommand(alice, commands.help.commands);
-
     // отмена
     useCommand(alice, commands.core.cancel);
 
@@ -94,46 +76,39 @@ class YandexDialogsWhatis {
     // спасибо
     useCommand(alice, commands.core.thankyou);
 
+    // молодец
+    useCommand(alice, commands.core.compliment);
+
     // что нового, changelog
     useCommand(alice, commands.core.changelog);
+
+    // меня зовут ...
+    useCommand(alice, commands.myName);
+
+
+
+    useCommand(alice, commands.items.known);
+
+    // команда запомни ...
+    useCommand(alice, commands.items.remember);
+
+    // забудь все, должно быть перед "удали последнее"
+    useCommand(alice, commands.items.clearData);
+
+    // забудь все вообще
+    useCommand(alice, commands.items.clearDataAll);
+
+    // демо данные
+    useCommand(alice, commands.items.demoData);
 
     // удали последнее
     alice.command(
       /^(удали|удалить|забудь) ?(последнее|последний|последние|последнюю запись)?$/i,
       commands.deleteLast
     );
+
+    // удали конкретное
     alice.command(/(забудь |удали(ть)? )(что )?.*/, commands.deleteQuestion);
-
-    // молодец
-    alice.command(matchers.compliment(), ctx => {
-      ctx.chatbase.setAsFeedback();
-      ctx.chatbase.setIntent('compliment');
-      ctx.logMessage(`> ${ctx.message} (compliment)`);
-
-      return ctx.replyRandom([
-        'Спасибо, стараюсь :)',
-        'Ой, так приятно )',
-        'Спасибо!',
-        'Спасибо!',
-        'Спасибо!',
-        'Спасибо!',
-        'Спасибо!'
-      ]);
-    });
-
-    // это ломает команды "удали последнее", "удали кокретное"
-    // alice.command(['что ты знаешь', 'что ты помнишь'], commands.known);
-    alice.command(
-      [
-        'что ты знаешь',
-        'что ты помнишь',
-        'ты знаешь',
-        'что ты запомнила',
-        'что ты поняла',
-        'что ты хочешь'
-      ],
-      commands.known
-    );
 
     // ниже все команды про помощь
     alice.command('тур', commands.help.tour);
@@ -141,6 +116,10 @@ class YandexDialogsWhatis {
 
     // помощь
     alice.command(matchers.help(), commands.help.help);
+
+    // команды
+    useCommand(alice, commands.help.commands);
+
     alice.command(['запоминать', 'как запомнить', 'как запоминать'], commands.help.remember);
     alice.command(['отвечать что', 'отвечает что', 'что'], commands.help.whatis);
     alice.command(['отвечать где', 'где'], commands.help.whereis);
@@ -165,7 +144,7 @@ class YandexDialogsWhatis {
     const inAnswerStage = new Stage();
     const inAnswerScene = new Scene('in-answer', { fuseOptions });
     useCommand(inAnswerScene, commands.core.cancel);
-    inAnswerScene.command(matchers.rememberSentence(), commands.remember);
+    useCommand(inAnswerScene, commands.items.remember);
     inAnswerScene.any(commands.inAnswerProcess);
     alice.command('запомни', commands.inAnswerEnter);
     inAnswerStage.addScene(inAnswerScene);
