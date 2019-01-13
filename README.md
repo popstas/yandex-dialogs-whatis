@@ -48,7 +48,7 @@
 - Выбор хранилища между MongoDB и Loki (локальное файловое хранилище)
 - Выбор сценария на основе простого морфологического разбора
 - Система тестирования на основе [сценариев](/static/scenarios.yml), работает на [yandex-dialogs-client](https://github.com/popstas/yandex-dialogs-client) и на [travis](https://travis-ci.org/popstas/yandex-dialogs-whatis)
-- Некоторые команды работают только в dev-окружении
+- Модульность команд (подробнее в CONTRIBUTING.md)
 
 ## Особенности диалога
 - Местами есть вариативность ответов

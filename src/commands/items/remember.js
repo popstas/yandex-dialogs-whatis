@@ -40,7 +40,7 @@ const processRemember = async (ctx, msg) => {
 module.exports = {
   intent: '',
   matcher(ctx) {
-    if (ctx.session.get('__currentScene') === 'in-answer') {
+    if (ctx.session.get('__currentScene') === 'rememberMaster') {
       ctx.message = ctx.message.replace(/^что /, '');
     }
     if (ctx.message.match(/^(что|кто) /)) return false;

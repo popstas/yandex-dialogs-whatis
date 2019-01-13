@@ -4,19 +4,12 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const { Alice, Stage, Scene, Reply } = require('yandex-dialogs-sdk');
 const middlewares = require('./middlewares');
-const matchers = require('./matchers');
 const packageJson = require('../package.json');
-const fuseOptions = {
-  keys: ['name'],
-  threshold: 0.3,
-  maxPatternLength: 50,
-  location: 68
-};
 const defaultConfig = require('./config');
 const commands = require('./commands');
 const utils = require('./utils');
 
-const alice = new Alice({ fuseOptions });
+const alice = new Alice();
 
 // подключение команд, которые возвращают { matcher, handler }
 const useCommand = (alice, command) => {
@@ -127,14 +120,14 @@ class YandexDialogsWhatis {
     useCommand(alice, commands.items.deleteQuestion);
 
     // запомни ...
-    const inAnswerStage = new Stage();
-    const inAnswerScene = new Scene('in-answer', { fuseOptions });
-    useCommand(inAnswerScene, commands.core.cancel);
-    useCommand(inAnswerScene, commands.items.remember);
-    inAnswerScene.any(commands.inAnswerProcess);
-    alice.command('запомни', commands.inAnswerEnter);
-    inAnswerStage.addScene(inAnswerScene);
-    alice.use(inAnswerStage.getMiddleware());
+    const rememberMasterStage = new Stage();
+    const rememberMasterScene = new Scene('rememberMaster');
+    useCommand(rememberMasterScene, commands.core.cancel);
+    useCommand(rememberMasterScene, commands.items.remember);
+    rememberMasterScene.any(commands.items.rememberMaster.rememberMasterProcess);
+    rememberMasterStage.addScene(rememberMasterScene);
+    alice.use(rememberMasterStage.getMiddleware());
+    useCommand(alice, commands.items.rememberMaster);
 
     // ниже все команды про помощь
     useCommand(alice, commands.help.tour);
