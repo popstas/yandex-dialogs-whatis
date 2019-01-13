@@ -106,34 +106,22 @@ class YandexDialogsWhatis {
     useCommand(alice, commands.items.deleteQuestion);
 
     // ниже все команды про помощь
-    alice.command('тур', commands.help.tour);
-    alice.command(['первая помощь', '1 помощь'], commands.help.firstHelp);
+    useCommand(alice, commands.help.tour);
+    useCommand(alice, commands.help.firstHelp);
 
     // помощь
-    alice.command(matchers.help(), commands.help.help);
+    useCommand(alice, commands.help.help);
 
     // команды
     useCommand(alice, commands.help.commands);
 
-    alice.command(['запоминать', 'как запомнить', 'как запоминать'], commands.help.remember);
-    alice.command(['отвечать что', 'отвечает что', 'что'], commands.help.whatis);
-    alice.command(['отвечать где', 'где'], commands.help.whereis);
-    alice.command(['забывать', 'как забывать', 'как забыть'], commands.help.forget);
+    useCommand(alice, commands.help.remember);
+    useCommand(alice, commands.help.whatis);
+    useCommand(alice, commands.help.whereis);
+    useCommand(alice, commands.help.forget);
 
-    alice.command(
-      [
-        ...['сценарии', 'примеры', 'примеры использования'],
-        ...[
-          'виртуальные подписи',
-          'помощь мастеру',
-          'список покупок',
-          'расписание',
-          'показания счетчиков',
-          'запомни номер'
-        ]
-      ],
-      commands.help.scenarios
-    );
+    // примеры использования
+    useCommand(alice, commands.help.scenarios);
 
     // запомни ...
     const inAnswerStage = new Stage();
@@ -153,7 +141,7 @@ class YandexDialogsWhatis {
     // непонятное
     useCommand(alice, commands.core.dontKnow); // должна быть после всех "как"
 
-    alice.any(commands.help.any);
+    alice.any(commands.core.any.handler);
   }
 
   // returns express instance

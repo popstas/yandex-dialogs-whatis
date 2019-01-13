@@ -20,7 +20,7 @@ module.exports = {
         'Я умею запоминать что где лежит и напоминать об этом.',
         'Хотите ознакомиться с возможностями на примере?'
       ];
-      return ctx.confirm(msg, help.tour, help.firstHelp);
+      return ctx.confirm(msg, help.tour.handler, help.firstHelp.handler);
     }
   }
 };

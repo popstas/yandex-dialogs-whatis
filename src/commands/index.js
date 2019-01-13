@@ -2,7 +2,6 @@
 const storage = require('../storage');
 const utils = require('../utils');
 const matchers = require('../matchers');
-const Fuse = require('fuse.js');
 
 // include recursive
 var normalizedPath = require('path').join(__dirname, '.');
@@ -109,6 +108,7 @@ module.exports.confirm = async ctx => {
       cmd = confirm.noCommand;
     }
 
+    console.log('cmd: ', cmd);
     if (cmd) {
       ctx.session.set('confirm', null);
       return await cmd(ctx);
