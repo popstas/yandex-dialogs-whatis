@@ -2,7 +2,7 @@
 
 const express = require('express');
 const bodyParser = require('body-parser');
-const { Alice, Stage, Scene } = require('yandex-dialogs-sdk');
+const { Alice, Stage, Scene, Reply } = require('yandex-dialogs-sdk');
 const middlewares = require('./middlewares');
 const matchers = require('./matchers');
 const packageJson = require('../package.json');
@@ -21,16 +21,20 @@ const alice = new Alice({ fuseOptions });
 // подключение команд, которые возвращают { matcher, handler }
 const useCommand = (alice, command) => {
   if (command.intent) {
-    const handler = command.handler;
-    command.handler = ctx => {
+    command.handler = handlerBefore(command.handler, ctx => {
       if (ctx.message != 'ping' && ctx.message != '') {
         ctx.chatbase.setIntent(command.intent);
         ctx.logMessage(`> ${ctx.message} (${command.intent})`);
       }
-      return handler(ctx);
-    };
+    });
   }
   alice.command(command.matcher, command.handler);
+};
+
+// добавляет в начало функции код из второго параметра
+const handlerBefore = (handler, before) => ctx => {
+  before(ctx);
+  return handler(ctx);
 };
 
 class YandexDialogsWhatis {
@@ -41,7 +45,6 @@ class YandexDialogsWhatis {
 
   async init() {
     // добавляют функции в ctx
-    alice.use(middlewares.confirm());
     alice.use(middlewares.reply());
     alice.use(middlewares.replyRandom());
     alice.use(middlewares.logMessage());
@@ -54,16 +57,23 @@ class YandexDialogsWhatis {
     alice.use(middlewares.cleaner());
     alice.use(middlewares.counter());
 
+    alice.use(middlewares.confirm());
+
     await utils.initMorph();
 
-    // при наличии session.confirm запускаем сценарий подтверждения
-    alice.command(matchers.confirm(), commands.confirm);
-
-    // ошибка с базой данных
-    useCommand(alice, commands.core.error);
+    /* alice.command(['', 'привет'], ctx => {
+      return Reply.text('hello');
+    }); */
+    // return;
 
     // привет
     useCommand(alice, commands.core.greetings);
+
+    // при наличии session.confirm запускаем сценарий подтверждения
+    useCommand(alice, commands.core.confirm);
+
+    // ошибка с базой данных
+    useCommand(alice, commands.core.error);
 
     // отмена
     useCommand(alice, commands.core.cancel);

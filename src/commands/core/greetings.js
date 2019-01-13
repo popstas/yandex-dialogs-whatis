@@ -1,9 +1,11 @@
 const help = require('../help');
+const matchers = require('../../matchers');
 
 // команда по умолчанию (справка)
 module.exports = {
   intent: '',
-  matcher: ['', 'привет', 'приветствие'],
+  matcher: matchers.strings(['', 'привет', 'приветствие']),
+  // matcher: ['привет', 'приветствие'], // TODO: заменить после выхода sdk 2.0.7
 
   async handler(ctx) {
     if (ctx.message != 'ping') ctx.logMessage(`> ${ctx.message} (welcome)`);
