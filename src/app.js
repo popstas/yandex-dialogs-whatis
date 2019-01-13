@@ -20,6 +20,16 @@ const alice = new Alice({ fuseOptions });
 
 // подключение команд, которые возвращают { matcher, handler }
 const useCommand = (alice, command) => {
+  if (command.intent) {
+    const handler = command.handler;
+    command.handler = ctx => {
+      if (ctx.message != 'ping' && ctx.message != '') {
+        ctx.chatbase.setIntent(command.intent);
+        ctx.logMessage(`> ${ctx.message} (${command.intent})`);
+      }
+      return handler(ctx);
+    };
+  }
   alice.command(command.matcher, command.handler);
 };
 
@@ -82,8 +92,6 @@ class YandexDialogsWhatis {
     // что нового, changelog
     useCommand(alice, commands.core.changelog);
 
-
-
     // что ты знаешь
     useCommand(alice, commands.items.known);
 
@@ -118,11 +126,9 @@ class YandexDialogsWhatis {
     inAnswerStage.addScene(inAnswerScene);
     alice.use(inAnswerStage.getMiddleware());
 
-
-
     // ниже все команды про помощь
     useCommand(alice, commands.help.tour);
-    useCommand(alice, commands.help.firstHelp);
+    useCommand(alice, commands.help.first);
 
     // помощь
     useCommand(alice, commands.help.help);
@@ -137,8 +143,6 @@ class YandexDialogsWhatis {
 
     // примеры использования
     useCommand(alice, commands.help.scenarios);
-
-
 
     // самые общие команды должны быть в конце
     // что ...

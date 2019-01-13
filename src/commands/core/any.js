@@ -2,6 +2,7 @@ const utils = require('../../utils');
 const commands = require('../../commands');
 
 module.exports = {
+  intent: '',
   matcher: null,
 
   async handler(ctx) {

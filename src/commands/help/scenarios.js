@@ -1,4 +1,5 @@
 module.exports = {
+  intent: 'helpScenarios',
   matcher: [
     ...['сценарии', 'примеры', 'примеры использования'],
     ...[
@@ -12,9 +13,6 @@ module.exports = {
   ],
 
   async handler(ctx) {
-    ctx.chatbase.setIntent('scenarios');
-    ctx.logMessage(`> ${ctx.message} (scenarios)`);
-
     const msg = ctx.message;
     const scenarios = {
       'виртуальные подписи': [

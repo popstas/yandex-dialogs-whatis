@@ -1,10 +1,8 @@
 module.exports = {
+  intent: 'helpRemember',
   matcher: ['запоминать', 'как запомнить', 'как запоминать'],
 
   handler(ctx) {
-    ctx.chatbase.setIntent('helpRemember');
-    ctx.logMessage(`> ${ctx.message} (helpRemember)`);
-
     const buttons = ['запомни на дворе находится трава', 'в синей бутылке налита вода'];
     return ctx.replySimple(
       [

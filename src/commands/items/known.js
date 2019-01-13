@@ -1,4 +1,5 @@
 module.exports = {
+  intent: 'known',
   matcher: [
     'что ты знаешь',
     'что ты помнишь',
@@ -9,9 +10,6 @@ module.exports = {
   ],
 
   async handler(ctx) {
-    ctx.chatbase.setIntent('known');
-    ctx.logMessage(`> ${ctx.message} (known)`);
-
     // buttons
     let questions = ctx.user.data.map(item => item.questions[0]);
     const buttons = questions.map(question => 'что ' + question);

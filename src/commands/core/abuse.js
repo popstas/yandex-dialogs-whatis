@@ -1,11 +1,10 @@
 module.exports = {
+  intent: 'abuse',
   matcher: /(тупая|тупой|дура|идиотка)/i,
 
   handler(ctx) {
-    ctx.chatbase.setIntent('abuse');
     ctx.chatbase.setNotHandled();
     ctx.chatbase.setAsFeedback();
-    ctx.logMessage(`> ${ctx.message} (abuse)`);
 
     return ctx.replyRandom([
       'Вот сейчас обидно было...',

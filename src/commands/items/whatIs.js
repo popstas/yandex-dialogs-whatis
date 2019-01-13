@@ -1,14 +1,11 @@
-const storage = require('../../storage');
 const utils = require('../../utils');
 const Fuse = require('fuse.js');
 
 module.exports = {
+  intent: 'whatis',
   matcher: /^(что|кто) /,
 
   async handler(ctx) {
-    ctx.chatbase.setIntent('whatis');
-    ctx.logMessage(`> ${ctx.message} (whatis)`);
-
     const q = utils.cleanQuestion(ctx.message);
 
     if (ctx.user.data.length == 0) {

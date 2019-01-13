@@ -1,10 +1,8 @@
 module.exports = {
+  intent: 'helpWhatis',
   matcher: ['отвечать что', 'отвечает что', 'что'],
 
   handler(ctx) {
-    ctx.chatbase.setIntent('helpWhatis');
-    ctx.logMessage(`> ${ctx.message} (helpWhatis)`);
-  
     const buttons = ['что на дворе', 'что в среду в столовой', 'что на ужин'];
     return ctx.replySimple(
       [

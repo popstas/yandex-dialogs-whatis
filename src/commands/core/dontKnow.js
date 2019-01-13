@@ -1,4 +1,5 @@
 module.exports = {
+  intent: '',
   matcher: /^(как|зачем|почему) /,
 
   handler(ctx) {

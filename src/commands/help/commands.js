@@ -1,10 +1,8 @@
 module.exports = {
+  intent: 'helpCommands',
   matcher: 'команды',
 
   handler(ctx) {
-    ctx.chatbase.setIntent('commands');
-    ctx.logMessage(`> ${ctx.message} (commands)`);
-
     const buttons = [
       'запомни в чем-то находится что-то',
       'удали последнее',

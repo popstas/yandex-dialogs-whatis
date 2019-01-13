@@ -1,4 +1,5 @@
 module.exports = {
+  intent: '',
   matcher: ctx => !!ctx.user.state.error,
 
   async handler(ctx) {

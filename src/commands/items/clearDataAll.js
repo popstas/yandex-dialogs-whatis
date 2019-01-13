@@ -2,12 +2,10 @@ const storage = require('../../storage');
 const utils = require('../../utils');
 
 module.exports = {
+  intent: 'clearDataAllConfirm',
   matcher: 'забудь все вообще',
 
   async handler(ctx) {
-    ctx.chatbase.setIntent('clearDataAllConfirm');
-    ctx.logMessage(`> ${ctx.message} (clearDataAll confirm)`);
-
     return ctx.confirm('Точно?', clearDataAll, ctx => ctx.reply('Как хочешь'));
   }
 };

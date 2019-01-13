@@ -2,6 +2,7 @@ const help = require('../help');
 
 // команда по умолчанию (справка)
 module.exports = {
+  intent: '',
   matcher: ['', 'привет', 'приветствие'],
 
   async handler(ctx) {
@@ -20,7 +21,7 @@ module.exports = {
         'Я умею запоминать что где лежит и напоминать об этом.',
         'Хотите ознакомиться с возможностями на примере?'
       ];
-      return ctx.confirm(msg, help.tour.handler, help.firstHelp.handler);
+      return ctx.confirm(msg, help.tour.handler, help.first.handler);
     }
   }
 };

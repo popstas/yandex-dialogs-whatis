@@ -63,12 +63,10 @@ const processDelete = async (ctx, question) => {
 };
 
 module.exports = {
+  intent: 'deleteQuestion',
   matcher: /(забудь |удали(ть)? )(что )?.*/,
 
   async handler(ctx) {
-    ctx.chatbase.setIntent('deleteQuestion');
-    ctx.logMessage(`> ${ctx.message} (deleteQuestion)`);
-
     // const question = ctx.body.question;
     const question = ctx.message.replace(/(забудь |удали(ть)? )(что )?(где )?/, '');
     return processDelete(ctx, question);

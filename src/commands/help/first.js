@@ -1,10 +1,8 @@
 module.exports = {
+  intent: 'helpFirst',
   matcher: ['первая помощь', '1 помощь'],
 
   async handler(ctx) {
-    ctx.chatbase.setIntent('welcomeHelp');
-    ctx.logMessage(`> ${ctx.message} (welcomeHelp)`);
-
     const buttons = ['помощь', 'примеры', 'что ты знаешь', 'команды'];
     return ctx.replySimple(
       [

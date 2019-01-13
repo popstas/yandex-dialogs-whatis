@@ -1,4 +1,5 @@
 module.exports = {
+  intent: 'compliment',
   matcher: [
     'молодец',
     'ты молодец',
@@ -13,8 +14,6 @@ module.exports = {
 
   handler(ctx) {
     ctx.chatbase.setAsFeedback();
-    ctx.chatbase.setIntent('compliment');
-    ctx.logMessage(`> ${ctx.message} (compliment)`);
 
     return ctx.replyRandom([
       'Спасибо, стараюсь :)',

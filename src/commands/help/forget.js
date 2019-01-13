@@ -1,10 +1,8 @@
 module.exports = {
+  intent: 'helpForget',
   matcher: ['забывать', 'как забывать', 'как забыть', 'забыть'],
 
   async handler(ctx) {
-    ctx.chatbase.setIntent('helpForget');
-    ctx.logMessage(`> ${ctx.message} (helpForget)`);
-
     const buttons = ['удали последнее', 'удали на дворе', 'забудь все'];
     return ctx.replySimple(
       [

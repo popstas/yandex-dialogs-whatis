@@ -2,12 +2,10 @@ const storage = require('../../storage');
 
 // команда "демо данные"
 module.exports = {
+  intent: 'demoDataConfirm',
   matcher: 'демо данные',
 
   handler(ctx) {
-    ctx.chatbase.setIntent('demoDataConfirm');
-    ctx.logMessage(`> ${ctx.message} (demoData confirm)`);
-
     return ctx.confirm('Точно?', demoData, ctx => ctx.reply('Как хочешь'));
   }
 };

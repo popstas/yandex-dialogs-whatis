@@ -2,12 +2,10 @@ const utils = require('../../utils');
 const Fuse = require('fuse.js');
 
 module.exports = {
+  intent: 'whereis',
   matcher: /^(где|когда|в чем) /,
 
   async handler(ctx) {
-    ctx.chatbase.setIntent('whereis');
-    ctx.logMessage(`> ${ctx.message} (whereis)`);
-
     const q = utils.cleanQuestion(ctx.message);
 
     if (ctx.user.data.length == 0) {

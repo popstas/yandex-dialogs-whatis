@@ -1,11 +1,10 @@
 const utils = require('../../utils');
 
 module.exports = {
+  intent: 'cancel',
   matcher: /^отмена/i,
 
   async handler(ctx) {
-    ctx.chatbase.setIntent('cancel');
-    ctx.logMessage(`> ${ctx.message} (cancel)`);
     ctx.chatbase.setNotHandled();
 
     ctx.leave();

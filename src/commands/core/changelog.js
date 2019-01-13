@@ -2,13 +2,11 @@ const yaml = require('js-yaml');
 const fs = require('fs');
 
 module.exports = {
+  intent: 'changelog',
   matcher: 'что нового',
 
   async handler(ctx) {
     const logLimit = 5; // максимум изменений, которые выдаются за один раз
-
-    ctx.chatbase.setIntent('changelog');
-    ctx.logMessage(`> ${ctx.message} (changelog)`);
 
     // текст начала ответа
     let textBegin = '';

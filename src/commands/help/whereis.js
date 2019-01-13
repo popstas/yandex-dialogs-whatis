@@ -1,10 +1,8 @@
 module.exports = {
+  intent: 'helpWhereis',
   matcher: ['отвечать где', 'где'],
 
   async handler(ctx) {
-    ctx.chatbase.setIntent('helpWhereis');
-    ctx.logMessage(`> ${ctx.message} (helpWhereis)`);
-
     const buttons = ['где трава', 'где находится трава', 'где вода'];
     return ctx.replySimple(
       [

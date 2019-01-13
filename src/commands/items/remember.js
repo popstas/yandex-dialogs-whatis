@@ -38,6 +38,7 @@ const processRemember = async (ctx, msg) => {
 
 // команда запомни ...
 module.exports = {
+  intent: '',
   matcher(ctx) {
     if (ctx.session.get('__currentScene') === 'in-answer') {
       ctx.message = ctx.message.replace(/^что /, '');
