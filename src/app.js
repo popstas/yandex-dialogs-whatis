@@ -13,11 +13,13 @@ const fuseOptions = {
   location: 68
 };
 const defaultConfig = require('./config');
-const commands = require('./commands/index');
+const commands = require('./commands');
 const utils = require('./utils');
-const commandsHelp = require('./commands/help');
 
 const alice = new Alice({ fuseOptions });
+
+// подключение команд, которые возвращают { matcher, handler }
+const useCommand = (alice, command) => alice.command(command.matcher, command.handler);
 
 class YandexDialogsWhatis {
   constructor(config = defaultConfig) {
@@ -56,7 +58,7 @@ class YandexDialogsWhatis {
     });
 
     // привет
-    alice.command(['', 'привет', 'приветствие'], commandsHelp.welcome);
+    useCommand(alice, commands.core.greetings);
 
     // демо данные
     alice.command('демо данные', ctx => {
@@ -220,15 +222,15 @@ class YandexDialogsWhatis {
     );
 
     // ниже все команды про помощь
-    alice.command('тур', commandsHelp.tour);
-    alice.command(['первая помощь', '1 помощь'], commandsHelp.firstHelp);
+    alice.command('тур', commands.help.tour);
+    alice.command(['первая помощь', '1 помощь'], commands.help.firstHelp);
 
     // помощь
-    alice.command(matchers.help(), commandsHelp.help);
-    alice.command(['запоминать', 'как запомнить', 'как запоминать'], commandsHelp.remember);
-    alice.command(['отвечать что', 'отвечает что', 'что'], commandsHelp.whatis);
-    alice.command(['отвечать где', 'где'], commandsHelp.whereis);
-    alice.command(['забывать', 'как забывать', 'как забыть'], commandsHelp.forget);
+    alice.command(matchers.help(), commands.help.help);
+    alice.command(['запоминать', 'как запомнить', 'как запоминать'], commands.help.remember);
+    alice.command(['отвечать что', 'отвечает что', 'что'], commands.help.whatis);
+    alice.command(['отвечать где', 'где'], commands.help.whereis);
+    alice.command(['забывать', 'как забывать', 'как забыть'], commands.help.forget);
 
     alice.command(
       [
@@ -242,7 +244,7 @@ class YandexDialogsWhatis {
           'запомни номер'
         ]
       ],
-      commandsHelp.scenarios
+      commands.help.scenarios
     );
 
     // самые общие команды должны быть в конце
@@ -253,7 +255,7 @@ class YandexDialogsWhatis {
     // непонятное
     alice.command(/^(как|зачем|почему) /, commands.dontKnow);
 
-    alice.any(commandsHelp.any);
+    alice.any(commands.help.any);
   }
 
   // returns express instance

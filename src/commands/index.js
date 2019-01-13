@@ -187,6 +187,9 @@ module.exports.whatIs = async ctx => {
   }
 };
 
+module.exports.core = require('./core');
+module.exports.help = require('./help');
+
 // команда "где ...""
 module.exports.whereIs = ctx => {
   ctx.chatbase.setIntent('whereis');
