@@ -1,5 +1,6 @@
 const storage = require('../../storage');
 const utils = require('../../utils');
+const Az = require('az');
 
 // процесс удаления вопроса
 const processDelete = async (ctx, question) => {
@@ -55,6 +56,14 @@ module.exports = {
   async handler(ctx) {
     // const question = ctx.body.question;
     const question = ctx.message.replace(/(забудь |удали(ть)? )(что )?(где )?/, '');
+
+    const inf = Az.Morph(question)[0].normalize().word;
+    const productIndex = ctx.user.state.products.indexOf(inf);
+    if(productIndex != -1){
+      ctx.user.state.products.splice(productIndex, 1);
+      return ctx.reply('Удалено из списка покупок: ' + inf);
+    }
+
     return processDelete(ctx, question);
   },
 
