@@ -38,19 +38,6 @@ module.exports = {
         msg += ', но это неточно';
       }
 
-      // tour step 2
-      if (ctx.user.state.tourStep === 'whatis') {
-        ctx.user.state.tourStep = 'forget';
-        // storage.setState(ctx.userData, ctx.user.state);
-        return await ctx.reply(
-          [
-            msg + '.',
-            'Теперь вы купили хлеб и хотите забыть о нем. Скажите "удали последнее" или "забудь что в магазине"'
-          ],
-          ['забудь что в магазине', 'удали последнее']
-        );
-      }
-
       return ctx.reply(msg);
     } else {
       ctx.chatbase.setNotHandled();

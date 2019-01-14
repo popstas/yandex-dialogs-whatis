@@ -45,20 +45,6 @@ const processDelete = async (ctx, question) => {
     return ctx.reply('При удалении что-то пошло не так...');
   }
 
-  // tour step 3
-  if (ctx.user.state.tourStep === 'forget') {
-    ctx.user.state.tourStep = '';
-    // storage.setState(ctx.userData, ctx.user.state);
-    return await ctx.reply(
-      [
-        'Прекрасно, теперь вы умеете пользоваться сценарием "список покупок".',
-        'Чтобы узнать, как ещё можно использовать вторую память, скажите "примеры".',
-        'Чтобы узнать обо всех командах, скажите "помощь".'
-      ],
-      ['примеры', 'помощь', 'первая помощь']
-    );
-  }
-
   return ctx.reply('Забыла, что ' + question);
 };
 

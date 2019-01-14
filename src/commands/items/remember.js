@@ -20,19 +20,6 @@ const processRemember = async (ctx, msg) => {
   ctx = await utils.resetState(ctx);
   // const suffix = utils.getVerb(ctx.message);
 
-  // tour step 1
-  if (ctx.user.state.tourStep === 'remember') {
-    ctx.user.state.tourStep = 'whatis';
-    // storage.setState(ctx.userData, ctx.user.state);
-    return await ctx.reply(
-      [
-        question + ' ' + verb + ' ' + answer + ', поняла.',
-        'Теперь вы собрались идти в магазин и хотите вспомнить, зачем. Скажите: "что надо купить в магазине"'
-      ],
-      ['что надо купить в магазине']
-    );
-  }
-
   return ctx.reply(question + ' ' + verb + ' ' + answer + ', поняла');
 };
 

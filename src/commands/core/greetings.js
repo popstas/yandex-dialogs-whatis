@@ -20,7 +20,7 @@ module.exports = {
       return ctx.reply(msg, buttons);
     } else {
       msg = [
-        'Я умею запоминать что где лежит и напоминать об этом.',
+        'Я умею запоминать что где лежит или вести список покупок.',
         'Хотите ознакомиться с возможностями на примере?'
       ];
       return ctx.confirm(msg, help.tour.handler, help.first.handler);

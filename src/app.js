@@ -7,6 +7,7 @@ const middlewares = require('./middlewares');
 const packageJson = require('../package.json');
 const defaultConfig = require('./config');
 const commands = require('./commands');
+const entities = require('./entities');
 const utils = require('./utils');
 
 const alice = new Alice();
@@ -51,6 +52,8 @@ class YandexDialogsWhatis {
     alice.use(middlewares.counter());
 
     alice.use(middlewares.confirm());
+
+    alice.use(entities.shop());
 
     await utils.initMorph();
 
@@ -101,23 +104,26 @@ class YandexDialogsWhatis {
     // меня зовут ... , должен быть перед commands.items.remember
     useCommand(alice, commands.items.myName);
 
+    // забудь все, должен быть перед commands.items.clearDataAll
+    useCommand(alice, commands.items.clearData);
+
+    // забудь все вообще, должен быть перед commands.items.deleteQuestion
+    useCommand(alice, commands.items.clearDataAll);
+
+    // список покупок, должен идти перед commands.items.deleteQuestion
+    useCommand(alice, commands.items.shopList);
+
+    // удали последнее, должен быть перед commands.items.shopList
+    useCommand(alice, commands.items.deleteLast);
+
+    // удали конкретное, должен быть перед commands.items.shopList
+    useCommand(alice, commands.items.deleteQuestion);
+
     // команда запомни ...
     useCommand(alice, commands.items.remember);
 
-    // забудь все, должно быть перед "удали последнее"
-    useCommand(alice, commands.items.clearData);
-
-    // забудь все вообще
-    useCommand(alice, commands.items.clearDataAll);
-
     // демо данные
     useCommand(alice, commands.items.demoData);
-
-    // удали последнее
-    useCommand(alice, commands.items.deleteLast);
-
-    // удали конкретное
-    useCommand(alice, commands.items.deleteQuestion);
 
     // запомни ...
     const rememberMasterStage = new Stage();
