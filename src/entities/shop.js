@@ -8,8 +8,8 @@ const plusMinusParse = ctx => {
   };
 
   // 'плюс один минус два товар плюс три' ->
-  // '|плюс один |минус два товар |плюс три' ->
-  // ['плюс один', 'минус два товар', 'плюс три']
+  // '|add один |remove два товар |add три' ->
+  // ['add один', 'remove два товар', 'add три']
   const pairs = ctx.message
     .split(' ')
     .map(word => {
@@ -21,8 +21,6 @@ const plusMinusParse = ctx => {
     .join(' ')
     .replace(/^\|/, '')
     .split('|');
-
-  console.log('pairs: ', pairs);
 
   const actions = [];
   pairs.forEach(pair => {
