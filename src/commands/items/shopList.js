@@ -20,8 +20,11 @@ module.exports = {
     if (opts.action == 'add') {
       const add = opts.products.filter(product => list.indexOf(product) == -1);
       ctx.user.state.products = [...list, ...add];
-      text = add.length > 0 ? 'Добавлены: ' + add.join(', ') : 'Ничего не добавлено.';
-      text += '\nПолный список:\n' + listText(ctx);
+      text =
+        add.length > 0
+          ? 'Добавлены: ' + add.join(', ') + '.'
+          : 'В списке уже есть ' + opts.products.join(', ') + '.';
+      if (add.length < ctx.user.state.products.length) text += '\nПолный список:\n' + listText(ctx);
 
       // tour step 1
       if (ctx.user.state.tourStep === 'remember') {
@@ -38,8 +41,20 @@ module.exports = {
 
     if (opts.action == 'remove') {
       const remove = opts.products.filter(product => list.indexOf(product) != -1);
+      const notFound = opts.products.filter(product => list.indexOf(product) == -1);
       ctx.user.state.products = list.filter(product => remove.indexOf(product) == -1);
-      text = remove.length > 0 ? 'Удалены: ' + remove.join(', ') : 'Ничего не удалено.';
+      const notInListText = words => {
+        return (
+          words.join(', ') + (words.length == 1 ? ' отсутствует' : ' отсутствуют') + ' в списке'
+        );
+      };
+
+      text = remove.length > 0 ? 'Удалены: ' + remove.join(', ') : '';
+
+      if (notFound.length > 0) {
+        text += (text ? '.\n' : '') + notInListText(notFound) +'.';
+      }
+
       text += '\nПолный список:\n' + listText(ctx);
 
       // tour step 3
