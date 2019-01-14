@@ -1,3 +1,12 @@
+# [3.1.0](https://github.com/popstas/yandex-dialogs-whatis/compare/v3.0.0...v3.1.0) (2019-01-14)
+
+
+### Features
+
+* список покупок ([b23184d](https://github.com/popstas/yandex-dialogs-whatis/commit/b23184d))
+
+
+
 # [3.0.0](https://github.com/popstas/yandex-dialogs-whatis/compare/v2.4.0...v3.0.0) (2019-01-13)
 
 
