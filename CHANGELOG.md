@@ -1,3 +1,19 @@
+## [3.1.1](https://github.com/popstas/yandex-dialogs-whatis/compare/v3.1.0...v3.1.1) (2019-01-14)
+
+
+### Bug Fixes
+
+* забудь всё теперь очищает список покупок ([2b8c4d7](https://github.com/popstas/yandex-dialogs-whatis/commit/2b8c4d7))
+* улучшения в ответе списк покупок ([fd43afb](https://github.com/popstas/yandex-dialogs-whatis/commit/fd43afb))
+* упоминание списка покупок в "что ты знаешь" ([86e68e1](https://github.com/popstas/yandex-dialogs-whatis/commit/86e68e1))
+
+
+### Features
+
+* добавление в покупки через "запомни в магазине хлеб и молоко" ([ef7270b](https://github.com/popstas/yandex-dialogs-whatis/commit/ef7270b))
+
+
+
 # [3.1.0](https://github.com/popstas/yandex-dialogs-whatis/compare/v3.0.0...v3.1.0) (2019-01-14)
 
 
