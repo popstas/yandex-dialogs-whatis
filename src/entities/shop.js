@@ -33,7 +33,7 @@ module.exports = () => (ctx, next) => {
 
   if(!ctx.entities.shop.action) return next(ctx);
 
-  const addActionWords = ['добавить', 'купить'];
+  const addActionWords = ['добавить', 'купить', 'запомнить'];
   if (
     !ctx.message.match(/^что /) &&
     addActionWords.filter(word => inf.indexOf(word) != -1).length > 0
@@ -57,7 +57,7 @@ module.exports = () => (ctx, next) => {
       ...addActionWords,
       ...removeActionWords,
       ...clearActionWords,
-      ...['надо', 'добавить', 'список', 'покупка', 'еще', 'в', 'и', 'из']
+      ...['надо', 'добавить', 'список', 'покупка', 'еще', 'ещё', 'в', 'и', 'из']
     ];
     const products = inf.filter(word => trashWords.indexOf(word) == -1);
     ctx.entities.shop.products = products;
@@ -71,6 +71,6 @@ module.exports = () => (ctx, next) => {
       ctx.entities.shop.products.join(',\n'); */
   }
 
-  console.log('ctx.entities: ', ctx.entities);
+  // console.log('ctx.entities: ', ctx.entities);
   return next(ctx);
 };
