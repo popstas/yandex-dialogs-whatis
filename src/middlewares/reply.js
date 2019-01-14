@@ -10,6 +10,13 @@ const onShutdown = async (ctx, text) => {
 
   ctx.chatbase.sendEvent(text);
 
+  // последний запрос и ответ, для контекста
+  ctx.user.state.lastRequest = {
+    request: ctx.message,
+    entities: ctx.entities,
+    response: text
+  }
+
   // store state
   await storage.setState(ctx.userData, ctx.user.state);
 };

@@ -19,6 +19,7 @@ module.exports = {
 
     if (opts.action == 'add') {
       const add = opts.products.filter(product => list.indexOf(product) == -1);
+      ctx.entities.shop.productsAdded = add; // для удали последнее
       ctx.user.state.products = [...list, ...add];
       text =
         add.length > 0
