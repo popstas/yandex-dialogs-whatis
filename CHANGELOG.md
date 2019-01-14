@@ -1,3 +1,18 @@
+# [3.2.0](https://github.com/popstas/yandex-dialogs-whatis/compare/v3.1.1...v3.2.0) (2019-01-14)
+
+
+### Bug Fixes
+
+* одиночное удаление продукта из списка без уточнения, что это список ([00fba3e](https://github.com/popstas/yandex-dialogs-whatis/commit/00fba3e))
+* удали последнее для списка покупок ([9043388](https://github.com/popstas/yandex-dialogs-whatis/commit/9043388))
+
+
+### Features
+
+* плюс-минус в списке покупок ([78caa65](https://github.com/popstas/yandex-dialogs-whatis/commit/78caa65))
+
+
+
 ## [3.1.1](https://github.com/popstas/yandex-dialogs-whatis/compare/v3.1.0...v3.1.1) (2019-01-14)
 
 
