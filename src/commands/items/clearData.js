@@ -15,6 +15,7 @@ const clearData = async ctx => {
   ctx.logMessage(`> ${ctx.message} (clearData)`);
 
   await storage.clearData(ctx.userData);
+  ctx.user.state.products = [];
   ctx = await utils.resetState(ctx);
   return ctx.reply('Всё забыла...');
 };

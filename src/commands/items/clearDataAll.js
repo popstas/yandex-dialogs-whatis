@@ -15,6 +15,7 @@ const clearDataAll = async ctx => {
   ctx.logMessage(`> ${ctx.message} (clearDataAll)`);
 
   await storage.clearData(ctx.userData);
+  ctx.user.state.products = [];
   ctx.user.state.visitor = { visits: 1 };
   ctx.user.state.visit = { messages: 0 };
   ctx.user.state.tourStep = '';
