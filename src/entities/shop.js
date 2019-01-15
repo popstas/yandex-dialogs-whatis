@@ -24,6 +24,7 @@ const plusMinusParse = ctx => {
 
   const actions = [];
   pairs.forEach(pair => {
+    if (!pair.trim()) return;
     const words = pair.trim().split(' ');
     const action = words.splice(0, 1)[0];
     const products = words.join(' ');
