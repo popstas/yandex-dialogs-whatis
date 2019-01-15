@@ -12,7 +12,7 @@ module.exports = {
       // удалить все продукты, добавленные в прошлый раз
       ctx.user.state.products = ctx.user.state.products.filter(p => added.indexOf(p) == -1);
 
-      return await ctx.reply('Удалено: ' + added.join(', '));
+      return await ctx.reply('Удалены ' + ctx.az.andList(added));
     }
 
     if (!ctx.user.state.lastAddedItem) {

@@ -41,6 +41,7 @@ class YandexDialogsWhatis {
     // добавляют функции в ctx
     alice.use(middlewares.reply());
     alice.use(middlewares.replyRandom());
+    alice.use(middlewares.az());
     alice.use(middlewares.logMessage());
     alice.use(middlewares.yametrika(this.config.YAMETRIKA_ID));
     alice.use(middlewares.chatbase(this.config.CHATBASE_KEY, packageJson.version));

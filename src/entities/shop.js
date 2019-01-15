@@ -24,10 +24,10 @@ const plusMinusParse = ctx => {
 
   const actions = [];
   pairs.forEach(pair => {
-    if (!pair.trim()) return;
     const words = pair.trim().split(' ');
     const action = words.splice(0, 1)[0];
     const products = words.join(' ');
+    if (!products) return;
     actions.push({ action, products });
   });
 
@@ -69,6 +69,9 @@ module.exports = () => (ctx, next) => {
       ctx.entities.shop.action = 'plusMinus';
       ctx.entities.shop.actions = actions;
       return next(ctx);
+    } else {
+      ctx.entities.shop.action = 'listAny';
+      return next(ctx);
     }
   }
 
@@ -107,7 +110,10 @@ module.exports = () => (ctx, next) => {
       ...['надо', 'добавить', 'список', 'покупка', 'еще', 'ещё', 'в', 'и', 'из']
     ];
     const products = inf.filter(word => trashWords.indexOf(word) == -1);
-    ctx.entities.shop.products = products;
+    ctx.entities.shop.products = products.filter(Boolean);
+    if (ctx.entities.shop.products.length == 0 && ctx.entities.shop.action != 'clear') {
+      ctx.entities.shop.action = 'listAny'; // если не нашлось продуктов
+    }
   }
 
   // console.log('ctx.entities: ', ctx.entities);

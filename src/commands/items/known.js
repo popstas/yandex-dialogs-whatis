@@ -15,7 +15,8 @@ module.exports = {
     const buttons = questions.map(question => 'что ' + question);
 
     if (ctx.user.state.products && ctx.user.state.products.length > 0) {
-      questions.push('Список покупок: ' + ctx.user.state.products.length);
+      const msg = 'Список покупок: ' + ctx.az.pluralWord('продукт', ctx.user.state.products.length);
+      questions = [...[msg], questions];
     }
 
     // text
