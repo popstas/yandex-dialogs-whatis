@@ -1,3 +1,18 @@
+## [3.2.1](https://github.com/popstas/yandex-dialogs-whatis/compare/v3.2.0...v3.2.1) (2019-01-15)
+
+
+### Bug Fixes
+
+* changelog-bot ([f8acbad](https://github.com/popstas/yandex-dialogs-whatis/commit/f8acbad))
+* тогда в начале ([14c632f](https://github.com/popstas/yandex-dialogs-whatis/commit/14c632f))
+
+
+### Features
+
+* az middleware, списки с "и", понимание пустых списков ([4ddd6d8](https://github.com/popstas/yandex-dialogs-whatis/commit/4ddd6d8))
+
+
+
 # [3.2.0](https://github.com/popstas/yandex-dialogs-whatis/compare/v3.1.1...v3.2.0) (2019-01-14)
 
 
