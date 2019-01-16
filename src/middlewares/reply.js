@@ -1,6 +1,17 @@
 const { Reply, Markup } = require('yandex-dialogs-sdk');
 const storage = require('../storage');
 
+const effects = [
+  '-', // нет эффекта
+  'behind_the_wall', // голос из-за стены
+  'hamster', // голос хомяка
+  'megaphone', // голос через мегафон
+  'pitch_down', // низкий голос
+  'psychodelic', // психоделический голос
+  'pulse', // голос с прерываниями
+  'train_announce' // громкоговоритель на вокзале
+];
+
 const onShutdown = async (ctx, text) => {
   // send yandex metrika
   text = text.substring(0, 100);
@@ -32,6 +43,24 @@ const ttsFromText = msg => {
     msg = msg.replace(new RegExp(search), replace);
   });
 
+  // заменяет сокращенные эффекты на полные, '[megaphone]' => '<speaker effect="megaphone"}>'
+  effects.forEach(effect => {
+    const search = `\\[${effect}\\]`;
+    const replace = `<speaker effect="${effect}">`;
+    msg = msg.replace(new RegExp(search), replace);
+  });
+
+  return msg;
+};
+
+// убирает разметку из текста
+const clearText = msg => {
+  // убирает сокращенные эффекты
+  effects.forEach(effect => {
+    const search = `\\[${effect}\\]`;
+    msg = msg.replace(new RegExp(search), '');
+  });
+
   return msg;
 };
 
@@ -55,6 +84,9 @@ module.exports = () => (ctx, next) => {
       params.tts = ttsFromText(text);
       if (params.tts == text) delete params.tts;
     }
+
+    // убирает придуманный язык
+    text = clearText(text);
 
     if (Array.isArray(buttons)) {
       resultButtons = buttons.map(button => Markup.button(button));
