@@ -1,6 +1,7 @@
 const storage = require('../../storage');
 const utils = require('../../utils');
 const Az = require('az');
+const known = require('./known');
 
 // процесс удаления вопроса
 const processDelete = async (ctx, question) => {
@@ -26,8 +27,10 @@ const processDelete = async (ctx, question) => {
     // второй раз подряд не может удалить
     if (ctx.user.state.deleteFails > 1) {
       ctx.chatbase.setIntent('knownConfirm');
-      return await ctx.confirm('Не знаю такого, рассказать, что знаю?', module.exports.known, ctx =>
-        ctx.replyRandom(['ОК', 'Молчу', 'Я могу и всё забыть...'])
+      return await ctx.confirm(
+        'Не знаю такого, рассказать, что знаю?',
+        known.handler, ctx => ctx.replyRandom(['ОК', 'Молчу', 'Я могу и всё забыть...']),
+        { optional: true }
       );
     }
     return await ctx.replyRandom([`Я не знаю про ${question}`, `Что за ${question}?`]);

@@ -1,9 +1,25 @@
 const matchers = require('../../matchers');
 
+const anycommand = ctx => {
+  const confirm = ctx.session.get('confirm');
+  return ctx.replyRandom(
+    [
+      'Скажите "да" или "нет"',
+      'Не отстану, пока не получу ответ',
+      'А ответ-то какой?',
+      confirm.reply
+    ],
+    ['да', 'нет']
+  );
+};
+
 module.exports = {
   intent: '',
-  matcher(ctx){
-    return !!ctx.session.get('confirm')
+  matcher(ctx) {
+    const confirm = ctx.session.get('confirm');
+    if (!confirm) return 0;
+    if (!confirm.options || !confirm.options.optional) return 1;
+    return 0.01; // если optional, то команда сработает только если не нашлось других команд
   },
 
   async handler(ctx) {
@@ -15,16 +31,8 @@ module.exports = {
       ...{
         yesMatcher: matchers.yes(),
         noMatcher: matchers.no(),
-        anyCommand: ctx =>
-          ctx.replyRandom(
-            [
-              'Скажите "да" или "нет"',
-              'Не отстану, пока не получу ответ',
-              'А ответ-то какой?',
-              confirm.reply
-            ],
-            ['да', 'нет']
-          )
+        anyCommand: anycommand,
+        optional: false
       }
     };
     if (ctx.message.match(/^повтори/)) {
@@ -35,12 +43,12 @@ module.exports = {
     } else if (options.noMatcher(ctx)) {
       cmd = confirm.noCommand;
     }
-  
+
     if (cmd) {
       ctx.session.set('confirm', null);
       return await cmd(ctx);
     }
-  
+
     return options.anyCommand(ctx);
   }
 };

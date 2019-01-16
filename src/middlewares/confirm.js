@@ -44,6 +44,7 @@ module.exports = () => (ctx, next) => {
     ctx.session.set('confirm', null);
   }
 
+  // options: { anyCommand: function, optional: false }
   ctx.confirm = async (reply, yesCommand, noCommand, options) => {
     ctx.session.set('confirm', { yesCommand, noCommand, options, reply });
     return await ctx.reply(reply, ['да', 'нет']);
