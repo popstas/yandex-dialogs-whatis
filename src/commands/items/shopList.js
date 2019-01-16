@@ -19,6 +19,10 @@ module.exports = {
     ctx.user.state.products = ctx.user.state.products || [];
     let text = '';
 
+    const intent =
+      module.exports.intent + opts.action.substr(0, 1).toUpperCase() + opts.action.substr(1);
+    ctx.chatbase.setIntent(intent);
+
     let list = ctx.user.state.products;
 
     if (opts.action == 'add') {
