@@ -5,7 +5,6 @@ module.exports = {
   matcher: /^(удали|удалить|забудь) ?(последнее|последний|последние|последнюю запись)?$/i,
 
   async handler(ctx) {
-    console.log('ctx.user.state.lastRequest: ', ctx.user.state.lastRequest);
     if (ctx.user.state.lastRequest.entities.shop.action == 'add') {
       const added = ctx.user.state.lastRequest.entities.shop.productsAdded;
 

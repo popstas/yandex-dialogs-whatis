@@ -123,6 +123,9 @@ class YandexDialogsWhatis {
     // команда запомни ...
     useCommand(alice, commands.items.remember);
 
+    // команда сколько ...
+    useCommand(alice, commands.items.howMany);
+
     // демо данные
     useCommand(alice, commands.items.demoData);
 
