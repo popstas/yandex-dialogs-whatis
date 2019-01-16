@@ -15,10 +15,24 @@ const onShutdown = async (ctx, text) => {
     request: ctx.message,
     entities: ctx.entities,
     response: text
-  }
+  };
 
   // store state
   await storage.setState(ctx.userData, ctx.user.state);
+};
+
+const ttsFromText = msg => {
+  const articles = {
+    стоит: 'сто+ит'
+  };
+
+  // ставит ударения
+  Object.entries(articles).map(pair => {
+    [search, replace] = pair;
+    msg = msg.replace(new RegExp(search), replace);
+  });
+
+  return msg;
 };
 
 module.exports = () => (ctx, next) => {
@@ -34,6 +48,12 @@ module.exports = () => (ctx, next) => {
     else if (typeof lines === 'object') {
       text = lines.text;
       params = { ...params, ...lines };
+    }
+
+    // создание tts с фиксами типичных проблем
+    if (!params.tts) {
+      params.tts = ttsFromText(text);
+      if (params.tts == text) delete params.tts;
     }
 
     if (Array.isArray(buttons)) {
