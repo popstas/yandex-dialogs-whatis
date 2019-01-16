@@ -1,3 +1,19 @@
+# [3.3.0](https://github.com/popstas/yandex-dialogs-whatis/compare/v3.2.2...v3.3.0) (2019-01-16)
+
+
+### Bug Fixes
+
+* подробные intents для shopList ([69a0d51](https://github.com/popstas/yandex-dialogs-whatis/commit/69a0d51))
+
+
+### Features
+
+* голосовые эффекты ([aaf3e5b](https://github.com/popstas/yandex-dialogs-whatis/commit/aaf3e5b))
+* исправление ударений ([57a3470](https://github.com/popstas/yandex-dialogs-whatis/commit/57a3470))
+* опциональный confirm ([cb37921](https://github.com/popstas/yandex-dialogs-whatis/commit/cb37921))
+
+
+
 ## [3.2.2](https://github.com/popstas/yandex-dialogs-whatis/compare/v3.2.1...v3.2.2) (2019-01-16)
 
 
