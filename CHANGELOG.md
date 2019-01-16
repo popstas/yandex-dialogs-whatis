@@ -1,3 +1,18 @@
+## [3.2.2](https://github.com/popstas/yandex-dialogs-whatis/compare/v3.2.1...v3.2.2) (2019-01-16)
+
+
+### Bug Fixes
+
+* удален сценарий "запомни номер" ([bab70dd](https://github.com/popstas/yandex-dialogs-whatis/commit/bab70dd))
+
+
+### Features
+
+* команда "повтори" ([cd73386](https://github.com/popstas/yandex-dialogs-whatis/commit/cd73386))
+* команда "сколько" (заглушка) ([dfdb8dd](https://github.com/popstas/yandex-dialogs-whatis/commit/dfdb8dd))
+
+
+
 ## [3.2.1](https://github.com/popstas/yandex-dialogs-whatis/compare/v3.2.0...v3.2.1) (2019-01-15)
 
 
