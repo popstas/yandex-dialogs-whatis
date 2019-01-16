@@ -75,6 +75,9 @@ class YandexDialogsWhatis {
     // отмена
     useCommand(alice, commands.core.cancel);
 
+    // повтори
+    useCommand(alice, commands.core.repeat);
+
     // пока
     useCommand(alice, commands.core.sessionEnd);
 
