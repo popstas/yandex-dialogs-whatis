@@ -40,80 +40,34 @@ class YandexDialogsWhatis {
 
     await utils.initMorph();
 
-    /* alice.command(['', 'привет'], ctx => {
-      return Reply.text('hello');
-    }); */
-    // return;
+    useCommand(alice, commands.core.abuse); // оскорбление
+    useCommand(alice, commands.core.alice); // Алиса
+    useCommand(alice, commands.core.cancel); // отмена
+    useCommand(alice, commands.core.changelog); // что нового, changelog
+    useCommand(alice, commands.core.compliment); // молодец
+    useCommand(alice, commands.core.confirm); // при наличии session.confirm запускаем сценарий подтверждения
+    useCommand(alice, commands.core.dontKnow); // непонятное, должна быть после всех "как"
+    useCommand(alice, commands.core.error); // ошибка с базой данных
+    useCommand(alice, commands.core.greetings); // привет
+    useCommand(alice, commands.core.repeat); // повтори
+    useCommand(alice, commands.core.repeatInput); // что ты услышала
+    useCommand(alice, commands.core.selfRun); // запусти навык 2 память
+    useCommand(alice, commands.core.sessionEnd); // пока
+    useCommand(alice, commands.core.thankyou); // спасибо
+    useCommand(alice, commands.core.version); // версия
 
-    // привет
-    useCommand(alice, commands.core.greetings);
-
-    // при наличии session.confirm запускаем сценарий подтверждения
-    useCommand(alice, commands.core.confirm);
-
-    // ошибка с базой данных
-    useCommand(alice, commands.core.error);
-
-    // отмена
-    useCommand(alice, commands.core.cancel);
-
-    // повтори
-    useCommand(alice, commands.core.repeat);
-    useCommand(alice, commands.core.repeatInput);
-
-    // пока
-    useCommand(alice, commands.core.sessionEnd);
-
-    // Алиса
-    useCommand(alice, commands.core.alice);
-
-    // запусти навык 2 память
-    useCommand(alice, commands.core.selfRun);
-
-    // версия
-    useCommand(alice, commands.core.version);
-
-    // оскорбление
-    useCommand(alice, commands.core.abuse);
-
-    // спасибо
-    useCommand(alice, commands.core.thankyou);
-
-    // молодец
-    useCommand(alice, commands.core.compliment);
-
-    // что нового, changelog
-    useCommand(alice, commands.core.changelog);
-
-    // что ты знаешь
-    useCommand(alice, commands.items.known);
-
-    // меня зовут ... , должен быть перед commands.items.remember
-    useCommand(alice, commands.items.myName);
-
-    // забудь все, должен быть перед commands.items.clearDataAll
-    useCommand(alice, commands.items.clearData);
-
-    // забудь все вообще, должен быть перед commands.items.deleteQuestion
-    useCommand(alice, commands.items.clearDataAll);
-
-    // список покупок, должен идти перед commands.items.deleteQuestion
-    useCommand(alice, commands.items.shopList);
-
-    // удали последнее, должен быть перед commands.items.shopList
-    useCommand(alice, commands.items.deleteLast);
-
-    // удали конкретное, должен быть перед commands.items.shopList
-    useCommand(alice, commands.items.deleteQuestion);
-
-    // команда запомни ...
-    useCommand(alice, commands.items.remember);
-
-    // команда сколько ...
-    useCommand(alice, commands.items.howMany);
-
-    // демо данные
-    useCommand(alice, commands.items.demoData);
+    useCommand(alice, commands.items.clearData); // забудь все, должен быть перед commands.items.clearDataAll
+    useCommand(alice, commands.items.clearDataAll); // забудь все вообще, должен быть перед commands.items.deleteQuestion
+    useCommand(alice, commands.items.deleteLast); // удали последнее, должен быть перед commands.items.shopList
+    useCommand(alice, commands.items.deleteQuestion); // удали конкретное, должен быть перед commands.items.shopList
+    useCommand(alice, commands.items.demoData); // демо данные
+    useCommand(alice, commands.items.howMany); // команда сколько ...
+    useCommand(alice, commands.items.known); // что ты знаешь
+    useCommand(alice, commands.items.myName); // меня зовут ... , должен быть перед commands.items.remember
+    useCommand(alice, commands.items.remember); // команда запомни ...
+    useCommand(alice, commands.items.shopList); // список покупок, должен идти перед commands.items.deleteQuestion
+    useCommand(alice, commands.items.whatIs); // что ...
+    useCommand(alice, commands.items.whereIs); // где ...
 
     // запомни ...
     const rememberMasterStage = new Stage();
@@ -125,31 +79,15 @@ class YandexDialogsWhatis {
     alice.use(rememberMasterStage.getMiddleware());
     useCommand(alice, commands.items.rememberMaster);
 
-    // ниже все команды про помощь
-    useCommand(alice, commands.help.tour);
-    useCommand(alice, commands.help.first);
-
-    // помощь
-    useCommand(alice, commands.help.help);
-
-    // команды
-    useCommand(alice, commands.help.commands);
-
-    useCommand(alice, commands.help.remember);
-    useCommand(alice, commands.help.whatis);
-    useCommand(alice, commands.help.whereis);
-    useCommand(alice, commands.help.forget);
-
-    // примеры использования
-    useCommand(alice, commands.help.scenarios);
-
-    // самые общие команды должны быть в конце
-    // что ...
-    useCommand(alice, commands.items.whatIs);
-    // где ...
-    useCommand(alice, commands.items.whereIs);
-    // непонятное
-    useCommand(alice, commands.core.dontKnow); // должна быть после всех "как"
+    useCommand(alice, commands.help.tour); // тур
+    useCommand(alice, commands.help.first); // первая помощь
+    useCommand(alice, commands.help.help); // помощь
+    useCommand(alice, commands.help.commands); // команды
+    useCommand(alice, commands.help.remember); // запоминать
+    useCommand(alice, commands.help.whatis); // отвечать что
+    useCommand(alice, commands.help.whereis); // отвечать где
+    useCommand(alice, commands.help.forget); // забывать
+    useCommand(alice, commands.help.scenarios); // примеры
 
     alice.any(commands.core.any.handler);
   }

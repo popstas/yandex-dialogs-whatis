@@ -34,7 +34,7 @@ module.exports = {
     if (ctx.message.match(/^(где|когда|в чем) /)) return false;
     if (ctx.message.match(/^(как|зачем|почему) /)) return false;
     const cleanMsg = ctx.message.replace(/^запомни /, '');
-    return !!utils.splitByVerb(cleanMsg);
+    return utils.splitByVerb(cleanMsg) ? 0.9 : 0;
   },
 
   async handler(ctx) {
