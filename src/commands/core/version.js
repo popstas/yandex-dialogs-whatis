@@ -2,7 +2,7 @@ const packageJson = require('../../../package.json');
 
 module.exports = {
   intent: 'version',
-  matcher: 'версия',
+  matcher: /(\s|^)верси[яюи](\s|$)/,
 
   handler(ctx) {
     return ctx.reply(packageJson.version, [], {

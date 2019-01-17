@@ -3,7 +3,7 @@ const fs = require('fs');
 
 module.exports = {
   intent: 'changelog',
-  matcher: 'что нового',
+  matcher: ['что нового', 'что изменилось', 'изменения', 'обновление', 'обновления'],
 
   async handler(ctx) {
     const logLimit = 5; // максимум изменений, которые выдаются за один раз

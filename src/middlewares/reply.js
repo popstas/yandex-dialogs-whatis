@@ -22,6 +22,7 @@ const onShutdown = async (ctx, text) => {
   ctx.chatbase.sendEvent(text);
 
   // последний запрос и ответ, для контекста
+  // TODO: if(['repeatInput', 'repeat'].indexOf(ctx.chatbase.getIntent()) != -1) skip
   ctx.user.state.lastRequest = {
     request: ctx.message,
     entities: ctx.entities,
