@@ -4,7 +4,7 @@ const matchers = require('../../matchers');
 // команда по умолчанию (справка)
 module.exports = {
   intent: '',
-  matcher: matchers.strings(['', 'привет', 'приветствие']),
+  matcher: matchers.strings(['', 'привет', 'приветствие', 'здравствуй']),
   // matcher: ['привет', 'приветствие'], // TODO: заменить после выхода sdk 2.0.7
 
   async handler(ctx) {
