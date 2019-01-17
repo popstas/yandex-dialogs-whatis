@@ -1,3 +1,12 @@
+## [3.3.1](https://github.com/popstas/yandex-dialogs-whatis/compare/v3.3.0...v3.3.1) (2019-01-17)
+
+
+### Features
+
+* команда "что ты услышала" ([76a5f38](https://github.com/popstas/yandex-dialogs-whatis/commit/76a5f38))
+
+
+
 # [3.3.0](https://github.com/popstas/yandex-dialogs-whatis/compare/v3.2.2...v3.3.0) (2019-01-16)
 
 
