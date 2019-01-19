@@ -1,9 +1,11 @@
 // убирает незначимые части
 module.exports = () => (ctx, next) => {
-  ctx.message = ctx.message.replace(/^(Алиса )?(привет )?(слушай )?(а )?(тогда )?(скажи )?(напомни )?/, '');
   ctx.message = ctx.message.replace(/^(ну )?(и )?/, '');
   ctx.message = ctx.message.replace(/(^|\s)же($|\s)/, ' ');
   ctx.message = ctx.message.replace(/(^|\s)то($|\s)/, ' ');
+  ctx.message = ctx.message.replace(/(^|\s)пожалуйста($|\s)/, ' ');
+  ctx.message = ctx.message.trim();
+  ctx.message = ctx.message.replace(/^(Алиса )?(привет )?(слушай )?(а )?(тогда )?(скажи )?(напомни )?/, '');
 
   ctx.message = ctx.message.replace(/ запомни$/, '');
 
