@@ -1,3 +1,18 @@
+## [3.3.2](https://github.com/popstas/yandex-dialogs-whatis/compare/v3.3.1...v3.3.2) (2019-01-20)
+
+
+### Bug Fixes
+
+* улучшено распознавание команд "версия", "что нового" ([2cfbc3c](https://github.com/popstas/yandex-dialogs-whatis/commit/2cfbc3c))
+* **cleaner:** пожалуйста ([9a67013](https://github.com/popstas/yandex-dialogs-whatis/commit/9a67013))
+
+
+### Features
+
+* команда sendTo (отправь на email), заглушка ([b5e8e14](https://github.com/popstas/yandex-dialogs-whatis/commit/b5e8e14))
+
+
+
 ## [3.3.1](https://github.com/popstas/yandex-dialogs-whatis/compare/v3.3.0...v3.3.1) (2019-01-17)
 
 
