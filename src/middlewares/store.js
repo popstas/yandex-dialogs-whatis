@@ -6,7 +6,8 @@ module.exports = () => async (ctx, next) => {
     ctx.userData = await storage.getUserData(ctx);
     ctx.user = {
       data: await storage.getData(ctx.userData),
-      state: await storage.getState(ctx.userData)
+      state: await storage.getState(ctx.userData),
+      shared: await storage.getShared(ctx.userData)
     };
   } catch (e) {
     ctx.user = {

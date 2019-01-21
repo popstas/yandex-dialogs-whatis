@@ -42,8 +42,23 @@ class MongoDriver extends BaseDriver {
       }
 
       try {
-        const dataCollectionName = ctx.userId + '_data';
-        const stateCollectionName = ctx.userId + '_state';
+        const sharedCollectionName = 'shared';
+        let userId = ctx.userId;
+
+        // shared database
+        let shared = await this.db.collection(sharedCollectionName);
+        if (shared === null) {
+          shared = await this.db.createCollection(sharedCollectionName);
+        }
+
+        // foreign userId
+        const s = await shared.find({ name: 'shared' }).toArray();
+        let auth = {};
+        if (s.length > 0) auth = s[0].shared.auth;
+        if (auth && auth[ctx.userId]) userId = auth[ctx.userId];
+
+        const dataCollectionName = userId + '_data';
+        const stateCollectionName = userId + '_state';
         let data = await this.db.collection(dataCollectionName);
         if (data === null) {
           data = await this.db.createCollection(dataCollectionName);
@@ -52,7 +67,7 @@ class MongoDriver extends BaseDriver {
         if (state === null) {
           state = await this.db.createCollection(stateCollectionName);
         }
-        resolve({ data, state });
+        resolve({ data, state, shared });
       } catch (err) {
         reject(err);
       }
@@ -68,10 +83,25 @@ class MongoDriver extends BaseDriver {
     return state.length > 0 ? state[0].state : {};
   }
 
+  async getShared(userData) {
+    let shared = await userData.shared.find({ name: 'shared' }).toArray();
+    let result = shared.length > 0 ? shared[0].shared : {};
+    if (Array.isArray(result)) result = {};
+    return result;
+  }
+
   async setState(userData, state) {
     const result = await userData.state.updateOne(
       { name: 'state' },
       { $set: { state } },
+      { upsert: true }
+    );
+  }
+
+  async setShared(userData, shared) {
+    const result = await userData.shared.updateOne(
+      { name: 'shared' },
+      { $set: { shared } },
       { upsert: true }
     );
   }
