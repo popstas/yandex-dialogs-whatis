@@ -12,9 +12,9 @@ const effects = [
   'train_announce' // громкоговоритель на вокзале
 ];
 
-const onShutdown = async (ctx, text) => {
+const onShutdown = async (ctx, reply) => {
   // send yandex metrika
-  text = text.substring(0, 100);
+  text = reply.text.substring(0, 100);
   let url = `d://${ctx.message}/${text}`;
   ctx.yametrika.onShutdown(url);
   ctx.user.state.referer = url;
@@ -26,7 +26,7 @@ const onShutdown = async (ctx, text) => {
   ctx.user.state.lastRequest = {
     request: ctx.message,
     entities: ctx.entities,
-    response: text
+    reply: reply
   };
 
   // store state
@@ -93,12 +93,14 @@ module.exports = () => (ctx, next) => {
       resultButtons = buttons.map(button => Markup.button(button));
     }
 
-    await onShutdown(ctx, text);
 
     // log outgoing message
     if (ctx.message != 'ping') ctx.logMessage(`< ${text.split('\n').join(' [n] ')}`);
 
-    return Reply.text(text, { ...{ buttons: resultButtons }, ...params });
+    const reply = Reply.text(text, { ...{ buttons: resultButtons }, ...params });
+    await onShutdown(ctx, reply);
+
+    return reply;
   };
 
   return next(ctx);

@@ -4,6 +4,6 @@ module.exports = {
   matcher: ['повтори', 'повторить', 'еще раз'],
 
   handler(ctx) {
-    return ctx.reply(ctx.user.state.lastRequest.response);
+    return ctx.user.state.lastRequest.reply;
   }
 };
