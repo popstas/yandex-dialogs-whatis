@@ -21,20 +21,20 @@ module.exports = {
     const code = ctx.message.replace(/ /g, '').match(/[0-9]{6}/);
     const item = getUserIdByCode(ctx, code);
     if (item) {
-      if (item.userId == ctx.userId) {
-        return ctx.reply([
-          'У вас получилось получить и передать код на одном и том же устройстве.',
-          'Теперь получите код на одном устройстве, а передайте его в другое.'
-        ]);
-      }
-
       if (!ctx.user.shared.auth) ctx.user.shared.auth = {};
       ctx.user.shared.auth[ctx.userId] = item.userId;
       await storage.setShared(ctx.userData, ctx.user.shared);
 
+      if (item.userId == ctx.userId) {
+        return ctx.reply([
+          'У вас получилось привязать устройство к самому себе.',
+          'Теперь получите код на одном устройстве, а передайте его в другое.'
+        ]);
+      }
+
       return ctx.reply([
         'Теперь вы связаны с другим устройством, теперь вы используете общие данные.',
-        'Чтобы разорвать связь, скажите "отменить авторизацию"'
+        'Чтобы разорвать связь, скажите "отменить авторизацию" или привяжите устройство к самому себе.'
       ]);
     } else {
       return ctx.reply('Код не найден');

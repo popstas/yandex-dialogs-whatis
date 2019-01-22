@@ -45,6 +45,7 @@ class YandexDialogsWhatis {
     useCommand(alice, commands.core.alice); // Алиса
     // useCommand(alice, commands.core.auth); // вход через яндекс аккаунт
     useCommand(alice, commands.core.authCode); // простое связывание разных Алис по одноразовому коду
+    useCommand(alice, commands.core.authCodeCancel); // простое связывание разных Алис по одноразовому коду
     useCommand(alice, commands.core.authCodeGenerate); // простое связывание разных Алис по одноразовому коду
     useCommand(alice, commands.core.cancel); // отмена
     useCommand(alice, commands.core.changelog); // что нового, changelog
@@ -84,6 +85,7 @@ class YandexDialogsWhatis {
     alice.use(rememberMasterStage.getMiddleware());
     useCommand(alice, commands.items.rememberMaster);
 
+    useCommand(alice, commands.help.authCode); // авторизация по коду
     useCommand(alice, commands.help.tour); // тур
     useCommand(alice, commands.help.first); // первая помощь
     useCommand(alice, commands.help.help); // помощь

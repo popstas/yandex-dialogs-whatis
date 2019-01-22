@@ -9,7 +9,8 @@ module.exports = {
       'отмена',
       'забудь всё',
       'запомни',
-      'что нового'
+      'что нового',
+      'авторизация'
     ];
     if (process.env.NODE_ENV != 'production') {
       buttons.push('демо данные');

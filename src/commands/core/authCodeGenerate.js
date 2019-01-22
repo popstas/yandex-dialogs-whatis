@@ -4,12 +4,14 @@ const expireSeconds = 60;
 
 module.exports = {
   intent: 'authCodeGenerate',
-  matcher: /(создай |сгенерируй |скажи )?(код|пин|пароль)( |$)/i,
+  matcher: /^(создай |сгенерируй |скажи )?(код|пин|пароль)( |$)/i,
 
   async handler(ctx) {
+    ctx.user.shared.codes = ctx.user.shared.codes || [];
+
+    // generate code
     const random = Math.floor(Math.random() * 999999);
     const code = `${random}`.padStart(6, '0');
-    if (!ctx.user.shared.codes) ctx.user.shared.codes = [];
 
     // check for duplicates
     if (ctx.user.shared.codes.find(item => item.code == code)) {
@@ -34,10 +36,23 @@ module.exports = {
     await storage.setShared(ctx.userData, ctx.user.shared);
 
     const codeText = `${code}`.split('').join(' ');
-    return ctx.replyRandom([
-      codeText,
-      `${codeText}, [megaphone]у тебя есть минута, беги!`,
-      `${codeText}, введите код на устройстве, которое хотите подключить`
-    ]);
+
+    ctx.user.shared.auth = ctx.user.shared.auth || [];
+    // есть редирект авторизации и он не на самого себя
+    if (ctx.user.shared.auth[ctx.userId] && ctx.user.shared.auth[ctx.userId] != ctx.userId) {
+      return ctx.replyRandom([
+        `Чтобы связать несколько устройств, спрашивайте код всё время на одном и том же устройстве. Код на ближайшую минуту: ${codeText}`,
+        [
+          'Сейчас вы привязаны к другому устройству, если привязать другое устройство к этому, они будут использовать разную память.',
+          `Короче, вы не должны этого хотеть, если вы понимаете, что делаете, то код ${codeText}`
+        ]
+      ]);
+    } else {
+      return ctx.replyRandom([
+        codeText,
+        `${codeText}, [megaphone]у тебя есть минута, беги!`,
+        `${codeText}, введите код на устройстве, которое хотите подключить`
+      ]);
+    }
   }
 };
