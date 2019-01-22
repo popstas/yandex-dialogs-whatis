@@ -1,3 +1,21 @@
+# [3.4.0](https://github.com/popstas/yandex-dialogs-whatis/compare/v3.3.2...v3.4.0) (2019-01-22)
+
+
+### Bug Fixes
+
+* helpAuthCode, отвязка устройства authCodeCancel, changelog ([bc06682](https://github.com/popstas/yandex-dialogs-whatis/commit/bc06682))
+* правки генерации и распознавания кода ([829ae73](https://github.com/popstas/yandex-dialogs-whatis/commit/829ae73))
+* скажи код, 30 -> 60 сек ([b0d52a3](https://github.com/popstas/yandex-dialogs-whatis/commit/b0d52a3))
+* удалить из базы случайно записанный state.error ([e9d97ef](https://github.com/popstas/yandex-dialogs-whatis/commit/e9d97ef))
+* улучшено распознавание changelog, sessionEnd ([8d86d90](https://github.com/popstas/yandex-dialogs-whatis/commit/8d86d90))
+
+
+### Features
+
+* команды связывания устройств по одноразовому коду ([7dea715](https://github.com/popstas/yandex-dialogs-whatis/commit/7dea715))
+
+
+
 ## [3.3.2](https://github.com/popstas/yandex-dialogs-whatis/compare/v3.3.1...v3.3.2) (2019-01-20)
 
 
