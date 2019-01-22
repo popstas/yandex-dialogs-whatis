@@ -71,7 +71,7 @@ module.exports = {
     // текст с датами для чтения глазами, даты не произносятся
     let logText = matchedLog.map(logLine => `${logLine.date}: ${logLine.text}`).join(',\n');
     logText = textBegin + ':\n' + logText + textEnd;
-    let logTTS = matchedLog.map(logLine => `${logLine.text}`).join(',\n');
+    let logTTS = matchedLog.map(logLine => `${logLine.text}`).join(' - - - - - ');
     logTTS = textBegin + ':\n' + logTTS + textEnd;
     // console.log('logText: ', logText);
     // console.log('logTTS: ', logTTS);
