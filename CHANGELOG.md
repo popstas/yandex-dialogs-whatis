@@ -1,3 +1,14 @@
+## [3.4.1](https://github.com/popstas/yandex-dialogs-whatis/compare/v3.4.0...v3.4.1) (2019-01-22)
+
+
+### Bug Fixes
+
+* loki storage переписан под shared.auth ([2b04b82](https://github.com/popstas/yandex-dialogs-whatis/commit/2b04b82))
+* более длинные паузы в истории изменений ([44fb6bb](https://github.com/popstas/yandex-dialogs-whatis/commit/44fb6bb))
+* команда "повтори" теперь полностью повторяет предыдущий ответ ([7251c0d](https://github.com/popstas/yandex-dialogs-whatis/commit/7251c0d))
+
+
+
 # [3.4.0](https://github.com/popstas/yandex-dialogs-whatis/compare/v3.3.2...v3.4.0) (2019-01-22)
 
 
