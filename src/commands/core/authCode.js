@@ -20,7 +20,6 @@ module.exports = {
   async handler(ctx) {
     const code = ctx.message.replace(/ /, '').match(/[0-9]{6}/);
     const item = getUserIdByCode(ctx, code);
-    console.log('item: ', item);
     if (item) {
       if (item.userId == ctx.userId) {
         return ctx.reply([

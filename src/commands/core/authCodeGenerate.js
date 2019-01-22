@@ -1,10 +1,10 @@
 // простое связывание разных Алис по одноразовому коду
 const storage = require('../../storage');
-const expireSeconds = 30;
+const expireSeconds = 60;
 
 module.exports = {
   intent: 'authCodeGenerate',
-  matcher: /(создай|сгенерируй|скажи) (код|пин|пароль)/,
+  matcher: /(создай |сгенерируй |скажи )?(код|пин|пароль)( |$)/i,
 
   async handler(ctx) {
     const code = Math.floor(Math.random() * 999999) + 100000;
@@ -26,10 +26,17 @@ module.exports = {
     });
 
     // delete expired
-    ctx.user.shared.codes = ctx.user.shared.codes.filter(item => item.expire > new Date().getTime());
+    ctx.user.shared.codes = ctx.user.shared.codes.filter(
+      item => item.expire > new Date().getTime()
+    );
 
     await storage.setShared(ctx.userData, ctx.user.shared);
 
-    return ctx.reply(`${code}`.split().join(' '));
+    const codeText = `${code}`.split('').join(' ');
+    return ctx.replyRandom([
+      codeText,
+      `${codeText}, [megaphone]у тебя есть минута, беги!`,
+      `${codeText}, введите код на устройстве, которое хотите подключить`
+    ]);
   }
 };
