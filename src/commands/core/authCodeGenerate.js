@@ -7,7 +7,8 @@ module.exports = {
   matcher: /(создай |сгенерируй |скажи )?(код|пин|пароль)( |$)/i,
 
   async handler(ctx) {
-    const code = Math.floor(Math.random() * 999999) + 100000;
+    const random = Math.floor(Math.random() * 999999);
+    const code = `${random}`.padStart(6, '0');
     if (!ctx.user.shared.codes) ctx.user.shared.codes = [];
 
     // check for duplicates

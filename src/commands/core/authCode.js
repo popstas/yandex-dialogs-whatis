@@ -13,12 +13,12 @@ const getUserIdByCode = (ctx, code) => {
 module.exports = {
   intent: 'authCode',
   matcher: ctx => {
-    const code = ctx.message.replace(/ /, '').match(/[0-9]{6}/);
+    const code = ctx.message.replace(/ /g, '').match(/[0-9]{6}/);
     return code ? 1 : 0;
   },
 
   async handler(ctx) {
-    const code = ctx.message.replace(/ /, '').match(/[0-9]{6}/);
+    const code = ctx.message.replace(/ /g, '').match(/[0-9]{6}/);
     const item = getUserIdByCode(ctx, code);
     if (item) {
       if (item.userId == ctx.userId) {
