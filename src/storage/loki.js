@@ -29,13 +29,28 @@ class LokiDriver extends BaseDriver {
       try {
         this.db = await this.connect();
       } catch (err) {
-        reject(err);
+        console.error(err);
       }
     }
 
     try {
-      const dataCollectionName = ctx.userId + '_data';
-      const stateCollectionName = ctx.userId + '_state';
+      const sharedCollectionName = 'shared';
+      let userId = ctx.userId;
+
+      // shared database
+      let shared = this.db.getCollection(sharedCollectionName);
+      if (shared === null) {
+        shared = this.db.addCollection(sharedCollectionName);
+      }
+
+      // foreign userId
+      const s = shared.data;
+      let auth = {};
+      if (s.length > 0) auth = s[0].auth;
+      if (auth && auth[ctx.userId]) userId = auth[ctx.userId];
+
+      const dataCollectionName = userId + '_data';
+      const stateCollectionName = userId + '_state';
       let data = this.db.getCollection(dataCollectionName);
       if (data === null) {
         data = this.db.addCollection(dataCollectionName);
@@ -44,9 +59,9 @@ class LokiDriver extends BaseDriver {
       if (state === null) {
         state = this.db.addCollection(stateCollectionName);
       }
-      return { data, state };
+      return { data, state, shared };
     } catch (err) {
-      reject(err);
+      console.error(err);
     }
   }
 
@@ -56,6 +71,10 @@ class LokiDriver extends BaseDriver {
 
   getState(userData) {
     return userData.state.data[0] || {};
+  }
+
+  getShared(userData) {
+    return userData.shared.data[0] || {};
   }
 
   setState(userData, state) {
@@ -71,6 +90,14 @@ class LokiDriver extends BaseDriver {
       userData.state.insert(state);
     } else {
       userData.state.update(state);
+    }
+  }
+
+  setShared(userData, shared) {
+    if (userData.shared.data.length == 0) {
+      userData.shared.insert(shared);
+    } else {
+      userData.shared.update(shared);
     }
   }
 
