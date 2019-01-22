@@ -80,7 +80,9 @@ class MongoDriver extends BaseDriver {
 
   async getState(userData) {
     let state = await userData.state.find({ name: 'state' }).toArray();
-    return state.length > 0 ? state[0].state : {};
+    state = state.length > 0 ? state[0].state : {};
+    delete(state.error);
+    return state;
   }
 
   async getShared(userData) {

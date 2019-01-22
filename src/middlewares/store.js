@@ -12,8 +12,10 @@ module.exports = () => async (ctx, next) => {
   } catch (e) {
     ctx.user = {
       data: {},
-      state: { error: 'database' }
+      state: { error: 'database' },
+      shared: {}
     };
+    console.log(e);
   }
   return next(ctx);
 };
