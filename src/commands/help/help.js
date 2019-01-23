@@ -1,6 +1,6 @@
 module.exports = {
   intent: 'help',
-  matcher: ['что ты умеешь', 'что ты можешь', 'помощь', 'помоги'],
+  matcher: ['что ты умеешь', 'что ты можешь', 'помощь', 'помоги', 'покажи помощь'],
 
   handler(ctx) {
     return ctx.reply(
