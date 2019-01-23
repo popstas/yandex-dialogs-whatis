@@ -93,12 +93,15 @@ module.exports = () => (ctx, next) => {
       resultButtons = buttons.map(button => Markup.button(button));
     }
 
-
     // log outgoing message
     if (ctx.message != 'ping') ctx.logMessage(`< ${text.split('\n').join(' [n] ')}`);
 
     const reply = Reply.text(text, { ...{ buttons: resultButtons }, ...params });
     await onShutdown(ctx, reply);
+
+    if (ctx.data.session.new && ctx.message != '') {
+      reply.end_session = true;
+    }
 
     return reply;
   };
