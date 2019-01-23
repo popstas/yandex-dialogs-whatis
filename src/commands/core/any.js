@@ -29,23 +29,26 @@ module.exports = {
     if (prepIndex != -1) {
       const question = words.slice(prepIndex, prepIndex + 2);
       const answer = prepIndex === 0 ? words.slice(prepIndex + 2) : words.slice(0, prepIndex);
-      const possibleMsg = question.join(' ') + ' находится ' + answer.join(' ');
-      ctx.chatbase.setIntent('rememberConfirm');
-      return ctx.confirm(
-        `Вы хотите запомнить: ${possibleMsg}?`,
-        ctx => commands.items.remember.processRemember(ctx, possibleMsg),
-        ctx => {
-          ctx.chatbase.setNotHandled();
-          return ctx.replyRandom(
-            [
-              'Я такое не понимаю...',
-              'Ну тогда не знаю... Попробуйте добавить глагол, так я лучше понимаю',
-              'Если вы правда имели в виду что что-то где-то находится, я это скоро пойму... Заходите через недельку'
-            ],
-            ['помощь']
-          );
-        }
-      );
+
+      if (question.length > 0 && answer.length > 0) {
+        const possibleMsg = question.join(' ') + ' находится ' + answer.join(' ');
+        ctx.chatbase.setIntent('rememberConfirm');
+        return ctx.confirm(
+          `Вы хотите запомнить: ${possibleMsg}?`,
+          ctx => commands.items.remember.processRemember(ctx, possibleMsg),
+          ctx => {
+            ctx.chatbase.setNotHandled();
+            return ctx.replyRandom(
+              [
+                'Я такое не понимаю...',
+                'Ну тогда не знаю... Попробуйте добавить глагол, так я лучше понимаю',
+                'Попробуйте сказать по-другому'
+              ],
+              ['помощь']
+            );
+          }
+        );
+      }
     }
 
     // неопределенное запомни
