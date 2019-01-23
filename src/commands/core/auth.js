@@ -1,4 +1,5 @@
 module.exports = {
+  disabled: true,
   intent: 'auth',
   matcher: [
     // вход через аккаунт

@@ -41,42 +41,7 @@ class YandexDialogsWhatis {
 
     await utils.initMorph();
 
-    useCommand(alice, commands.core.abuse); // оскорбление
-    useCommand(alice, commands.core.alice); // Алиса
-    // useCommand(alice, commands.core.auth); // вход через яндекс аккаунт
-    useCommand(alice, commands.core.authCode); // простое связывание разных Алис по одноразовому коду
-    useCommand(alice, commands.core.authCodeCancel); // простое связывание разных Алис по одноразовому коду
-    useCommand(alice, commands.core.authCodeGenerate); // простое связывание разных Алис по одноразовому коду
-    useCommand(alice, commands.core.cancel); // отмена
-    useCommand(alice, commands.core.changelog); // что нового, changelog
-    useCommand(alice, commands.core.compliment); // молодец
-    useCommand(alice, commands.core.confirm); // при наличии session.confirm запускаем сценарий подтверждения
-    useCommand(alice, commands.core.dontKnow); // непонятное, должна быть после всех "как"
-    useCommand(alice, commands.core.error); // ошибка с базой данных
-    useCommand(alice, commands.core.greetings); // привет
-    useCommand(alice, commands.core.repeat); // повтори
-    useCommand(alice, commands.core.repeatInput); // что ты услышала
-    useCommand(alice, commands.core.selfRun); // запусти навык 2 память
-    useCommand(alice, commands.core.sessionEnd); // пока
-    useCommand(alice, commands.core.thankyou); // спасибо
-    useCommand(alice, commands.core.version); // версия
-    useCommand(alice, commands.core.yes); // иногда огрызаться на "да", сказанное без вопроса
-
-    useCommand(alice, commands.items.clearData); // забудь все, должен быть перед commands.items.clearDataAll
-    useCommand(alice, commands.items.clearDataAll); // забудь все вообще, должен быть перед commands.items.deleteQuestion
-    useCommand(alice, commands.items.deleteLast); // удали последнее, должен быть перед commands.items.shopList
-    useCommand(alice, commands.items.deleteQuestion); // удали конкретное, должен быть перед commands.items.shopList
-    useCommand(alice, commands.items.demoData); // демо данные
-    useCommand(alice, commands.items.howMany); // команда сколько ...
-    useCommand(alice, commands.items.known); // что ты знаешь
-    useCommand(alice, commands.items.myName); // меня зовут ... , должен быть перед commands.items.remember
-    useCommand(alice, commands.items.remember); // команда запомни ...
-    useCommand(alice, commands.items.sendTo); // отправить список покупок на email
-    useCommand(alice, commands.items.shopList); // список покупок, должен идти перед commands.items.deleteQuestion
-    useCommand(alice, commands.items.whatIs); // что ...
-    useCommand(alice, commands.items.whereIs); // где ...
-
-    // запомни ...
+    // сцена запомни ...
     const rememberMasterStage = new Stage();
     const rememberMasterScene = new Scene('rememberMaster');
     useCommand(rememberMasterScene, commands.core.cancel);
@@ -84,18 +49,12 @@ class YandexDialogsWhatis {
     rememberMasterScene.any(commands.items.rememberMaster.rememberMasterProcess);
     rememberMasterStage.addScene(rememberMasterScene);
     alice.use(rememberMasterStage.getMiddleware());
-    useCommand(alice, commands.items.rememberMaster);
 
-    useCommand(alice, commands.help.authCode); // авторизация по коду
-    useCommand(alice, commands.help.tour); // тур
-    useCommand(alice, commands.help.first); // первая помощь
-    useCommand(alice, commands.help.help); // помощь
-    useCommand(alice, commands.help.commands); // команды
-    useCommand(alice, commands.help.remember); // запоминать
-    useCommand(alice, commands.help.whatis); // отвечать что
-    useCommand(alice, commands.help.whereis); // отвечать где
-    useCommand(alice, commands.help.forget); // забывать
-    useCommand(alice, commands.help.scenarios); // примеры
+    // подключение всех команд
+    commands.utils.useCommands(alice, commands.core);
+    commands.utils.useCommands(alice, commands.items);
+    commands.utils.useCommands(alice, commands.help);
+    commands.utils.useCommands(alice, commands.help.items);
 
     alice.any(commands.core.any.handler);
   }

@@ -11,6 +11,15 @@ module.exports.useCommand = (alice, command) => {
   alice.command(command.matcher, command.handler);
 };
 
+// подключение всех команд группы (плоский список). Вложенные группы не будут подключены
+module.exports.useCommands = (alice, commands) => {
+  Object.entries(commands).forEach(entry => {
+    [commandName, command] = entry;
+    if (command.disabled || !command.matcher) return;
+    module.exports.useCommand(alice, command);
+  });
+};
+
 // добавляет в начало функции код из второго параметра
 const handlerBefore = (handler, before) => ctx => {
   before(ctx);
