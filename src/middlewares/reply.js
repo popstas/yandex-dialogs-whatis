@@ -51,6 +51,9 @@ const ttsFromText = msg => {
     msg = msg.replace(new RegExp(search), replace);
   });
 
+  // паузы при перечислении
+  msg = msg.replace(/,\n/g, ' - - - ');
+
   return msg;
 };
 

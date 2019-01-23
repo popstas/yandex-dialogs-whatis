@@ -11,7 +11,7 @@ const notInListText = words => {
 module.exports = {
   intent: 'shopList',
   matcher(ctx) {
-    return ctx.entities.shop.action ? 1 : 0;
+    return ctx.entities.shop.action ? 0.95 : 0; //  должен быть > 0.9 < 1
   },
 
   async handler(ctx) {
@@ -136,6 +136,6 @@ module.exports = {
       text = 'Список покупок очищен';
     }
 
-    return await ctx.reply(text, 'что в магазине', 'добавить хлеб', 'удалить хлеб из списка');
+    return await ctx.reply(text, ['что в магазине', 'добавить хлеб', 'удалить хлеб из списка']);
   }
 };

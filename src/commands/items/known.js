@@ -16,7 +16,7 @@ module.exports = {
 
     if (ctx.user.state.products && ctx.user.state.products.length > 0) {
       const msg = 'Список покупок: ' + ctx.az.pluralWord('продукт', ctx.user.state.products.length);
-      questions = [...[msg], questions];
+      questions = [msg, ...questions];
     }
 
     // text
