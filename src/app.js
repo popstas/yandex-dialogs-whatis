@@ -60,6 +60,7 @@ class YandexDialogsWhatis {
     useCommand(alice, commands.core.sessionEnd); // пока
     useCommand(alice, commands.core.thankyou); // спасибо
     useCommand(alice, commands.core.version); // версия
+    useCommand(alice, commands.core.yes); // иногда огрызаться на "да", сказанное без вопроса
 
     useCommand(alice, commands.items.clearData); // забудь все, должен быть перед commands.items.clearDataAll
     useCommand(alice, commands.items.clearDataAll); // забудь все вообще, должен быть перед commands.items.deleteQuestion
