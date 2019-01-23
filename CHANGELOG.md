@@ -1,3 +1,18 @@
+## [3.4.3](https://github.com/popstas/yandex-dialogs-whatis/compare/v3.4.2...v3.4.3) (2019-01-23)
+
+
+### Bug Fixes
+
+* проверка ответов от Алисы в session ([0886936](https://github.com/popstas/yandex-dialogs-whatis/commit/0886936))
+* улучшение определения "запомни" ([8a8942d](https://github.com/popstas/yandex-dialogs-whatis/commit/8a8942d))
+
+
+### Features
+
+* завершать сессию, если при запуске навыка передавали команду ([a4695e8](https://github.com/popstas/yandex-dialogs-whatis/commit/a4695e8))
+
+
+
 ## [3.4.2](https://github.com/popstas/yandex-dialogs-whatis/compare/v3.4.1...v3.4.2) (2019-01-23)
 
 
