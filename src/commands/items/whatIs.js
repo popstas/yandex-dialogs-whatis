@@ -3,7 +3,7 @@ const Fuse = require('fuse.js');
 
 module.exports = {
   intent: 'whatis',
-  matcher: ctx => ctx.message.match(/^(что|кто) /) ? 0.9 : 0,
+  matcher: ctx => ctx.message.match(/^(что|кто) /i) ? 0.9 : 0,
 
   async handler(ctx) {
     const q = utils.cleanQuestion(ctx.message);

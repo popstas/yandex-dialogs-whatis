@@ -11,7 +11,7 @@ module.exports = () => (ctx, next) => {
   ctx.message = ctx.message.replace(/ алиса$/i, '');
 
   // скажи подразумевает запись, а "что" здесь естественно напрашивается
-  if (ctx.originalUtterance.toLowerCase().match(/^скажи/)) {
+  if (ctx.originalUtterance.match(/^скажи/i)) {
     ctx.message = ctx.message.replace(/^что /i, '');
   }
 

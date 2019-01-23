@@ -115,7 +115,7 @@ const cleanVerb = msg => {
 
 // убирает лишнее в вопросе
 module.exports.cleanQuestion = message => {
-  let msg = message.replace(/^(что|кто) /, '').replace(/^(где|когда|в чем) /, '');
+  let msg = message.replace(/^(что|кто) /i, '').replace(/^(где|когда|в чем) /i, '');
   return cleanVerb(msg);
 };
 

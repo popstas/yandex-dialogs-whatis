@@ -22,7 +22,7 @@ module.exports = {
     }
 
     // определение частей фразы без глагола
-    const cleanMsg = ctx.message.replace(/^запомни /, '').replace(/^что /, '');
+    const cleanMsg = ctx.message.replace(/^запомни /i, '').replace(/^что /i, '');
     const posts = utils.getMsgPosts(cleanMsg);
     const words = cleanMsg.split(' ');
     prepIndex = posts.indexOf('PREP');
@@ -49,7 +49,7 @@ module.exports = {
     }
 
     // неопределенное запомни
-    if (ctx.message.match(/^запомни /)) {
+    if (ctx.message.match(/^запомни /i)) {
       ctx.chatbase.setNotHandled();
       return ctx.reply('Вам нужно добавить глагол, например, на дворе растёт трава', [
         'как запомнить',

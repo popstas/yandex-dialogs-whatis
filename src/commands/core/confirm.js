@@ -35,7 +35,7 @@ module.exports = {
         optional: false
       }
     };
-    if (ctx.message.match(/^повтори/)) {
+    if (ctx.message.match(/^повтори/i)) {
       ctx.chatbase.setIntent('confirmRepeat');
       return ctx.reply(confirm.reply, ['да', 'нет']);
     } else if (options.yesMatcher(ctx)) {

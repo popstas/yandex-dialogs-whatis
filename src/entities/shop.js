@@ -85,7 +85,7 @@ module.exports = () => (ctx, next) => {
 
   const addActionWords = ['добавить', 'купить', 'запомнить'];
   if (
-    !ctx.message.match(/^что /) &&
+    !ctx.message.match(/^что /i) &&
     addActionWords.filter(word => inf.indexOf(word) != -1).length > 0
   ) {
     ctx.entities.shop.action = 'add';

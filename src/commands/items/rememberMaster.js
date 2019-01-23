@@ -25,7 +25,7 @@ module.exports = {
   },
 
   async processAnswer(ctx) {
-    const q = ctx.message.replace(/^запомни/, '').trim();
+    const q = ctx.message.replace(/^запомни/i, '').trim();
     let answerText = '';
 
     if (!ctx.user.state.stage || ctx.user.state.stage === 'STAGE_IDLE') {

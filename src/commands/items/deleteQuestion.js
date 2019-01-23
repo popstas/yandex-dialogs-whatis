@@ -54,11 +54,11 @@ const processDelete = async (ctx, question) => {
 
 module.exports = {
   intent: 'deleteQuestion',
-  matcher: ctx => ctx.message.match(/(забудь |удали(ть)? )(что )?.*/) ? 0.9 : 0, // он ломал items.shopList
+  matcher: ctx => ctx.message.match(/(забудь |удали(ть)? )(что )?.*/i) ? 0.9 : 0, // он ломал items.shopList
 
   async handler(ctx) {
     // const question = ctx.body.question;
-    const question = ctx.message.replace(/(забудь |удали(ть)? )(что )?(где )?/, '');
+    const question = ctx.message.replace(/(забудь |удали(ть)? )(что )?(где )?/i, '');
 
     const inf = Az.Morph(question)[0].normalize().word;
     const productIndex = ctx.user.state.products.indexOf(inf);

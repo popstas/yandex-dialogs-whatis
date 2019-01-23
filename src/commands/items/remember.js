@@ -6,7 +6,7 @@ const processRemember = async (ctx, msg) => {
   ctx.logMessage(`> ${msg} (remember)`);
 
   // regexp
-  const cleanMsg = msg.replace(/^запомни /, '').replace(/^что /, '');
+  const cleanMsg = msg.replace(/^запомни /i, '').replace(/^что /i, '');
   const { question, verb, answer } = utils.fixReversedRemember(utils.splitByVerb(cleanMsg));
 
   await storage.storeAnswer(ctx.userData, question, answer);
@@ -28,12 +28,12 @@ module.exports = {
   intent: '',
   matcher(ctx) {
     if (ctx.session.get('__currentScene') === 'rememberMaster') {
-      ctx.message = ctx.message.replace(/^что /, '');
+      ctx.message = ctx.message.replace(/^что /i, '');
     }
-    if (ctx.message.match(/^(что|кто) /)) return false;
-    if (ctx.message.match(/^(где|когда|в чем) /)) return false;
-    if (ctx.message.match(/^(как|зачем|почему) /)) return false;
-    const cleanMsg = ctx.message.replace(/^запомни /, '');
+    if (ctx.message.match(/^(что|кто) /i)) return false;
+    if (ctx.message.match(/^(где|когда|в чем) /i)) return false;
+    if (ctx.message.match(/^(как|зачем|почему) /i)) return false;
+    const cleanMsg = ctx.message.replace(/^запомни /i, '');
     return utils.splitByVerb(cleanMsg) ? 0.9 : 0;
   },
 
