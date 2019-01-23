@@ -63,13 +63,17 @@ module.exports = {
 
       // tour step 3
       if (ctx.user.state.tourStep === 'forget') {
-        ctx.user.state.tourStep = '';
+        if(remove.length > 0) ctx.user.state.tourStep = '';
         // storage.setState(ctx.userData, ctx.user.state);
         return await ctx.reply(
-          [
+          remove.length > 0 ? [
+            text + '.',
             'Прекрасно, теперь вы умеете пользоваться сценарием "список покупок".',
             'Чтобы узнать, как ещё можно использовать вторую память, скажите "примеры".',
             'Чтобы узнать обо всех командах, скажите "помощь".'
+          ] : [
+            text,
+            `Не получилось удалить, я услышала: "${ctx.message}"`,
           ],
           ['примеры', 'помощь', 'первая помощь']
         );
