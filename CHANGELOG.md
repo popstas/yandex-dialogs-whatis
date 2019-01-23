@@ -1,3 +1,19 @@
+## [3.4.2](https://github.com/popstas/yandex-dialogs-whatis/compare/v3.4.1...v3.4.2) (2019-01-23)
+
+
+### Bug Fixes
+
+* исправлены ошибки несовпадение с командой из-за регистра ([e5ea047](https://github.com/popstas/yandex-dialogs-whatis/commit/e5ea047))
+* обработка ошибки на шаге удаления в туре ([99abe4b](https://github.com/popstas/yandex-dialogs-whatis/commit/99abe4b))
+* обрезка "Алиса" в конце фразы, cleaner без учета регистра ([9559f3a](https://github.com/popstas/yandex-dialogs-whatis/commit/9559f3a))
+
+
+### Features
+
+* иногда огрызаться на "да", сказанное без вопроса ([3e6f2ed](https://github.com/popstas/yandex-dialogs-whatis/commit/3e6f2ed))
+
+
+
 ## [3.4.1](https://github.com/popstas/yandex-dialogs-whatis/compare/v3.4.0...v3.4.1) (2019-01-22)
 
 
