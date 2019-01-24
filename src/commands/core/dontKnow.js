@@ -1,6 +1,6 @@
 module.exports = {
   intent: 'dontKnow',
-  matcher: ctx => ctx.message.match(/^(как|зачем|почему) /i) ? 0.01 : 0,
+  matcher: ctx => ctx.message.match(/^(как|зачем|почему)( |$)/i) ? 0.01 : 0,
 
   handler(ctx) {
     ctx.chatbase.setNotHandled();
