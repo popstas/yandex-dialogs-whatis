@@ -1,3 +1,4 @@
+// вход через яндекс аккаунт
 module.exports = {
   disabled: true,
   intent: 'auth',

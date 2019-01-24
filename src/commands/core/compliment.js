@@ -1,3 +1,4 @@
+// комплимент, похвала
 module.exports = {
   intent: 'compliment',
   matcher: [

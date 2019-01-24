@@ -1,3 +1,4 @@
+// история изменений
 const yaml = require('js-yaml');
 const fs = require('fs');
 

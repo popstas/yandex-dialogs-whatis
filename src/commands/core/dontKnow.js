@@ -1,3 +1,4 @@
+// непонятное, должна быть после всех "как"
 module.exports = {
   intent: 'dontKnow',
   matcher: ctx => ctx.message.match(/^(как|зачем|почему)( |$)/i) ? 0.01 : 0,

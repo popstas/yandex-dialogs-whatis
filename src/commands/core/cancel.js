@@ -1,3 +1,4 @@
+// отмена всех текущих процессов сцен
 const utils = require('../../utils');
 
 module.exports = {

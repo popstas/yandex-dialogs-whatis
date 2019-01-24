@@ -1,3 +1,4 @@
+// версия
 const packageJson = require('../../../package.json');
 
 module.exports = {

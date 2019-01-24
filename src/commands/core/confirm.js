@@ -1,3 +1,4 @@
+// при наличии session.confirm запускаем сценарий подтверждения
 const matchers = require('../../matchers');
 
 const anycommand = ctx => {

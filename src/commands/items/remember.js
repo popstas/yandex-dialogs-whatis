@@ -1,3 +1,4 @@
+// команда запомни ...
 const storage = require('../../storage');
 const utils = require('../../utils');
 

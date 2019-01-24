@@ -1,3 +1,4 @@
+// ошибка с базой данных
 module.exports = {
   intent: '',
   matcher: ctx => !!ctx.user.state.error,

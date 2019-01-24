@@ -1,3 +1,5 @@
+// сюда попадает всё нераспознанное
+
 const utils = require('../../utils');
 const commands = require('../../commands');
 

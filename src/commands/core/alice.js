@@ -1,3 +1,4 @@
+// по ошибке зовут Алису
 module.exports = {
   intent: 'alice',
   matcher: /(алиса|алису)/i,

@@ -1,3 +1,4 @@
+// отмена связывания
 const storage = require('../../storage');
 
 module.exports = {

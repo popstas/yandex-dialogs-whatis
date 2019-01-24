@@ -1,3 +1,4 @@
+// оскорбление
 module.exports = {
   intent: 'abuse',
   matcher: /(тупая|тупой|дура|идиотка)/i,
