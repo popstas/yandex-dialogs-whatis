@@ -1,3 +1,14 @@
+## [3.4.4](https://github.com/popstas/yandex-dialogs-whatis/compare/v3.4.3...v3.4.4) (2019-01-24)
+
+
+### Bug Fixes
+
+* ответ на просто "как", "зачем" и "почему" ([f5a41dc](https://github.com/popstas/yandex-dialogs-whatis/commit/f5a41dc))
+* паузы в перечислениях, помощь "покупки", мелкие правки ([e2f32f1](https://github.com/popstas/yandex-dialogs-whatis/commit/e2f32f1))
+* правки примеров ([9d89bb8](https://github.com/popstas/yandex-dialogs-whatis/commit/9d89bb8))
+
+
+
 ## [3.4.3](https://github.com/popstas/yandex-dialogs-whatis/compare/v3.4.2...v3.4.3) (2019-01-23)
 
 
