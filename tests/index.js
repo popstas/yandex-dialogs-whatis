@@ -1,7 +1,7 @@
 'use strict';
 const { Scenarios } = require('./scenarios');
+process.env.DB_DRIVER = 'loki'; // должен быть перед конфигом
 const defaultConfig = require('../src/config');
-process.env.DB_DRIVER = 'loki';
 const app = require('../src/app');
 
 // const url = process.env.URL || 'https://whatis.dialogs.popstas.ru';
