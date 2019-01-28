@@ -59,7 +59,8 @@ module.exports = {
         text += (text ? '.\n' : '') + notInListText(notFound) + '.';
       }
 
-      text += '\nПолный список:\n' + listText(ctx);
+      text += ctx.user.state.products.length > 0 ? '\nПолный список:\n' : '\n';
+      text += listText(ctx);
 
       // tour step 3
       if (ctx.user.state.tourStep === 'forget') {

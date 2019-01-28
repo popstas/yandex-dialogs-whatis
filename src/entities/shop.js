@@ -76,7 +76,7 @@ module.exports = () => (ctx, next) => {
   }
 
   // пересечение массивов на магазинные слова
-  const shopWords = ['магазин', 'купить', 'покупка', 'заказать', 'список', 'добавить'];
+  const shopWords = ['магазин', 'купить', 'покупка', 'заказать', 'список', 'добавить', 'песок'];
   if (shopWords.filter(word => inf.indexOf(word) != -1).length > 0) {
     ctx.entities.shop.action = 'list';
   }

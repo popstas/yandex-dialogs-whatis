@@ -2,7 +2,7 @@ const deleteQuestion = require('./deleteQuestion');
 
 module.exports = {
   intent: 'deleteLast',
-  matcher: /^(удали|удалить|забудь) ?(последнее|последний|последние|последнюю запись)?$/i,
+  matcher: /^(отмени|удали|удалить|забудь) ?(последнее|последний|последние|последнюю запись)?$/i,
 
   async handler(ctx) {
     if (ctx.user.state.lastRequest.entities.shop.action == 'add') {
