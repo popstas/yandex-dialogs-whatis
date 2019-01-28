@@ -1,3 +1,19 @@
+## [3.4.5](https://github.com/popstas/yandex-dialogs-whatis/compare/v3.4.4...v3.4.5) (2019-01-28)
+
+
+### Bug Fixes
+
+* корректный ответ при отвале БД ([2e86564](https://github.com/popstas/yandex-dialogs-whatis/commit/2e86564))
+* новые слова к старым командам: отмени, хочу, что в песке ([e733b86](https://github.com/popstas/yandex-dialogs-whatis/commit/e733b86))
+* тесты снова на loki ([feb5715](https://github.com/popstas/yandex-dialogs-whatis/commit/feb5715))
+
+
+### Features
+
+* ссылка на Умный счетчик калорий ([2d8a149](https://github.com/popstas/yandex-dialogs-whatis/commit/2d8a149))
+
+
+
 ## [3.4.4](https://github.com/popstas/yandex-dialogs-whatis/compare/v3.4.3...v3.4.4) (2019-01-24)
 
 
