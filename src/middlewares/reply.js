@@ -30,7 +30,7 @@ const onShutdown = async (ctx, reply) => {
   };
 
   // store state
-  await storage.setState(ctx.userData, ctx.user.state);
+  if (!ctx.user.state.error) await storage.setState(ctx.userData, ctx.user.state);
 };
 
 const ttsFromText = msg => {
