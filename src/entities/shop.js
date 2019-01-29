@@ -39,11 +39,6 @@ module.exports = () => (ctx, next) => {
   ctx.entities = ctx.entities || {};
 
   const words = ctx.message.split(' ');
-  const posts = words.map(word => {
-    const morph = Az.Morph(word);
-    if (morph.length === 0) return '?';
-    return morph[0].tag.POST;
-  });
 
   // слова в начальных формах
   const inf = words.map(word => {
@@ -109,7 +104,13 @@ module.exports = () => (ctx, next) => {
       ...clearActionWords,
       ...['надо', 'добавить', 'список', 'покупка', 'еще', 'ещё', 'в', 'и', 'из']
     ];
-    const products = inf.filter(word => trashWords.indexOf(word) == -1);
+    let products = inf.filter(word => trashWords.indexOf(word) == -1);
+    products = products.filter(word => {
+      const morph = Az.Morph(word);
+      if (morph.length === 0) return false;
+      const post = morph[0].tag.POST;
+      return ['NOUN'].includes(post); // только существительные
+    });
     ctx.entities.shop.products = products.filter(Boolean);
     if (ctx.entities.shop.products.length == 0 && ctx.entities.shop.action != 'clear') {
       ctx.entities.shop.action = 'listAny'; // если не нашлось продуктов

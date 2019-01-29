@@ -487,6 +487,17 @@
   - tests: [ { contains: 'сметана' }, { contains: 'хлеб' } ]
   - удали сметану
   - tests: [ { contains: 'сметана' } ]
+  - на завтра надо заехать в магазин и купить растворимый кофе в пакетиках
+  - tests: 
+    - { contains: 'кофе' }
+    - { contains: 'пакетик' }
+    - { not_contains: 'на ' }
+    - { not_contains: 'завтра' }
+    - { not_contains: 'надо' }
+    - { not_contains: 'заехать' }
+    - { not_contains: 'магазин' }
+    - { not_contains: 'магазин' }
+    - { not_contains: 'растворимый' }
 
 "плюс минус":
   - плюс булка плюс рахат лукум
