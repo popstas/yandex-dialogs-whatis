@@ -1,3 +1,12 @@
+## [3.4.6](https://github.com/popstas/yandex-dialogs-whatis/compare/v3.4.5...v3.4.6) (2019-01-29)
+
+
+### Bug Fixes
+
+* в список покупок допускаются только существительные ([c050227](https://github.com/popstas/yandex-dialogs-whatis/commit/c050227))
+
+
+
 ## [3.4.5](https://github.com/popstas/yandex-dialogs-whatis/compare/v3.4.4...v3.4.5) (2019-01-28)
 
 
