@@ -1,3 +1,12 @@
+## [3.4.7](https://github.com/popstas/yandex-dialogs-whatis/compare/v3.4.6...v3.4.7) (2019-01-29)
+
+
+### Features
+
+* "удали это" после shopList ([2e4aba6](https://github.com/popstas/yandex-dialogs-whatis/commit/2e4aba6))
+
+
+
 ## [3.4.6](https://github.com/popstas/yandex-dialogs-whatis/compare/v3.4.5...v3.4.6) (2019-01-29)
 
 
