@@ -4,7 +4,7 @@ const expireSeconds = 60;
 
 module.exports = {
   intent: 'authCodeGenerate',
-  matcher: /^(создай |сгенерируй |скажи )?(код|пин|пароль)( |$)/i,
+  matcher: /^(создай |сгенерируй |скажи )?(код|пин|пароль|code)( |$)/i,
 
   async handler(ctx) {
     ctx.user.shared.codes = ctx.user.shared.codes || [];
