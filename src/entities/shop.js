@@ -4,7 +4,9 @@ const Az = require('az');
 const plusMinusParse = ctx => {
   const replaceMap = {
     плюс: 'add',
-    минус: 'remove'
+    минус: 'remove',
+    '+': 'add',
+    '-': 'remove'
   };
 
   // 'плюс один минус два товар плюс три' ->
@@ -57,7 +59,7 @@ module.exports = () => (ctx, next) => {
 
   // плюс-минус, как в https://dialogs.yandex.ru/store/skills/19170605-golosovoj-spisok-plyus-minus
   // главнее других
-  const plusMinusWords = ['плюс', 'минус'];
+  const plusMinusWords = ['плюс', 'минус', '+', '-'];
   if (plusMinusWords.includes(inf[0])) {
     const actions = plusMinusParse(ctx);
     if (actions.length > 0) {

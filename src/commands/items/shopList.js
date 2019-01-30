@@ -118,7 +118,11 @@ module.exports = {
         lines.push('\nПолный список:\n' + listText(ctx));
       }
 
-      return await ctx.reply(lines, ['список покупок']);
+      const buttons = ctx.user.state.products.length
+        ? ctx.user.state.products.map(product => `- ${product}`)
+        : ['список покупок'];
+
+      return await ctx.reply(lines, buttons);
     }
 
     if (opts.action == 'list' || opts.action == 'listAny') {
@@ -146,6 +150,9 @@ module.exports = {
       text = 'Список покупок очищен';
     }
 
-    return await ctx.reply(text, ['что в магазине', 'добавить хлеб', 'удалить хлеб из списка']);
+    const buttons = ctx.user.state.products.length
+      ? ctx.user.state.products.map(product => `- ${product}`)
+      : ['список покупок', 'добавить хлеб', 'удалить хлеб из списка'];
+    return await ctx.reply(text, buttons);
   }
 };
