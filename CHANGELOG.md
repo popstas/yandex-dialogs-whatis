@@ -1,3 +1,12 @@
+## [3.4.8](https://github.com/popstas/yandex-dialogs-whatis/compare/v3.4.7...v3.4.8) (2019-01-30)
+
+
+### Features
+
+* кнопки удаления продуктов в списке, +- знаками ([25f0a84](https://github.com/popstas/yandex-dialogs-whatis/commit/25f0a84))
+
+
+
 ## [3.4.7](https://github.com/popstas/yandex-dialogs-whatis/compare/v3.4.6...v3.4.7) (2019-01-29)
 
 
