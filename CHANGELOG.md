@@ -1,3 +1,12 @@
+## [3.5.1](https://github.com/popstas/yandex-dialogs-whatis/compare/v3.5.0...v3.5.1) (2019-01-31)
+
+
+### Bug Fixes
+
+* axios package ([1f69e83](https://github.com/popstas/yandex-dialogs-whatis/commit/1f69e83))
+
+
+
 # [3.5.0](https://github.com/popstas/yandex-dialogs-whatis/compare/v3.4.9...v3.5.0) (2019-01-31)
 
 
