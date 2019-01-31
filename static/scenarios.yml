@@ -557,13 +557,13 @@
   - tests: [ { contains: 'Вчера' } ]
 
 "вебхуки":
-  - '[{"strings": ["включи свет"], "url": "https://example.com"}]'
+  - '{"name": "light-on", "strings": ["включи свет"], "url": "https://example.com", "answer": "OK"}'
   - Поставила новые вебхуки
   - включи свет
-  - Готово
+  - OK
   - забудь все вообще
   - Точно?
   - да
   - Вообще всё забыла...
   - включи свет
-  - tests: [ { not_contains: 'Готово' } ]
+  - tests: [ { not_contains: 'OK' } ]
