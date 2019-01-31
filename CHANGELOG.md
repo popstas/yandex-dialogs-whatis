@@ -1,3 +1,12 @@
+## [3.5.2](https://github.com/popstas/yandex-dialogs-whatis/compare/v3.5.1...v3.5.2) (2019-01-31)
+
+
+### Bug Fixes
+
+* все хуки не влазят, добавление по одному ([30a9fe6](https://github.com/popstas/yandex-dialogs-whatis/commit/30a9fe6))
+
+
+
 ## [3.5.1](https://github.com/popstas/yandex-dialogs-whatis/compare/v3.5.0...v3.5.1) (2019-01-31)
 
 
