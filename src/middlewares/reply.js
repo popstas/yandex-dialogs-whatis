@@ -30,7 +30,10 @@ const onShutdown = async (ctx, reply) => {
   };
 
   // store state
-  if (!ctx.user.state.error) await storage.setState(ctx.userData, ctx.user.state);
+  if (!ctx.user.state.error){
+    await storage.setState(ctx.userData, ctx.user.state);
+    await storage.setShared(ctx.userData, ctx.user.shared);
+  }
 };
 
 const ttsFromText = msg => {

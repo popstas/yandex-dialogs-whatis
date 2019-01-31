@@ -1,8 +1,15 @@
 const longPauseDays = 3;
 const maxVisitPauseMins = 10;
 
+Date.prototype.outDate = function() {
+  return [this.getFullYear(), pad(this.getDate()), pad(this.getMonth() + 1)].join('-');
+};
+
 // запоминает последнее посещение юзера и несколько других метрик
 module.exports = () => (ctx, next) => {
+  // глобально юзеров
+  ctx.user.shared.stat = ctx.user.shared.stat || { visits: {} };
+
   // юзер
   ctx.user.state.visitor = ctx.user.state.visitor || {
     visits: 0, // кол-во визитов (визит - группа сообщений в пределах 10 минут)
@@ -24,6 +31,13 @@ module.exports = () => (ctx, next) => {
   const isNewVisit = delta > maxVisitPauseMins * 60 * 1000;
 
   if (isNewVisit) {
+    const todayDate = new Date().outDate();
+    if (!ctx.user.shared.stat.visits[todayDate]) {
+      ctx.user.shared.stat.visits[todayDate] = 1;
+    } else {
+      ctx.user.shared.stat.visits[todayDate]++;
+    }
+
     ctx.user.state.visitor.visits++;
     ctx.user.state.visitor.lastVisitDate = ctx.user.state.visitor.lastMessageDate;
     if (ctx.message != 'ping') {
