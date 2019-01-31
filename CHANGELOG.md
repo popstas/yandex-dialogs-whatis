@@ -1,3 +1,12 @@
+# [3.5.0](https://github.com/popstas/yandex-dialogs-whatis/compare/v3.4.9...v3.5.0) (2019-01-31)
+
+
+### Features
+
+* кастомные вебхуки ([e44fe06](https://github.com/popstas/yandex-dialogs-whatis/commit/e44fe06))
+
+
+
 ## [3.4.9](https://github.com/popstas/yandex-dialogs-whatis/compare/v3.4.8...v3.4.9) (2019-01-31)
 
 
