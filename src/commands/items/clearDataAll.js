@@ -19,6 +19,7 @@ const clearDataAll = async ctx => {
   ctx.user.state.visitor = { visits: 1 };
   ctx.user.state.visit = { messages: 0 };
   ctx.user.state.tourStep = '';
+  ctx.user.state.webhooks = [];
   ctx = await utils.resetState(ctx);
   return ctx.reply('Вообще всё забыла...');
 };
