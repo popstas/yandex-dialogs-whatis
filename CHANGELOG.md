@@ -1,3 +1,12 @@
+## [3.4.9](https://github.com/popstas/yandex-dialogs-whatis/compare/v3.4.8...v3.4.9) (2019-01-31)
+
+
+### Features
+
+* команда "посещаемость", визиты за сегодня и вчера ([230120a](https://github.com/popstas/yandex-dialogs-whatis/commit/230120a))
+
+
+
 ## [3.4.8](https://github.com/popstas/yandex-dialogs-whatis/compare/v3.4.7...v3.4.8) (2019-01-30)
 
 
