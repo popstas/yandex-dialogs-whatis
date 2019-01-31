@@ -28,6 +28,7 @@
   },
   "homepage": "https://github.com/popstas/yandex-dialogs-whatis#readme",
   "dependencies": {
+    "axios": "^0.18.0",
     "az": "^0.2.3",
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
@@ -40,7 +41,6 @@
     "yandex-dialogs-sdk-chatbase": "^1.2.2"
   },
   "devDependencies": {
-    "axios": "^0.18.0",
     "conventional-changelog-cli": "^2.0.11",
     "conventional-github-releaser": "^3.1.0"
   }
