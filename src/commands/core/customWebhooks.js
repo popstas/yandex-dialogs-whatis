@@ -4,7 +4,16 @@ const matchers = require('../../matchers');
 
 const getWebhook = ctx => {
   return ctx.user.state.webhooks.find(webhook => {
-    return matchers.strings(webhook.strings)(ctx);
+    webhook.regs = webhook.strings.map(string => {
+      const reg = new RegExp(string);
+      return reg;
+    });
+
+    const match = webhook.regs.find(reg => {
+      return reg.test(ctx.message);
+    });
+
+    return match;
   });
 };
 
