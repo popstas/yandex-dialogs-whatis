@@ -42,7 +42,6 @@ module.exports = {
   },
 
   async handler(ctx) {
-    ctx.logMessage(`> ${ctx.message} (customWebhooks)`);
     const webhook = getWebhook(ctx);
 
     // if (webhook.url.match(placeholderRegex)) {

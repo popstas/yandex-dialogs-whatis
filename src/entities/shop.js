@@ -44,11 +44,15 @@ module.exports = () => (ctx, next) => {
 
   const words = ctx.message.split(' ');
 
-  // слова в начальных формах
-  const inf = words.map(word => {
+  // слова в начальных формах, сохраняется число у сущ. и прил.
+  const infs = words.map(word => {
     const morph = Az.Morph(word);
     if (morph.length === 0) return '?';
-    return morph[0].normalize().word;
+    const inf = morph[0].normalize();
+    const res = ['NOUN', 'ADJF'].includes(inf.tag.POST) // как минимум глагол не стоит ставить в ед.ч. из инфинитива
+      ? inf.inflect(['NMbr', morph[0].tag.NMbr])
+      : inf;
+    return res ? res.word : inf.word;
   });
 
   if (!ctx.entities.shop) {
@@ -62,7 +66,7 @@ module.exports = () => (ctx, next) => {
   // плюс-минус, как в https://dialogs.yandex.ru/store/skills/19170605-golosovoj-spisok-plyus-minus
   // главнее других
   const plusMinusWords = ['плюс', 'минус', '+', '-'];
-  if (plusMinusWords.includes(inf[0])) {
+  if (plusMinusWords.includes(infs[0])) {
     const actions = plusMinusParse(ctx);
     if (actions.length > 0) {
       ctx.entities.shop.action = 'plusMinus';
@@ -75,8 +79,8 @@ module.exports = () => (ctx, next) => {
   }
 
   // пересечение массивов на магазинные слова
-  const shopWords = ['магазин', 'купить', 'покупка', 'заказать', 'список', 'добавить', 'песок'];
-  if (shopWords.filter(word => inf.indexOf(word) != -1).length > 0) {
+  const shopWords = ['магазин', 'купить', 'покупка', 'покупки', 'заказать', 'список', 'добавить', 'песок'];
+  if (shopWords.filter(word => infs.indexOf(word) != -1).length > 0) {
     ctx.entities.shop.action = 'list';
   }
 
@@ -85,18 +89,18 @@ module.exports = () => (ctx, next) => {
   const addActionWords = ['добавить', 'купить', 'запомнить'];
   if (
     !ctx.message.match(/^что /i) &&
-    addActionWords.filter(word => inf.indexOf(word) != -1).length > 0
+    addActionWords.filter(word => infs.indexOf(word) != -1).length > 0
   ) {
     ctx.entities.shop.action = 'add';
   }
 
   const removeActionWords = ['удаль', 'удалить', 'убрать', 'стереть', 'вычеркнуть'];
-  if (removeActionWords.filter(word => inf.indexOf(word) != -1).length > 0) {
+  if (removeActionWords.filter(word => infs.indexOf(word) != -1).length > 0) {
     ctx.entities.shop.action = 'remove';
   }
 
   const clearActionWords = ['очистить'];
-  if (clearActionWords.filter(word => inf.indexOf(word) != -1).length > 0) {
+  if (clearActionWords.filter(word => infs.indexOf(word) != -1).length > 0) {
     ctx.entities.shop.action = 'clear';
   }
 
@@ -108,7 +112,7 @@ module.exports = () => (ctx, next) => {
       ...clearActionWords,
       ...['надо', 'добавить', 'список', 'покупка', 'еще', 'ещё', 'в', 'и', 'из']
     ];
-    let products = inf.filter(word => trashWords.indexOf(word) == -1);
+    let products = infs.filter(word => trashWords.indexOf(word) == -1);
 
     const productsPosts = products.map(product => {
       const morph = Az.Morph(product);
