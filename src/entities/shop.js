@@ -1,5 +1,7 @@
 const Az = require('az');
 
+const postPairs = ['NOUN PROP NOUN', 'ADJF NOUN', 'NOUN'];
+
 // задает ctx.entities.shop.add и remove
 const plusMinusParse = ctx => {
   const replaceMap = {
@@ -107,13 +109,47 @@ module.exports = () => (ctx, next) => {
       ...['надо', 'добавить', 'список', 'покупка', 'еще', 'ещё', 'в', 'и', 'из']
     ];
     let products = inf.filter(word => trashWords.indexOf(word) == -1);
-    products = products.filter(word => {
-      const morph = Az.Morph(word);
+
+    const productsPosts = products.map(product => {
+      const morph = Az.Morph(product);
       if (morph.length === 0) return false;
       const post = morph[0].tag.POST;
-      return ['NOUN'].includes(post); // только существительные
+      return post;
     });
-    ctx.entities.shop.products = products.filter(Boolean);
+    const productsPostsString = productsPosts.join(' ');
+
+    const productsCombos = [];
+
+    const comboIndexes = [];
+
+    let i = 0;
+    while (i < products.length) {
+      const w = [
+        products[i],
+        products.length > i + 1 ? products[i + 1] : '',
+        products.length > i + 2 ? products[i + 2] : ''
+      ];
+
+      const p = w.map(w => {
+        const morph = Az.Morph(w);
+        return (post = morph.length > 0 ? morph[0].tag.POST : '');
+      });
+
+      let found = false;
+      for (let wordCount = 3; wordCount > 0; wordCount--) {
+        if (!w[wordCount - 1]) continue;
+        const str = w.slice(0, wordCount).join(' ');
+        const postStr = p.slice(0, wordCount).join(' ');
+        if (postPairs.includes(postStr)) {
+          productsCombos.push(str);
+          i += wordCount;
+          found = true;
+        }
+      }
+      if (!found) i++;
+    }
+
+    ctx.entities.shop.products = productsCombos.filter(Boolean);
     if (ctx.entities.shop.products.length == 0 && ctx.entities.shop.action != 'clear') {
       ctx.entities.shop.action = 'listAny'; // если не нашлось продуктов
     }
