@@ -10,6 +10,13 @@ const notInListText = words => {
   return words.join(', ') + (words.length == 1 ? ' отсутствует' : ' отсутствуют') + ' в списке';
 };
 
+const listTextShort = ctx => {
+  if (ctx.user.state.products.length > 5) {
+    return 'В списке ' + ctx.az.pluralWord('продукт', ctx.user.state.products.length);
+  }
+  return (ctx.user.state.products.length > 0 ? 'Полный список:\n' : '') + listText(ctx);
+};
+
 module.exports = {
   intent: 'shopList',
   matcher(ctx) {
@@ -27,6 +34,7 @@ module.exports = {
 
     let list = ctx.user.state.products;
 
+    // добавить
     if (opts.action == 'add') {
       const add = opts.products.filter(product => product && list.indexOf(product) == -1);
       ctx.entities.shop.productsAdded = add; // для удали последнее
@@ -35,7 +43,7 @@ module.exports = {
         add.length > 0
           ? 'Добавлены: ' + ctx.az.andList(add) + '.'
           : 'В списке уже есть ' + ctx.az.andList(opts.products) + '.';
-      if (add.length < ctx.user.state.products.length) text += '\nПолный список:\n' + listText(ctx);
+      if (add.length < ctx.user.state.products.length) text += '\n' + listTextShort(ctx);
 
       // tour step 1
       if (ctx.user.state.tourStep === 'remember') {
@@ -50,6 +58,7 @@ module.exports = {
       }
     }
 
+    // удалить
     if (opts.action == 'remove') {
       const remove = opts.products.filter(product => product && list.indexOf(product) != -1);
       const notFound = opts.products.filter(product => product && list.indexOf(product) == -1);
@@ -66,8 +75,7 @@ module.exports = {
         }
       }
 
-      text += ctx.user.state.products.length > 0 ? '\nПолный список:\n' : '\n';
-      text += listText(ctx);
+      text += '\n' + listTextShort(ctx);
 
       // tour step 3
       if (ctx.user.state.tourStep === 'forget') {
@@ -97,6 +105,7 @@ module.exports = {
       }
     }
 
+    // плюс минус
     if (opts.action == 'plusMinus') {
       const p = { add: [], remove: [] };
       ctx.entities.shop.actions.forEach(item => {
@@ -122,7 +131,11 @@ module.exports = {
       if (exists.length > 0) lines.push(ctx.az.andList(exists) + ' уже есть в списке.'); // отсутствуют
       if (notFound.length > 0) lines.push(notInListText(notFound)) + '.'; // отсутствуют
       if (add.length < ctx.user.state.products.length) {
-        lines.push('\nПолный список:\n' + listText(ctx));
+        if (ctx.user.state.products.length > 5) {
+          lines.push('В списке ' + ctx.az.pluralWord('продукт', ctx.user.state.products.length));
+        } else {
+          lines.push('\nПолный список:\n' + listText(ctx));
+        }
       }
 
       const buttons = ctx.user.state.products.length
@@ -132,6 +145,7 @@ module.exports = {
       return await ctx.reply(lines, buttons);
     }
 
+    // список
     if (opts.action == 'list' || opts.action == 'listAny') {
       if (opts.action == 'listAny' && ctx.user.state.products.length > 0) {
         text += 'Список покупок:\n';
@@ -152,6 +166,7 @@ module.exports = {
       }
     }
 
+    // очистка
     if (opts.action == 'clear') {
       ctx.user.state.products = [];
       text = 'Список покупок очищен';
