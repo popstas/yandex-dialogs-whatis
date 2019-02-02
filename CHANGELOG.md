@@ -1,3 +1,18 @@
+## [3.5.3](https://github.com/popstas/yandex-dialogs-whatis/compare/v3.5.2...v3.5.3) (2019-02-02)
+
+
+### Bug Fixes
+
+* спасибо до свидания, правила ([9f9e4b0](https://github.com/popstas/yandex-dialogs-whatis/commit/9f9e4b0))
+
+
+### Features
+
+* начальная поддержка переменных в запросах к вебхукам ([c72e8a6](https://github.com/popstas/yandex-dialogs-whatis/commit/c72e8a6))
+* поддержка regexp в кастомных вебхуках ([43cf9aa](https://github.com/popstas/yandex-dialogs-whatis/commit/43cf9aa))
+
+
+
 ## [3.5.2](https://github.com/popstas/yandex-dialogs-whatis/compare/v3.5.1...v3.5.2) (2019-01-31)
 
 
