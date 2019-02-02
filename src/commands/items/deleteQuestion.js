@@ -1,6 +1,5 @@
 const storage = require('../../storage');
 const utils = require('../../utils');
-const Az = require('az');
 const known = require('./known');
 
 // процесс удаления вопроса
@@ -29,7 +28,8 @@ const processDelete = async (ctx, question) => {
       ctx.chatbase.setIntent('knownConfirm');
       return await ctx.confirm(
         'Не знаю такого, рассказать, что знаю?',
-        known.handler, ctx => ctx.replyRandom(['ОК', 'Молчу', 'Я могу и всё забыть...']),
+        known.handler,
+        ctx => ctx.replyRandom(['ОК', 'Молчу', 'Я могу и всё забыть...']),
         { optional: true }
       );
     }
@@ -54,18 +54,11 @@ const processDelete = async (ctx, question) => {
 
 module.exports = {
   intent: 'deleteQuestion',
-  matcher: ctx => ctx.message.match(/(забудь |удали(ть)? )(что )?.*/i) ? 0.9 : 0, // он ломал items.shopList
+  matcher: ctx => (ctx.message.match(/(забудь |удали(ть)? )(что )?.*/i) ? 0.9 : 0), // он ломал items.shopList
 
   async handler(ctx) {
     // const question = ctx.body.question;
     const question = ctx.message.replace(/(забудь |удали(ть)? )(что )?(где )?/i, '');
-
-    const inf = Az.Morph(question)[0].normalize().word;
-    const productIndex = ctx.user.state.products.indexOf(inf);
-    if(productIndex != -1){
-      ctx.user.state.products.splice(productIndex, 1);
-      return ctx.reply('Удалено из списка покупок: ' + inf);
-    }
 
     return processDelete(ctx, question);
   },
