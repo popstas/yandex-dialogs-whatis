@@ -1,3 +1,13 @@
+# [3.6.0](https://github.com/popstas/yandex-dialogs-whatis/compare/v3.5.3...v3.6.0) (2019-02-02)
+
+
+### Features
+
+* запоминание продуктов с прилагательными ([b5ad062](https://github.com/popstas/yandex-dialogs-whatis/commit/b5ad062))
+* сохранение числа сохраняемого продукта ([8487858](https://github.com/popstas/yandex-dialogs-whatis/commit/8487858))
+
+
+
 ## [3.5.3](https://github.com/popstas/yandex-dialogs-whatis/compare/v3.5.2...v3.5.3) (2019-02-02)
 
 
