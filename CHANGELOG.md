@@ -1,3 +1,17 @@
+## [3.6.1](https://github.com/popstas/yandex-dialogs-whatis/compare/v3.6.0...v3.6.1) (2019-02-03)
+
+
+### Bug Fixes
+
+* удаление нескольких продуктов без уточнения "из списка" ([d34ade9](https://github.com/popstas/yandex-dialogs-whatis/commit/d34ade9))
+
+
+### Features
+
+* не диктовать длинный список продуктов, пока не спросилиПри явном запросе всегда читается полный список.При добавлении и удалении читается до 5 продуктов. ([460a922](https://github.com/popstas/yandex-dialogs-whatis/commit/460a922))
+
+
+
 # [3.6.0](https://github.com/popstas/yandex-dialogs-whatis/compare/v3.5.3...v3.6.0) (2019-02-02)
 
 
