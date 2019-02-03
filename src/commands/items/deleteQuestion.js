@@ -54,7 +54,7 @@ const processDelete = async (ctx, question) => {
 
 module.exports = {
   intent: 'deleteQuestion',
-  matcher: ctx => (ctx.message.match(/(забудь |удали(ть)? )(что )?.*/i) ? 0.9 : 0), // он ломал items.shopList
+  matcher: ctx => (ctx.message.match(/(забудь|удали(ть)?|убрать|убери|сотри|стереть) (что )?.*/i) ? 0.9 : 0), // он ломал items.shopList
 
   async handler(ctx) {
     // const question = ctx.body.question;
