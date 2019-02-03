@@ -1,3 +1,12 @@
+## [3.6.2](https://github.com/popstas/yandex-dialogs-whatis/compare/v3.6.1...v3.6.2) (2019-02-03)
+
+
+### Bug Fixes
+
+* счетчик калорий, убери, сотри, списки ([3acd845](https://github.com/popstas/yandex-dialogs-whatis/commit/3acd845))
+
+
+
 ## [3.6.1](https://github.com/popstas/yandex-dialogs-whatis/compare/v3.6.0...v3.6.1) (2019-02-03)
 
 
