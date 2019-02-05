@@ -15,11 +15,28 @@ const clearDataAll = async ctx => {
   ctx.logMessage(`> ${ctx.message} (clearDataAll)`);
 
   await storage.clearData(ctx.userData);
-  ctx.user.state.products = [];
-  ctx.user.state.visitor = { visits: 1 };
-  ctx.user.state.visit = { messages: 0 };
+  [
+    'answer',
+    'deleteFails',
+    'lastAddedItem',
+    'lastRequest',
+    'lastWelcome',
+    'products',
+    'question',
+    'referer',
+    'stage',
+    'tourStep',
+    'visit',
+    'visitor',
+    'webhooks'
+  ].forEach(name => {
+    delete ctx.user.state[name];
+  });
+  /* ctx.user.state.products = [];
+  delete(ctx.user.state.visitor);
+  delete(ctx.user.state.visit);
   ctx.user.state.tourStep = '';
-  ctx.user.state.webhooks = [];
+  ctx.user.state.webhooks = []; */
   ctx = await utils.resetState(ctx);
   return ctx.reply('Вообще всё забыла...');
 };
