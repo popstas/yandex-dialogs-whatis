@@ -92,6 +92,7 @@ module.exports = () => (ctx, next) => {
     'песок',
     'пески',
     'удалить',
+    'убрать',
     'удаль'
   ];
   if (shopWords.filter(word => infs.indexOf(word) != -1).length > 0) {

@@ -13,6 +13,7 @@ module.exports = {
     let msg;
     const buttons = ['авторизация', 'что нового', 'помощь', 'примеры', 'что ты знаешь', 'команды', 'список покупок'];
     if (ctx.user.state.visitor.visits > 1 || ctx.user.state.visit.messages > 1) {
+      // TODO: разные приветствия
       msg =
         'Привет' +
         (ctx.user.state.visitor.lastVisitLong
