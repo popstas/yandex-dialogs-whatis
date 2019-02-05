@@ -1,3 +1,13 @@
+## [3.6.3](https://github.com/popstas/yandex-dialogs-whatis/compare/v3.6.2...v3.6.3) (2019-02-05)
+
+
+### Bug Fixes
+
+* доп. фразы ([109382e](https://github.com/popstas/yandex-dialogs-whatis/commit/109382e))
+* правки отслеживания visitor ([444771c](https://github.com/popstas/yandex-dialogs-whatis/commit/444771c))
+
+
+
 ## [3.6.2](https://github.com/popstas/yandex-dialogs-whatis/compare/v3.6.1...v3.6.2) (2019-02-03)
 
 
