@@ -12,8 +12,8 @@ module.exports = () => (ctx, next) => {
 
     let ageText = '__:__';
     const pad = d => (d > 9 ? d : '0' + d);
-    if (ctx.user.state.visitor && ctx.user.state.visitor.lastVisitDate) {
-      const age = new Date(new Date().getTime() - ctx.user.state.visitor.lastVisitDate);
+    if (ctx.user.state.visitor && ctx.user.state.visitor.currentVisitDate) {
+      const age = new Date(new Date().getTime() - ctx.user.state.visitor.currentVisitDate);
       ageText = `${pad(age.getMinutes())}:${pad(age.getSeconds())}`;
     }
 
@@ -22,7 +22,7 @@ module.exports = () => (ctx, next) => {
       (ctx.user.state.visit && ctx.user.state.visit.messages) || 0
     ];
 
-    console.log(`${sessId}, ${visits}, ${messages}, ${ageText} ${message}`);
+    console.log(`${sessId}, v${visits}, m${messages}, ${ageText} ${message}`);
   };
   return next(ctx);
 };

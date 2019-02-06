@@ -39,6 +39,7 @@ module.exports = () => (ctx, next) => {
     }
 
     ctx.user.state.visitor.visits++;
+    ctx.user.state.visitor.currentVisitDate = new Date().getTime();
     ctx.user.state.visitor.lastVisitDate =
       ctx.user.state.visitor.lastMessageDate || new Date().getTime();
     if (ctx.message != 'ping') {
