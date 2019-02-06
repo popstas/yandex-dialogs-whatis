@@ -1,3 +1,12 @@
+## [3.6.4](https://github.com/popstas/yandex-dialogs-whatis/compare/v3.6.3...v3.6.4) (2019-02-06)
+
+
+### Bug Fixes
+
+* время с непервого визита считалось неправильно, изменен формат лога ([c6cd1bc](https://github.com/popstas/yandex-dialogs-whatis/commit/c6cd1bc))
+
+
+
 ## [3.6.3](https://github.com/popstas/yandex-dialogs-whatis/compare/v3.6.2...v3.6.3) (2019-02-05)
 
 
