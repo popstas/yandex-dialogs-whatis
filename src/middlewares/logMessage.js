@@ -1,8 +1,13 @@
 // логирует реплику
 
+const getNanoSecTime = () => {
+  var hrTime = process.hrtime();
+  return hrTime[0] * 1000000000 + hrTime[1];
+};
+
 module.exports = () => (ctx, next) => {
   ctx.logMessage = message => {
-    const sessId = ctx.session.id ? ctx.session.id.toString().substring(0, 4) : '';
+    const sessId = ctx.session.id ? ctx.session.id.toString().substring(0, 6) : '';
 
     /* if(ctx.user.state.visitor.visits > 10){
       console.log(
@@ -22,7 +27,7 @@ module.exports = () => (ctx, next) => {
       (ctx.user.state.visit && ctx.user.state.visit.messages) || 0
     ];
 
-    console.log(`${sessId}, v${visits}, m${messages}, ${ageText} ${message}`);
+    console.log(`${getNanoSecTime()} ${sessId}, visit ${visits}, msg ${messages}, ${ageText} ${message}`);
   };
   return next(ctx);
 };
