@@ -1,3 +1,13 @@
+## [3.6.5](https://github.com/popstas/yandex-dialogs-whatis/compare/v3.6.4...v3.6.5) (2019-02-12)
+
+
+### Bug Fixes
+
+* добавлены наносекунды в лог, userId увеличен с 4 до 6 ([f744cea](https://github.com/popstas/yandex-dialogs-whatis/commit/f744cea))
+* новые фразы "что ты умеешь" ([caffb4e](https://github.com/popstas/yandex-dialogs-whatis/commit/caffb4e))
+
+
+
 ## [3.6.4](https://github.com/popstas/yandex-dialogs-whatis/compare/v3.6.3...v3.6.4) (2019-02-06)
 
 
