@@ -1,3 +1,13 @@
+## [3.6.7](https://github.com/popstas/yandex-dialogs-whatis/compare/v3.6.6...v3.6.7) (2019-02-14)
+
+
+### Bug Fixes
+
+* ладно пока, спасибо умничка, например ([7a42a76](https://github.com/popstas/yandex-dialogs-whatis/commit/7a42a76))
+* ругательства, глухая, все пока, все спасибо, пример, удали все, сотри его ([2768396](https://github.com/popstas/yandex-dialogs-whatis/commit/2768396))
+
+
+
 ## [3.6.6](https://github.com/popstas/yandex-dialogs-whatis/compare/v3.6.5...v3.6.6) (2019-02-14)
 
 
