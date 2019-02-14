@@ -1,6 +1,6 @@
 module.exports = {
   intent: 'thankyou',
-  matcher: ['спс', 'все спасибо', 'спасибо', 'благодарю'],
+  matcher: ['спс', 'все спасибо', 'спасибо', 'благодарю', 'спасибо умничка', 'спасибо тебе'],
 
   handler(ctx) {
     ctx.chatbase.setAsFeedback();
