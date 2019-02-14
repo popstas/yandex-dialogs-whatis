@@ -3,7 +3,7 @@ const utils = require('../../utils');
 
 module.exports = {
   intent: 'cancel',
-  matcher: /^отмена/i,
+  matcher: /^(отмена|стоп)/i,
 
   async handler(ctx) {
     ctx.chatbase.setNotHandled();

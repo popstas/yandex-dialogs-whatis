@@ -93,7 +93,8 @@ module.exports = () => (ctx, next) => {
     'пески',
     'удалить',
     'убрать',
-    'удаль'
+    'удаль',
+    'вычеркнуть'
   ];
   if (shopWords.filter(word => infs.indexOf(word) != -1).length > 0) {
     ctx.entities.shop.action = 'list';
