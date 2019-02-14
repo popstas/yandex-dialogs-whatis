@@ -1,3 +1,12 @@
+## [3.6.6](https://github.com/popstas/yandex-dialogs-whatis/compare/v3.6.5...v3.6.6) (2019-02-14)
+
+
+### Bug Fixes
+
+* класс, домой, стоп, так, конечно, передай ([3842dba](https://github.com/popstas/yandex-dialogs-whatis/commit/3842dba))
+
+
+
 ## [3.6.5](https://github.com/popstas/yandex-dialogs-whatis/compare/v3.6.4...v3.6.5) (2019-02-12)
 
 
