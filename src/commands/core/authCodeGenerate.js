@@ -37,7 +37,8 @@ module.exports = {
 
     const codeText = `${code}`.split('').join(' ');
 
-    ctx.user.shared.auth = ctx.user.shared.auth || [];
+    ctx.user.shared.auth = ctx.user.shared.auth || {};
+
     // есть редирект авторизации и он не на самого себя
     if (ctx.user.shared.auth[ctx.userId] && ctx.user.shared.auth[ctx.userId] != ctx.userId) {
       return ctx.replyRandom([
