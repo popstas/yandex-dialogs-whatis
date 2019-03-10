@@ -1,3 +1,19 @@
+# [3.7.0](https://github.com/popstas/yandex-dialogs-whatis/compare/v3.6.7...v3.7.0) (2019-03-10)
+
+
+### Bug Fixes
+
+* дополнены все основные команды по истории запросов за февраль ([e9891c6](https://github.com/popstas/yandex-dialogs-whatis/commit/e9891c6))
+* иногда связки устройств shared.auth не могли создаться ([31646ef](https://github.com/popstas/yandex-dialogs-whatis/commit/31646ef))
+
+
+### Features
+
+* оценить навык ([de7cf16](https://github.com/popstas/yandex-dialogs-whatis/commit/de7cf16))
+* ссылка на Вкусный список ([57a8e50](https://github.com/popstas/yandex-dialogs-whatis/commit/57a8e50))
+
+
+
 ## [3.6.7](https://github.com/popstas/yandex-dialogs-whatis/compare/v3.6.6...v3.6.7) (2019-02-14)
 
 
@@ -669,11 +685,7 @@
 
 
 
-## [1.7.1](https://github.com/popstas/yandex-dialogs-whatis/compare/v1.7.0...v1.7.1) (2018-07-19)
-
-
-
-# [1.7.0](https://github.com/popstas/yandex-dialogs-whatis/compare/v1.6.0...v1.7.0) (2018-07-19)
+## [1.7.1](https://github.com/popstas/yandex-dialogs-whatis/compare/v1.6.0...v1.7.1) (2018-07-19)
 
 
 ### Bug Fixes
