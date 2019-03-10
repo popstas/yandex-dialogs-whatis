@@ -14,6 +14,12 @@ module.exports = {
       'Пожалуйста',
       'Пожалуйста',
       'Пожалуйста'
+    ], [
+      {
+        title: 'оценить навык',
+        url: 'https://dialogs.yandex.ru/store/skills/00203e6e-vtoraya-pamya',
+        hide: true
+      }
     ]);
   }
 };

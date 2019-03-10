@@ -17,7 +17,8 @@ module.exports = {
     'правильно молодец',
     'класс',
     'спасибо умничка',
-    'прикольно'
+    'прикольно',
+    'оценить навык'
   ],
 
   handler(ctx) {
@@ -31,6 +32,12 @@ module.exports = {
       'Спасибо!',
       'Спасибо!',
       'Спасибо!'
+    ], [
+      {
+        title: 'оценить навык',
+        url: 'https://dialogs.yandex.ru/store/skills/00203e6e-vtoraya-pamya',
+        hide: true
+      }
     ]);
   }
 };
