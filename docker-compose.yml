@@ -8,9 +8,9 @@ services:
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
     volumes:
-      - ./data/mongodb:/data/db
-    # ports:
-    #   - 27017:27017
+      - /var/lib/yandex-dialogs-whatis:/data/db
+    ports:
+       - 27018:27017
 
   yandex-dialogs-whatis:
     image: popstas/yandex-dialogs-whatis:v3.6.7
