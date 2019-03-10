@@ -5,8 +5,10 @@ const matchers = require('../../matchers');
 // команда по умолчанию (справка)
 module.exports = {
   intent: '',
-  matcher: matchers.strings(['', 'привет', 'приветствие', 'здравствуй', 'здравствуйте', 'здрасте', 'прив']),
-  // matcher: ['привет', 'приветствие'], // TODO: заменить после выхода sdk 2.0.7
+  matcher: ctx => {
+    return matchers.strings(['', 'привет', 'приветствие', 'здравствуй', 'здравствуйте', 'здрасте', 'прив'])(ctx) ? 99 : 0;
+  },
+  // matcher: ['', 'привет', 'приветствие', 'здравствуй', 'здравствуйте', 'здрасте', 'прив'], // TODO: заменить после выхода sdk 2.0.7
 
   async handler(ctx) {
     if (ctx.message != 'ping') ctx.logMessage(`> ${ctx.message} (welcome)`);

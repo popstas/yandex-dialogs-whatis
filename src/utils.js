@@ -124,9 +124,9 @@ module.exports.resetState = async ctx => {
   ctx.user.state.stage = 'STAGE_IDLE';
   ctx.user.state.question = '';
   ctx.user.state.answer = '';
-  // ctx.leave();
+  ctx.leave();
   // ctx.session.set('__currentScene', '__mainScene');
-  ctx.session.set(Stage.CURRENT_SCENE_SESSION_KEY, Stage.DEFAULT_SCENE_NAME);
+  // ctx.session.set(Stage.CURRENT_SCENE_SESSION_KEY, Stage.DEFAULT_SCENE_NAME);
   await storage.setState(ctx.userData, ctx.user.state);
   return ctx;
 };
