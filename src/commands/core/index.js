@@ -6,3 +6,11 @@ require('fs')
     const moduleName = file.split('.')[0];
     if (file !== 'index.js') exports[moduleName] = require('./' + file);
   });
+
+  const storage = require('../../storage');
+  exports.migration = {
+    matcher: 'миграция',
+    handler(ctx) {
+        storage.migrateCollectionsToUsers();
+    }
+}

@@ -43,12 +43,20 @@ class MongoDriver extends BaseDriver {
 
       try {
         const sharedCollectionName = 'shared';
+        const usersCollectionName = 'users';
+
         let userId = ctx.userId;
 
-        // shared database
+        // shared collection
         let shared = await this.db.collection(sharedCollectionName);
         if (shared === null) {
           shared = await this.db.createCollection(sharedCollectionName);
+        }
+
+        // users collection
+        let users = await this.db.collection(usersCollectionName);
+        if (users === null) {
+          users = await this.db.createCollection(usersCollectionName);
         }
 
         // foreign userId
@@ -57,17 +65,12 @@ class MongoDriver extends BaseDriver {
         if (s.length > 0) auth = s[0].shared.auth;
         if (auth && auth[ctx.userId]) userId = auth[ctx.userId];
 
-        const dataCollectionName = userId + '_data';
-        const stateCollectionName = userId + '_state';
-        let data = await this.db.collection(dataCollectionName);
-        if (data === null) {
-          data = await this.db.createCollection(dataCollectionName);
-        }
-        let state = await this.db.collection(stateCollectionName);
-        if (state === null) {
-          state = await this.db.createCollection(stateCollectionName);
-        }
-        resolve({ data, state, shared });
+        // new storage
+        let state = { userId };
+        const stateRes = await users.find({ userId: userId }).toArray();
+        if (stateRes.length > 0) state = stateRes[0].state;
+
+        resolve({ state, shared });
       } catch (err) {
         reject(err);
       }
@@ -76,6 +79,24 @@ class MongoDriver extends BaseDriver {
 
   async getData(userData) {
     return await userData.data.find({}).toArray();
+  }
+
+  async migrateCollectionsToUsers(){
+    const tryMigrate = true;
+    if (tryMigrate) {
+      const dataCollectionName = userId + '_data';
+      const stateCollectionName = userId + '_state';
+      let data = await this.db.collection(dataCollectionName);
+      if (data === null) {
+        data = await this.db.createCollection(dataCollectionName);
+      }
+      let state = await this.db.collection(stateCollectionName);
+      if (state === null) {
+        state = await this.db.createCollection(stateCollectionName);
+      }
+    }
+
+
   }
 
   async getState(userData) {
