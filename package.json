@@ -28,7 +28,7 @@
   },
   "homepage": "https://github.com/popstas/yandex-dialogs-whatis#readme",
   "dependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.18.1",
     "az": "^0.2.3",
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
