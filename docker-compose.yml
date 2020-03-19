@@ -21,3 +21,4 @@ services:
       - $PWD/src/config.js:/app/src/config.js
     ports:
       - 2756:3002
+    restart: always
